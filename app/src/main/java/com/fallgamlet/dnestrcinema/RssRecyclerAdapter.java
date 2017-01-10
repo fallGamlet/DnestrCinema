@@ -127,27 +127,27 @@ public class RssRecyclerAdapter extends RecyclerView.Adapter<RssRecyclerAdapter.
         });
 
         //region Load and set Image
-//        String imgUrl = item.getImgUrl();
+        String imgUrl = item.getImgUrl();
         try {
             holder.mImageView.setImageResource(R.drawable.ic_local_movies_black_24dp);
             // если ссылка есть
-//            if (imgUrl != null) {
-//                Bitmap img = NetworkImageTask.cachedImages.get(imgUrl);
-//                if (img != null) {
-//                    holder.mImageView.setImageBitmap(img);
-//                } else {
-//                    imageTask.requestImage(imgUrl, new NetworkImageTask.NetworkImageCallback() {
-//                        @Override
-//                        public void onImageLoaded(NetworkImageTask.UrlImage urlImg) {
-//                            if (urlImg.img != null && urlImg.url != null && urlImg.url.equalsIgnoreCase(item.getImgUrl())) {
-//                                int pos = getPosition(item);
-//                                // посылаем сигнал, что элемент нужно обновить - установить картинку
-//                                notifyItemChanged(pos, urlImg.img);
-//                            }
-//                        }
-//                    });
-//                }
-//            }
+            if (imgUrl != null) {
+                Bitmap img = NetworkImageTask.cachedImages.get(imgUrl);
+                if (img != null) {
+                    holder.mImageView.setImageBitmap(img);
+                } else {
+                    imageTask.requestImage(imgUrl, new NetworkImageTask.NetworkImageCallback() {
+                        @Override
+                        public void onImageLoaded(NetworkImageTask.UrlImage urlImg) {
+                            if (urlImg.img != null && urlImg.url != null && urlImg.url.equalsIgnoreCase(item.getImgUrl())) {
+                                int pos = getPosition(item);
+                                // посылаем сигнал, что элемент нужно обновить - установить картинку
+                                notifyItemChanged(pos, urlImg.img);
+                            }
+                        }
+                    });
+                }
+            }
         } catch (Exception ignored) {
             holder.mImageView.setImageResource(R.drawable.ic_local_movies_black_24dp);
         }
