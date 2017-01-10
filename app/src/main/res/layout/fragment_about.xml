@@ -1,0 +1,81 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/AppTheme"
+    tools:context="com.fallgamlet.dnestrcinema.AboutFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/SpaceMiddle">
+
+         <!--Кассы:   \n\nАдрес: Приднестровье, г.Тирасполь, ул. 25 Октября, 53 \n\nВ расписании возможны изменения. Уточняйте время сеансов перед выходом в кино.-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/org_contact_info" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="@dimen/SpaceMiddle" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Автоответчик" />
+
+        <TextView android:id="@+id/phoneAutoAnswer1"
+            style="@style/AppTheme.Link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="phone"
+            android:text="@string/phone_org_autoanswer_1" />
+
+        <TextView android:id="@+id/phoneAutoAnswer2"
+            style="@style/AppTheme.Link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="phone"
+            android:text="@string/phone_org_autoanswer_2" />
+
+
+        <android.support.v4.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="@dimen/SpaceMiddle" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Касса (с 10:00 до 22:00)" />
+
+        <TextView android:id="@+id/phoneCashbox"
+            style="@style/AppTheme.Link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="email"
+            android:text="@string/phone_org_cashbox" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:src="@drawable/scheme"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/developer_contact_info" />
+
+        <TextView android:id="@+id/emailDeveloper"
+            style="@style/AppTheme.Link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/developer_email" />
+
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

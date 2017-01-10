@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/SpaceMiddle"
+    android:paddingLeft="@dimen/SpaceMiddle"
+    android:paddingRight="@dimen/SpaceMiddle"
+    android:paddingBottom="0dp"
+    android:orientation="vertical"
+    android:background="@color/colorBgLight">
+
+    <TextView android:id="@+id/titleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="@dimen/TextMedium"
+        android:gravity="start"
+        android:layout_marginBottom="@dimen/SpaceSmall"
+        tools:text="Заголовок сообщения" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <TextView android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/SpaceSmall"
+            android:gravity="start"
+            android:textSize="@dimen/TextMedium"
+            android:textIsSelectable="true"
+            tools:text="Тект сообщения" />
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button android:id="@+id/positiveBtn"
+            style="@style/AppTheme.DialogButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">К.Тирасполь Афиша</string>
+    <string name="title_main">К.Тирасполь. Афиша</string>
+
+    <string name="title_now">Сейчас</string>
+    <string name="title_soon">Скоро</string>
+    <string name="title_about">Контакты</string>
+
+    <string name="ok">ок</string>
+    <string name="yes">да</string>
+    <string name="no">нет</string>
+    <string name="accept">принять</string>
+    <string name="cancel">отменить</string>
+    <string name="error">Ошибка</string>
+    <string name="update">Обновить</string>
+    <string name="yet_empty">Пока что пусто</string>
+    <string name="developer_email">fallgamlet@yandex.ru</string>
+    <string name="developer_contact_info">Контактная информация разработчика \nПсевдоним: fallGamlet</string>
+    <string name="phone_org_autoanswer_1">0 533 8-15-19</string>
+    <string name="phone_org_autoanswer_2">14-04</string>
+    <string name="org_contact_info">Контактная информация кинотеатра Тирасполь</string>
+    <string name="phone_org_cashbox">0 533 7-35-26</string>
+
+
+</resources>
