@@ -11,8 +11,6 @@
         android:orientation="vertical"
         android:padding="@dimen/SpaceMiddle">
 
-         <!--Кассы:   \n\nАдрес: Приднестровье, г.Тирасполь, ул. 25 Октября, 53 \n\nВ расписании возможны изменения. Уточняйте время сеансов перед выходом в кино.-->
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,21 +24,13 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Автоответчик" />
+            android:text="@string/label_autoanswer" />
 
-        <TextView android:id="@+id/phoneAutoAnswer1"
-            style="@style/AppTheme.Link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autoLink="phone"
-            android:text="@string/phone_org_autoanswer_1" />
+        <include android:id="@+id/phoneAutoAnswer1"
+            layout="@layout/call_phone" />
 
-        <TextView android:id="@+id/phoneAutoAnswer2"
-            style="@style/AppTheme.Link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autoLink="phone"
-            android:text="@string/phone_org_autoanswer_2" />
+        <include android:id="@+id/phoneAutoAnswer2"
+            layout="@layout/call_phone" />
 
 
         <android.support.v4.widget.Space
@@ -50,31 +40,46 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Касса (с 10:00 до 22:00)" />
+            android:text="@string/label_cashbox_with_worktime" />
 
-        <TextView android:id="@+id/phoneCashbox"
-            style="@style/AppTheme.Link"
+        <include android:id="@+id/phoneCashbox"
+            layout="@layout/call_phone" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="@dimen/SpaceSmall" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:autoLink="email"
-            android:text="@string/phone_org_cashbox" />
+            android:text="@string/label_address"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/org_address"/>
 
-        <ImageView
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/org_desc_info"/>
+
+        <!--ImageView
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:src="@drawable/scheme"
-            android:contentDescription="@null" />
+            android:contentDescription="@null" /-->
+
+        <android.support.v4.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="@dimen/SpaceBig" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/developer_contact_info" />
 
-        <TextView android:id="@+id/emailDeveloper"
-            style="@style/AppTheme.Link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/developer_email" />
+        <include android:id="@+id/emailDeveloper"
+            layout="@layout/send_email" />
 
 
     </LinearLayout>

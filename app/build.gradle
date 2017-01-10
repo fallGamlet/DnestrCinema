@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'fallgamlet'
             keyPassword 'raziel51535957'
-            storeFile file('/home/fallgamlet/Proj/keystore/AndroidKey.jks')
+            storeFile file('/home/fallgamlet/Projs/Helix/AndroidKey.jks')
             storePassword 'raziel51535957'
         }
     }
@@ -15,8 +15,8 @@ android {
         applicationId "com.fallgamlet.dnestrcinema"
         minSdkVersion 10
         targetSdkVersion 25
-        versionCode 2
-        versionName "0.1.2"
+        versionCode 4
+        versionName "0.1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
         vectorDrawables.useSupportLibrary = true

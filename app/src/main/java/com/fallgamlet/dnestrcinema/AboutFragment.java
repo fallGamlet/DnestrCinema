@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.RestrictTo;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,12 +22,17 @@ import android.widget.TextView;
  */
 public class AboutFragment extends Fragment implements View.OnClickListener {
     //region Fields
-    View mRootView;
-    TextView mPhoneAutoAnswerView1;
-    TextView mPhoneAutoAnswerView2;
-    TextView mPhoneCashboxView;
-    TextView mEmailDeveloperView;
+    private View mRootView;
+    private View mPhoneAutoAnswerView1;
+    private View mPhoneAutoAnswerView2;
+    private View mPhoneCashboxView;
+    private View mEmailDeveloperView;
     private OnFragmentInteractionListener mListener;
+
+    private String mOrgPhoneAutoanswer1;
+    private String mOrgPhoneAutoanswer2;
+    private String mOrgCashbox;
+    private String mEmailDeveloper;
     //endregion
 
     public AboutFragment() {
@@ -58,15 +62,17 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_about, container, false);
 
-        mPhoneAutoAnswerView1 = (TextView) mRootView.findViewById(R.id.phoneAutoAnswer1);
-        mPhoneAutoAnswerView2 = (TextView) mRootView.findViewById(R.id.phoneAutoAnswer2);
-        mPhoneCashboxView = (TextView) mRootView.findViewById(R.id.phoneCashbox);
-        mEmailDeveloperView = (TextView) mRootView.findViewById(R.id.emailDeveloper);
+        mPhoneAutoAnswerView1 = mRootView.findViewById(R.id.phoneAutoAnswer1);
+        mPhoneAutoAnswerView2 =  mRootView.findViewById(R.id.phoneAutoAnswer2);
+        mPhoneCashboxView =  mRootView.findViewById(R.id.phoneCashbox);
+        mEmailDeveloperView = mRootView.findViewById(R.id.emailDeveloper);
 
-        mPhoneAutoAnswerView1.setOnClickListener(this);
-        mPhoneAutoAnswerView2.setOnClickListener(this);
-        mPhoneCashboxView.setOnClickListener(this);
-        mEmailDeveloperView.setOnClickListener(this);
+        mOrgPhoneAutoanswer1 = getString(R.string.phone_org_autoanswer_1);
+        mOrgPhoneAutoanswer2 = getString(R.string.phone_org_autoanswer_2);
+        mOrgCashbox = getString(R.string.phone_org_cashbox);
+        mEmailDeveloper = getString(R.string.developer_email);
+
+        fillContactData();
 
         return mRootView;
     }
@@ -85,6 +91,58 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    protected void fillContactData() {
+        //region Set contact data
+        if (mPhoneAutoAnswerView1 != null) {
+            mPhoneAutoAnswerView1.setOnClickListener(this);
+            boolean check = false;
+            TextView textView =  (TextView) mPhoneAutoAnswerView1.findViewById(R.id.textView);
+            if (textView != null) {
+                String value = mOrgPhoneAutoanswer1;
+                textView.setText(value);
+                check = value != null && !value.isEmpty();
+            }
+            mPhoneAutoAnswerView1.setVisibility(check? View.VISIBLE: View.GONE);
+        }
+
+        if (mPhoneAutoAnswerView2 != null) {
+            mPhoneAutoAnswerView2.setOnClickListener(this);
+            boolean check = false;
+            TextView textView =  (TextView) mPhoneAutoAnswerView2.findViewById(R.id.textView);
+            if (textView != null) {
+                String value = mOrgPhoneAutoanswer2;
+                textView.setText(value);
+                check = value != null && !value.isEmpty();
+            }
+            mPhoneAutoAnswerView2.setVisibility(check? View.VISIBLE: View.GONE);
+        }
+
+        if (mPhoneCashboxView != null) {
+            mPhoneCashboxView.setOnClickListener(this);
+            boolean check = false;
+            TextView textView =  (TextView) mPhoneCashboxView.findViewById(R.id.textView);
+            if (textView != null) {
+                String value = mOrgCashbox;
+                textView.setText(value);
+                check = value != null && !value.isEmpty();
+            }
+            mPhoneCashboxView.setVisibility(check? View.VISIBLE: View.GONE);
+        }
+
+        if (mEmailDeveloperView != null) {
+            mEmailDeveloperView.setOnClickListener(this);
+            boolean check = false;
+            TextView textView =  (TextView) mEmailDeveloperView.findViewById(R.id.textView);
+            if (textView != null) {
+                String value = mEmailDeveloper;
+                textView.setText(value);
+                check = value != null && !value.isEmpty();
+            }
+            mEmailDeveloperView.setVisibility(check? View.VISIBLE: View.GONE);
+        }
+        //endregion
     }
 
     protected void callPhone(String phone) {
@@ -111,13 +169,18 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         if (view == null) { return; }
 
         if (view == mPhoneAutoAnswerView1 || view == mPhoneAutoAnswerView2 || view == mPhoneCashboxView) {
-            callPhone(((TextView)view).getText().toString());
+            TextView phoneTextView = (TextView) view.findViewById(R.id.textView);
+            if (phoneTextView != null) {
+                callPhone(phoneTextView.getText().toString());
+            }
             return;
         }
 
         if (view == mEmailDeveloperView) {
-            CharSequence val = ((TextView)view).getText();
-            sendEmail(val.toString());
+            TextView emailTextView = (TextView) view.findViewById(R.id.textView);
+            if (emailTextView != null) {
+                sendEmail(emailTextView.getText().toString());
+            }
             return;
         }
     }
