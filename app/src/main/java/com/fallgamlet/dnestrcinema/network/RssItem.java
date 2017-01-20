@@ -116,6 +116,7 @@ public class RssItem implements Parcelable {
         dest.writeString(mDescription);
         dest.writeString(mImgUrl);
         dest.writeTypedList(mSchedules);
+        dest.writeLong(mPubDate==null? 0: mPubDate.getTime());
     }
 
     public void setData(Parcel in) {
@@ -124,6 +125,10 @@ public class RssItem implements Parcelable {
         mDescription = in.readString();
         mImgUrl = in.readString();
         mSchedules = in.createTypedArrayList(Schedule.CREATOR);
+
+        long d = in.readLong();
+        mPubDate = d == 0? null: new Date(d);
+
     }
 
     public boolean setData(@NonNull JSONObject jObj) throws JSONException {

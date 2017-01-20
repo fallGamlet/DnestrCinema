@@ -2,6 +2,7 @@ package com.fallgamlet.dnestrcinema;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     //endregion
 
+    //region Override methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
         setupViewPager(mViewPager);
         mTablayout.setupWithViewPager(mViewPager);
-
-        loadRss();
     }
 
     @Override
@@ -91,13 +91,52 @@ public class MainActivity extends AppCompatActivity {
         return res;
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("rss", getRssList());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        ArrayList<RssItem> list = savedInstanceState.getParcelableArrayList("rss");
+        getRssList().clear();
+        if (list != null) { getRssList().addAll(list); }
+
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onResume() {
+        if (getRssList().isEmpty()) {
+            loadRss();
+        } else {
+            updateData(getRssList());
+        }
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cinemaNowFragment = null;
+        cinemaSoonFragment = null;
+        aboutFragment = null;
+        mToolbar = null;
+        mTablayout = null;
+        mViewPager = null;
+    }
+    //endregion
+
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+
         adapter.addFragment(getCinemaNowFragment(), getString(R.string.title_now));
         adapter.addFragment(getCinemaSoonFragment(), getString(R.string.title_soon));
         adapter.addFragment(getAboutFragment(), getString(R.string.title_about));
 
-        viewPager.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     private void loadRss() {
@@ -139,6 +178,10 @@ public class MainActivity extends AppCompatActivity {
                     getMessageDialog().showMessage(getString(R.string.error), msg);
                 }
                 dismissMessageDialog();
+
+                getRssList().clear();
+                if (rssItems != null) { getRssList().addAll(rssItems); }
+
                 updateData(rssItems);
             }
         });
@@ -172,7 +215,6 @@ public class MainActivity extends AppCompatActivity {
         getCinemaSoonFragment().notifyDataSetChanged();
     }
 
-
     //region Static Methods
     public static void hideKeyboard(Activity activity, View v) {
         if (v == null) { v = activity.getWindow().getCurrentFocus(); }
@@ -199,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
     }
     //endregion
 
-    //region Fragments
+    //region Fragments singletons
     protected CinemaFragment cinemaNowFragment;
     protected CinemaFragment getCinemaNowFragment() {
         if (cinemaNowFragment == null) {
@@ -241,5 +283,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //endregion
+
+    //region RssList singleton
+    private ArrayList<RssItem> mRssList;
+    protected ArrayList<RssItem> getRssList() {
+        if (mRssList == null) {
+            mRssList = new ArrayList<>(100);
+        }
+        return mRssList;
+    }
     //endregion
 }
