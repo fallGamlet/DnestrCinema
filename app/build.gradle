@@ -1,12 +1,18 @@
 apply plugin: 'com.android.application'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+
 android {
     signingConfigs {
         config {
-            keyAlias 'fallgamlet'
-            keyPassword 'raziel51535957'
-            storeFile file('/home/fallgamlet/Projs/Helix/AndroidKey.jks')
-            storePassword 'raziel51535957'
+		keyAlias keystoreProperties['keyAlias']
+		keyPassword keystoreProperties['keyPassword']
+		storeFile file(keystoreProperties['storeFile'])
+		storePassword keystoreProperties['storePassword']
+
         }
     }
     compileSdkVersion 25
@@ -18,8 +24,8 @@ android {
         versionCode 5
         versionName "0.1.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.config
         vectorDrawables.useSupportLibrary = true
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
