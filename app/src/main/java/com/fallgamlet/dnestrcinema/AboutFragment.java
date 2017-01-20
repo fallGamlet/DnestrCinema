@@ -263,7 +263,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
 
     protected void navigateToMap() {
         try {
-            Uri gmmIntentUri = Uri.parse("google.streetview:cbll=46.836884,29.6149155"); //,19z
+            Uri gmmIntentUri = Uri.parse("geo:46.8368409,29.6143292,19.5z/data=!4m5!3m4!1s0x0:0x2ee5fc85e9d8c2be!8m2!3d46.8367404!4d29.6142114");
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
