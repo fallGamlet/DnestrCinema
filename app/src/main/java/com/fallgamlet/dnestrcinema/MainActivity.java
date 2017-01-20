@@ -2,7 +2,6 @@ package com.fallgamlet.dnestrcinema;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -22,13 +21,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.fallgamlet.dnestrcinema.dialogs.MessageDialog;
+import com.fallgamlet.dnestrcinema.network.DataSettings;
 import com.fallgamlet.dnestrcinema.network.Network;
 import com.fallgamlet.dnestrcinema.network.RssItem;
-import com.fallgamlet.dnestrcinema.network.Xml2JSON;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.w3c.dom.Document;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -128,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
     }
     //endregion
 
+    //region Methods
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
@@ -143,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         Network.RequestData requestData = new Network.RequestData();
         requestData.options = Network.Options.Default();
         requestData.options.contentType = Network.CONTENT_TYPE_XML;
-        requestData.url = "http://kino.dnestr.info/rss";
+        requestData.url = DataSettings.BASE_URL + DataSettings.PATH_RSS;
 
         getMessageDialog().showWaiting(null);
         Network.requestDataAsync(requestData, new Network.ResponseHandle() {
@@ -214,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
         getCinemaNowFragment().notifyDataSetChanged();
         getCinemaSoonFragment().notifyDataSetChanged();
     }
+    //endregion
 
     //region Static Methods
     public static void hideKeyboard(Activity activity, View v) {

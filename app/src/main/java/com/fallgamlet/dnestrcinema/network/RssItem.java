@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.os.ParcelableCompat;
+import android.text.Html;
+import android.text.Spanned;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +30,12 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 
 public class RssItem implements Parcelable {
+    //region Static Constants
+    public static final String ROOM_BLUE = "Синий зал";
+    public static final String ROOM_BORDO = "Бордовый зал";
+    public static final String ROOM_DVD = "Малый зал";
+    //endregion
+
     //region Fields
     String mTitle;
     String mLink;
@@ -78,7 +86,11 @@ public class RssItem implements Parcelable {
         this.mPubDate = pubDate;
     }
 
+    @NonNull
     public ArrayList<Schedule> getSchedules() {
+        if (mSchedules == null) {
+            mSchedules = new ArrayList<>();
+        }
         return mSchedules;
     }
     //endregion
@@ -167,8 +179,8 @@ public class RssItem implements Parcelable {
             Schedule schedule = new Schedule();
             if (arr.length >= 1) {
                 String roomVal = arr[0];
-                if ("борд.".equals(roomVal)) { roomVal = "Бордовый зал"; }
-                else if ("DVD".equals(roomVal)) { roomVal = "Малый зал"; }
+                if ("борд.".equals(roomVal)) { roomVal = ROOM_BORDO; }
+                else if ("DVD".equals(roomVal)) { roomVal = ROOM_DVD; }
                 schedule.room = roomVal;
                 if (arr.length >= 2) {
                     schedule.value = arr[1];
@@ -305,6 +317,15 @@ public class RssItem implements Parcelable {
         };
     }
 
+    public static Spanned fromHtml(String html) {
+        Spanned result;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            result = Html.fromHtml(html);
+        }
+        return result;
+    }
     //endregion
 
     //region Sub classes and interfaces
@@ -317,6 +338,10 @@ public class RssItem implements Parcelable {
         }
 
         protected Schedule(Parcel in) {
+            setData(in);
+        }
+
+        void setData(Parcel in) {
             room = in.readString();
             value = in.readString();
         }

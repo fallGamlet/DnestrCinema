@@ -1,7 +1,6 @@
 package com.fallgamlet.dnestrcinema;
 
 import android.graphics.Bitmap;
-import android.support.v4.text.TextUtilsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
@@ -24,7 +23,8 @@ import java.util.List;
 public class RssRecyclerAdapter extends RecyclerView.Adapter<RssRecyclerAdapter.ViewHolder> {
     //region Sub classes and Interfaces
     public interface OnAdapterListener {
-        void OnItemClicked(RssItem item, int pos);
+        void onItemPressed(RssItem item, int pos);
+        void onItemSchedulePressed(RssItem item, int pos);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -44,6 +44,15 @@ public class RssRecyclerAdapter extends RecyclerView.Adapter<RssRecyclerAdapter.
             super(itemView);
             initView(itemView);
         }
+        //endregion
+
+        //region Getters
+        public RssItem getItem() { return mItem; }
+        public View getRootView() { return mRootView; }
+        public ImageView getImageView() { return mImageView; }
+        public TextView getTitleView() { return mTitleView; }
+        public TextView getPubdateView() { return mPubdateView; }
+        public TextView getScheduleView() { return mScheduleView; }
         //endregion
 
         //region Methods
@@ -109,22 +118,35 @@ public class RssRecyclerAdapter extends RecyclerView.Adapter<RssRecyclerAdapter.
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rss_item, parent, false);
-        return new ViewHolder(view);
+        final ViewHolder holder = new ViewHolder(view);
+
+        holder.getRootView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    int pos = getPosition(holder.getItem());
+                    mListener.onItemPressed(holder.getItem(), pos);
+                }
+            }
+        });
+
+//        holder.getScheduleView().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (mListener != null) {
+//                    int pos = getPosition(holder.getItem());
+//                    mListener.onItemSchedulePressed(holder.getItem(), pos);
+//                }
+//            }
+//        });
+
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final RssItem item = getItem(position);
         holder.initData(item);
-        holder.mRootView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener != null) {
-                    int pos = getPosition(item);
-                    mListener.OnItemClicked(item, pos);
-                }
-            }
-        });
 
         //region Load and set Image
         String imgUrl = item.getImgUrl();

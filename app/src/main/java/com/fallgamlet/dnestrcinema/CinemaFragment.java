@@ -1,10 +1,13 @@
 package com.fallgamlet.dnestrcinema;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,9 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fallgamlet.dnestrcinema.network.DataSettings;
 import com.fallgamlet.dnestrcinema.network.RssItem;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -28,16 +34,16 @@ import java.util.ArrayList;
  */
 public class CinemaFragment extends Fragment {
     //region Fields
-    ViewGroup mRootView;
-    RecyclerView mlistView;
-    TextView mPlaceholderView;
+    private ViewGroup mRootView;
+    private RecyclerView mlistView;
+    private TextView mPlaceholderView;
 
-    RssRecyclerAdapter mAdapter;
-
-    ArrayList<RssItem> dataItems;
-    //endregion
-
+    private RssRecyclerAdapter mAdapter;
+    private ArrayList<RssItem> dataItems;
     private OnFragmentInteractionListener mListener;
+
+    AlertDialog dialog;
+    //endregion
 
     public CinemaFragment() {
         // Required empty public constructor
@@ -131,8 +137,93 @@ public class CinemaFragment extends Fragment {
     protected RssRecyclerAdapter getAdapter() {
         if (mAdapter == null) {
             mAdapter = new RssRecyclerAdapter();
+            mAdapter.setListener(new RssRecyclerAdapter.OnAdapterListener() {
+                @Override
+                public void onItemPressed(RssItem item, int pos) {
+                    navigateToDetail(item);
+                }
+
+                @Override
+                public void onItemSchedulePressed(RssItem item, int pos) {
+//                    navigateToRoomView(item);
+                }
+            });
         }
         return mAdapter;
+    }
+
+    protected void navigateToDetail(RssItem rssItem) {
+        if (rssItem != null) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(CinemaDetailActivity.ARG_RSSITEM, rssItem);
+
+            Intent intent = new Intent(getContext(), CinemaDetailActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+    }
+
+    protected  void navigateToRoomView(String roomName) {
+        if (roomName == null) {
+            return;
+        }
+
+        String imgURL = null;
+        if (RssItem.ROOM_BLUE.equalsIgnoreCase(roomName)) {
+            imgURL = DataSettings.PATH_IMG_ROOM_BLUE;
+        } else if (RssItem.ROOM_BORDO.equalsIgnoreCase(roomName)) {
+            imgURL = DataSettings.PATH_IMG_ROOM_BORDO;
+        } else if (RssItem.ROOM_DVD.equalsIgnoreCase(roomName)) {
+            imgURL = DataSettings.PATH_IMG_ROOM_DVD;
+        }
+
+        if (imgURL != null) {
+            imgURL = DataSettings.BASE_URL + imgURL;
+            Bundle bundle = new Bundle();
+            bundle.putString(ImageActivity.ARG_IMG_URL, imgURL);
+
+            Intent intent = new Intent(getContext(), ImageActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+
+    }
+
+    protected  void navigateToRoomView(RssItem rssItem) {
+        String[] rooms = null;
+        if (rssItem != null && !rssItem.getSchedules().isEmpty()) {
+            int count = rssItem.getSchedules().size();
+            rooms = new String[count];
+            for (int i=0; i<count; i++) {
+                RssItem.Schedule item = rssItem.getSchedules().get(i);
+                if (item.room != null) {
+                    rooms[i] = item.room;
+                }
+            }
+        }
+
+        if (rooms != null) {
+            if (rooms.length == 1) {
+                navigateToRoomView(rooms[0]);
+            } else {
+                final String[] items = rooms;
+                dialog = new AlertDialog.Builder(getContext(), R.style.AppTheme_Dialog)
+                        .setTitle("Выберите зал")
+                        .setCancelable(true)
+                        .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if (dialog != null) {
+                                    dialog.dismiss();
+                                    dialog = null;
+                                }
+                                navigateToRoomView(items[i]);
+                            }
+                        })
+                        .create();
+                dialog.show();
+            }
+        }
     }
 
     public interface OnFragmentInteractionListener {

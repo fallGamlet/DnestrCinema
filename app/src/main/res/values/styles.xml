@@ -42,4 +42,12 @@
         <!--<item name="android:flag"></item>-->
         <item name="android:layout_margin">@dimen/SpaceTini</item>
     </style>
+
+    <style name="AppTheme.ColoredLink" parent="AppTheme.TextView">
+        <!--<item name="android:flag"></item>-->
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:layout_margin">@dimen/SpaceTini</item>
+        <item name="android:padding">@dimen/SpaceSmall</item>
+        <item name="android:background">@drawable/selector_bd_link_rounded</item>
+    </style>
 </resources>

@@ -21,9 +21,14 @@
     <string name="org_contact_info">Контактная информация кинотеатра Тирасполь</string>
     <string name="phone_org_cashbox">0 (533) 7-35-26</string>
     <string name="label_address">Адрес</string>
-    <string name="org_address">Приднестровье, г.Тирасполь, ул. 25 Октября, 53</string>
+    <string name="org_address">г.Тирасполь, ул. 25 Октября, 53</string>
     <string name="org_desc_info">В расписании возможны изменения. Уточняйте время сеансов перед выходом в кино</string>
     <string name="label_cashbox_with_worktime">Касса (с 10:00 до 22:00)</string>
     <string name="label_autoanswer">Автоответчик</string>
+    <string name="room_blue">Синий зал</string>
+    <string name="room_bordo">Бордовый зал</string>
+    <string name="room_dvd">Малый зал</string>
+    <string name="msg_not_found_intent_for_view_google_map">Не найдено приложения для показа Google карты</string>
+    <string name="msg_not_found_intent_for_email">Не найдено приложения для отправки электронной почты</string>
 
 </resources>

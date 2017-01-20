@@ -1,15 +1,20 @@
 package com.fallgamlet.dnestrcinema;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.fallgamlet.dnestrcinema.network.DataSettings;
+import com.fallgamlet.dnestrcinema.network.RssItem;
 
 
 /**
@@ -27,6 +32,11 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
     private View mPhoneAutoAnswerView2;
     private View mPhoneCashboxView;
     private View mEmailDeveloperView;
+    private View mRoomBlueView;
+    private View mRoomBordoView;
+    private View mRoomDvdView;
+    private View mPointView;
+
     private OnFragmentInteractionListener mListener;
 
     private String mOrgPhoneAutoanswer1;
@@ -58,14 +68,8 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_about, container, false);
-
-        mPhoneAutoAnswerView1 = mRootView.findViewById(R.id.phoneAutoAnswer1);
-        mPhoneAutoAnswerView2 =  mRootView.findViewById(R.id.phoneAutoAnswer2);
-        mPhoneCashboxView =  mRootView.findViewById(R.id.phoneCashbox);
-        mEmailDeveloperView = mRootView.findViewById(R.id.emailDeveloper);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        initViews(inflater, container);
 
         mOrgPhoneAutoanswer1 = getString(R.string.phone_org_autoanswer_1);
         mOrgPhoneAutoanswer2 = getString(R.string.phone_org_autoanswer_2);
@@ -91,6 +95,26 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    protected void initViews(LayoutInflater inflater, ViewGroup container) {
+        mRootView = inflater.inflate(R.layout.fragment_about, container, false);
+
+        mPhoneAutoAnswerView1 = mRootView.findViewById(R.id.phoneAutoAnswer1);
+        mPhoneAutoAnswerView2 =  mRootView.findViewById(R.id.phoneAutoAnswer2);
+        mPhoneCashboxView =  mRootView.findViewById(R.id.phoneCashbox);
+        mEmailDeveloperView = mRootView.findViewById(R.id.emailDeveloper);
+
+        mRoomBlueView = mRootView.findViewById(R.id.roomBlueView);
+        mRoomBordoView = mRootView.findViewById(R.id.roomBordoView);
+        mRoomDvdView = mRootView.findViewById(R.id.roomDvdView);
+
+        mPointView = mRootView.findViewById(R.id.pointLayout);
+
+        if (mRoomBlueView != null) { mRoomBlueView.setOnClickListener(this); }
+        if (mRoomBordoView != null) { mRoomBordoView.setOnClickListener(this); }
+        if (mRoomDvdView != null) { mRoomDvdView.setOnClickListener(this); }
+        if (mPointView != null) { mPointView.setOnClickListener(this); }
     }
 
     protected void fillContactData() {
@@ -161,6 +185,11 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
             startActivity(intent);
         } catch (Exception ignored) {
             Log.d("Intent start", "Type: email, Value: "+email+". Error: "+ignored.toString());
+                new AlertDialog.Builder(getContext(), R.style.AppTheme_Dialog)
+                        .setTitle(R.string.error)
+                        .setMessage(R.string.msg_not_found_intent_for_email)
+                        .create()
+                        .show();
         }
     }
 
@@ -183,6 +212,82 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
             }
             return;
         }
+
+        if (view == mRoomBlueView) {
+            navigateToRoomView(RssItem.ROOM_BLUE);
+            return;
+        }
+
+        if (view == mRoomBordoView) {
+            navigateToRoomView(RssItem.ROOM_BORDO);
+            return;
+        }
+
+        if (view == mRoomDvdView) {
+            navigateToRoomView(RssItem.ROOM_DVD);
+            return;
+        }
+
+        if (view == mPointView) {
+            navigateToMap();
+            return;
+        }
+
+    }
+
+    protected  void navigateToRoomView(String roomName) {
+        if (roomName == null) {
+            return;
+        }
+
+        String imgURL = null;
+        if (RssItem.ROOM_BLUE.equalsIgnoreCase(roomName)) {
+            imgURL = DataSettings.PATH_IMG_ROOM_BLUE;
+        } else if (RssItem.ROOM_BORDO.equalsIgnoreCase(roomName)) {
+            imgURL = DataSettings.PATH_IMG_ROOM_BORDO;
+        } else if (RssItem.ROOM_DVD.equalsIgnoreCase(roomName)) {
+            imgURL = DataSettings.PATH_IMG_ROOM_DVD;
+        }
+
+        if (imgURL != null) {
+            imgURL = DataSettings.BASE_URL + imgURL;
+            Bundle bundle = new Bundle();
+            bundle.putString(ImageActivity.ARG_IMG_URL, imgURL);
+
+            Intent intent = new Intent(getContext(), ImageActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+
+    }
+
+    protected void navigateToMap() {
+        try {
+            Uri gmmIntentUri = Uri.parse("google.streetview:cbll=46.836884,29.6149155"); //,19z
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
+        } catch (Exception e) {
+            Log.e("Map", e.toString());
+            if (e instanceof ActivityNotFoundException) {
+                String imgURL = DataSettings.BASE_URL + DataSettings.PATH_IMG_SCHEME;
+
+                Bundle bundle = new Bundle();
+                bundle.putString(ImageActivity.ARG_IMG_URL, imgURL);
+
+                Intent intent = new Intent(getContext(), ImageActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+
+//                new AlertDialog.Builder(getContext(), R.style.AppTheme_Dialog)
+//                        .setTitle(R.string.error)
+//                        .setMessage(R.string.msg_not_found_intent_for_view_google_map)
+//                        .create()
+//                        .show();
+            }
+        }
+
+
     }
 
     public interface OnFragmentInteractionListener {
