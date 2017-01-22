@@ -21,18 +21,21 @@
 
             <TextView android:id="@+id/roomBlueView"
                 style="@style/AppTheme.ColoredLink"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/room_blue"/>
 
             <TextView android:id="@+id/roomBordoView"
                 style="@style/AppTheme.ColoredLink"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/room_bordo"/>
 
             <TextView android:id="@+id/roomDvdView"
                 style="@style/AppTheme.ColoredLink"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/room_dvd"/>
@@ -49,7 +52,6 @@
             android:layout_height="@dimen/SpaceMiddle" />
 
         <TextView
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/label_autoanswer" />
@@ -59,7 +61,6 @@
 
         <include android:id="@+id/phoneAutoAnswer2"
             layout="@layout/call_phone" />
-
 
         <android.support.v4.widget.Space
             android:layout_width="0dp"
@@ -72,6 +73,10 @@
 
         <include android:id="@+id/phoneCashbox"
             layout="@layout/call_phone" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="0dp"
+            android:layout_height="@dimen/SpaceBig" />
 
         <LinearLayout android:id="@+id/pointLayout"
             android:layout_width="wrap_content"
@@ -109,7 +114,6 @@
 
         <include android:id="@+id/emailDeveloper"
             layout="@layout/send_email" />
-
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

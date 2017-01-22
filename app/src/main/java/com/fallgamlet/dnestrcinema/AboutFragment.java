@@ -263,7 +263,9 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
 
     protected void navigateToMap() {
         try {
-            Uri gmmIntentUri = Uri.parse("geo:46.8368409,29.6143292,19.5z/data=!4m5!3m4!1s0x0:0x2ee5fc85e9d8c2be!8m2!3d46.8367404!4d29.6142114");
+            String point = "46.8367399,29.6142111";
+            String name = Uri.encode("Кинотеатр Тирасполь");
+            Uri gmmIntentUri = Uri.parse("geo:"+point+"?z=19&q="+point+"("+name+")");
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
@@ -271,19 +273,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
             Log.e("Map", e.toString());
             if (e instanceof ActivityNotFoundException) {
                 String imgURL = DataSettings.BASE_URL + DataSettings.PATH_IMG_SCHEME;
-
-                Bundle bundle = new Bundle();
-                bundle.putString(ImageActivity.ARG_IMG_URL, imgURL);
-
-                Intent intent = new Intent(getContext(), ImageActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
-
-//                new AlertDialog.Builder(getContext(), R.style.AppTheme_Dialog)
-//                        .setTitle(R.string.error)
-//                        .setMessage(R.string.msg_not_found_intent_for_view_google_map)
-//                        .create()
-//                        .show();
+                ImageActivity.showActivity(getContext(), imgURL);
             }
         }
 

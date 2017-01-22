@@ -17,7 +17,6 @@
         style="@style/AppTheme.Link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autoLink="phone"
         tools:text="0 (xxx) xxx-xx" />
 
 

@@ -35,7 +35,6 @@
     <style name="AppTheme.TextView" parent="android:Widget.TextView">
         <item name="android:textSize">@dimen/TextMedium</item>
         <item name="android:textColor">@color/colorTextPrimary</item>
-
     </style>
 
     <style name="AppTheme.Link" parent="AppTheme.TextView">
@@ -49,5 +48,6 @@
         <item name="android:layout_margin">@dimen/SpaceTini</item>
         <item name="android:padding">@dimen/SpaceSmall</item>
         <item name="android:background">@drawable/selector_bd_link_rounded</item>
+        <item name="android:gravity">center</item>
     </style>
 </resources>

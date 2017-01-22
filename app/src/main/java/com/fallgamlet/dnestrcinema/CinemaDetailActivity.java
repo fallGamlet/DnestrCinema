@@ -161,12 +161,7 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
 
         if (imgURL != null) {
             imgURL = DataSettings.BASE_URL + imgURL;
-            Bundle bundle = new Bundle();
-            bundle.putString(ImageActivity.ARG_IMG_URL, imgURL);
-
-            Intent intent = new Intent(this, ImageActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
+            ImageActivity.showActivity(this, imgURL);
         }
 
     }
