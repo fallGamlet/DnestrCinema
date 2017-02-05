@@ -21,15 +21,15 @@ android {
         applicationId "com.fallgamlet.dnestrcinema"
         minSdkVersion 10
         targetSdkVersion 25
-        versionCode 12
-        versionName "0.1.12"
+        versionCode 13
+        versionName "0.1.13"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         signingConfig signingConfigs.config
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
@@ -53,5 +53,6 @@ dependencies {
     compile 'com.android.support:palette-v7:25.1.1'
     compile 'com.android.support:recyclerview-v7:25.1.1'
     compile 'org.jsoup:jsoup:1.10.2'
+//    compile files('libs/jsoup-1.10.2.jar')
     testCompile 'junit:junit:4.12'
 }
