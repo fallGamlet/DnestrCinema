@@ -3,33 +3,51 @@ package com.fallgamlet.dnestrcinema;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.v4.text.TextUtilsCompat;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.Spanned;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.network.DataSettings;
+import com.fallgamlet.dnestrcinema.network.Network;
 import com.fallgamlet.dnestrcinema.network.NetworkImageTask;
 import com.fallgamlet.dnestrcinema.network.RssItem;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class CinemaDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     //region Static fields
     public static String ARG_RSSITEM = "rss_item";
+    public static String YOUTUBE = "youtube.com";
     //endregion
 
     //region Fields
+    private List<String> mTrailerUrls;
     private RssItem mRssItem;
-
     private RssRecyclerAdapter.ViewHolder mRssHolder;
     private TextView mDescriptionView;
+    private RecyclerView mImageListView;
+    View mTrailerBtn;
     Toolbar mToolbar;
     //endregion
 
@@ -85,6 +103,11 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
             navigateToRoomView(getRssItem());
             return;
         }
+
+        if (view == mTrailerBtn) {
+            navigateToTrailer();
+            return;
+        }
     }
     //endregion
 
@@ -102,9 +125,22 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
 
 
         mRssHolder = new RssRecyclerAdapter.ViewHolder(findViewById(R.id.itemRootView));
+        mRssHolder.getScheduleView().setOnClickListener(this);
+
         mDescriptionView = (TextView) findViewById(R.id.descriptionView);
 
-        mRssHolder.getScheduleView().setOnClickListener(this);
+        mTrailerBtn = findViewById(R.id.trailerBtn);
+        if (mTrailerBtn != null) {
+            mTrailerBtn.setOnClickListener(this);
+        }
+
+        mImageListView = (RecyclerView) findViewById(R.id.imageList);
+        if (mImageListView != null) {
+            mImageListView.setAdapter(getImagesAdapter());
+            mImageListView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            mImageListView.setItemAnimator(new DefaultItemAnimator());
+            mImageListView.setHasFixedSize(false);
+        }
     }
 
     private void showData(RssItem rssItem) {
@@ -142,7 +178,179 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
             //endregion
         }
 
+        setImagesViewVisible(false);
+        loadInfo(rssItem==null? null: rssItem.getLink());
+    }
 
+    protected void setImagesViewVisible(boolean v) {
+        if (mImageListView != null) {
+            mImageListView.setVisibility(v? View.VISIBLE: View.GONE);
+        }
+    }
+
+    protected void setTrailerViewVisible(boolean v) {
+        if (mTrailerBtn != null) {
+            mTrailerBtn.setVisibility(v? View.VISIBLE: View.GONE);
+        }
+    }
+
+    protected void loadInfo(String url) {
+        if (url == null || url.isEmpty()) {
+            return;
+        }
+
+        Network.RequestData request = new Network.RequestData();
+        request.url = url;
+        Network.requestDataAsync(request, new Network.ResponseHandle() {
+            @Override
+            public void finished(Exception exception, Network.StrResult result) {
+                if (exception != null) {
+                    Log.d("LoadData", "Error: "+exception.toString());
+                    return;
+                }
+
+                if (result == null) {
+                    Log.d("LoadData", "Null data");
+                    return;
+                }
+
+                if (result.error != null) {
+                    Log.d("LoadData", "Server error: "+result.error);
+                    return;
+                }
+
+                if (result.data == null) {
+                    Log.d("LoadData", "Empty data");
+                    return;
+                }
+
+                try {
+                    ArrayList<String> urlList = new ArrayList<String>();
+                    String htmlStr = result.data;
+                    Document doc = Jsoup.parse(htmlStr);
+                    Elements elements = doc == null? null : doc.select("a[rel='photos']");
+                    if (elements != null && !elements.isEmpty()) {
+                        for (int i = 0; i < elements.size(); i++) {
+                            Element item = elements.get(i);
+                            String imgUrl = item.attr("href");
+                            if (imgUrl != null && !imgUrl.isEmpty()) {
+                                urlList.add(DataSettings.BASE_URL + imgUrl);
+                            }
+                        }
+                    }
+
+                    ArrayList<String> trailerUrlList = new ArrayList<String>();
+                    elements = doc == null? null :doc.select(".trailer a");
+                    if (elements != null) {
+                        for (int i = 0; i < elements.size(); i++) {
+                            Element item = elements.get(i);
+                            String imgUrl = item.attr("href");
+                            if (imgUrl != null && !imgUrl.isEmpty() && imgUrl.contains(YOUTUBE)) {
+                                trailerUrlList.add(imgUrl);
+                            }
+                        }
+                    }
+
+                    loadImages(urlList);
+                    showTrailers(trailerUrlList);
+                } catch (Exception e) {
+                    Log.d("LoadPage", "Error: "+e.toString());
+                }
+            }
+        });
+    }
+
+    protected void loadImages(List<String> urlList) {
+        if (urlList != null) {
+            for (String url: urlList) {
+                addImage(url);
+            }
+        }
+    }
+
+    private void addImage(final String imgUrl) {
+        try {
+            // если ссылка есть
+            if (imgUrl != null) {
+                Bitmap img = NetworkImageTask.cachedImages.get(imgUrl);
+                if (img != null) {
+                    addImage(img);
+                } else {
+                    final NetworkImageTask imageTask = new NetworkImageTask();
+                    imageTask.requestImage(imgUrl, new NetworkImageTask.NetworkImageCallback() {
+                        @Override
+                        public void onImageLoaded(NetworkImageTask.UrlImage urlImg) {
+                            if (urlImg.img != null && urlImg.url != null && urlImg.url.equalsIgnoreCase(imgUrl)) {
+                                addImage(urlImg.img);
+                            }
+                        }
+                    });
+                }
+            }
+        } catch (Exception ignored) {}
+    }
+
+    private void addImage(Bitmap image) {
+        if (image == null) {
+            return;
+        }
+        try {
+            Drawable drawable = new BitmapDrawable(null, image);
+            getImagesAdapter().addItem(drawable);
+            setImagesViewVisible(true);
+        } catch (Exception e) {
+
+        }
+    }
+
+    protected void showTrailers(List<String> urlList) {
+        mTrailerUrls = urlList;
+        setTrailerViewVisible(urlList != null && !urlList.isEmpty());
+    }
+
+    protected void navigateToTrailer() {
+        if (mTrailerUrls == null || mTrailerUrls.isEmpty()) {
+            return;
+        }
+
+        if (mTrailerUrls.size() == 1) {
+            navigateToTrailer(mTrailerUrls.get(0));
+            return;
+        }
+
+        String[] items = new String[mTrailerUrls.size()];
+        for (int i=0; i<mTrailerUrls.size(); i++) {
+            items[i] = "Трейлер "+(i+1);
+        }
+
+        dialog = new AlertDialog.Builder(this, R.style.AppTheme_Dialog)
+                .setTitle("Выберите")
+                .setCancelable(true)
+                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (dialog != null) {
+                            dialog.dismiss();
+                            dialog = null;
+                        }
+                        navigateToTrailer(mTrailerUrls.get(i));
+                    }
+                })
+                .create();
+        dialog.show();
+    }
+
+    protected void navigateToTrailer(String url) {
+        if (url == null || url.isEmpty()) {
+            return;
+        }
+
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.e("Intent url", "Error: "+e.toString());
+        }
     }
 
     protected  void navigateToRoomView(String roomName) {
@@ -163,7 +371,6 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
             imgURL = DataSettings.BASE_URL + imgURL;
             ImageActivity.showActivity(this, imgURL);
         }
-
     }
 
     AlertDialog dialog;
@@ -214,4 +421,16 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
         return imageTask;
     }
     //endregion
+
+    //region Images recycler adapter
+    private ImageRecyclerAdapter mImagesAdapter;
+    @NonNull
+    private ImageRecyclerAdapter getImagesAdapter() {
+        if (mImagesAdapter == null) {
+            mImagesAdapter = new ImageRecyclerAdapter();
+        }
+        return mImagesAdapter;
+    }
+    //endregion
+
 }
