@@ -95,7 +95,8 @@ public class RssRecyclerAdapter extends RecyclerView.Adapter<RssRecyclerAdapter.
 //            }
 
             if (mTitleView != null) { mTitleView.setText(titleStr); }
-            if (mPubdateView != null) { mPubdateView.setText(DateTimeFormatter.getDateDotWithoutTime(item.getPubDate())); }
+            if (mPubdateView != null) { mPubdateView.setText(DateTimeFormatter.getDateNamed(item.getPubDate())); }
+//            if (mPubdateView != null) { mPubdateView.setText(DateTimeFormatter.getDateDotWithoutTime(item.getPubDate())); }
             if (mScheduleView != null) { mScheduleView.setText(roomsStr); }
 //            if (mDescriptionView != null) { mDescriptionView.setText(desc); }
         }
