@@ -47,4 +47,11 @@ console.log('-------------------------');
 // kino-bendery.info
 var items = [];
 var viewItems = $("#dle-content > .binner > .baseshort > .basetext");
-viewItems.find(".heading")
+var head = viewItems.find(".heading");
+var head = viewItems.find(".maincont");
+var viewTitle = head[1];
+var viewStart = head[2];
+
+
+
+

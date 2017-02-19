@@ -3,6 +3,7 @@ package com.fallgamlet.dnestrcinema.network;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.os.ParcelableCompat;
 import android.text.Html;
 import android.text.Spanned;
@@ -37,12 +38,12 @@ public class RssItem implements Parcelable {
     //endregion
 
     //region Fields
-    String mTitle;
-    String mLink;
-    String mDescription;
-    String mImgUrl;
-    Date mPubDate;
-    ArrayList<Schedule> mSchedules = new ArrayList<>();
+    private String mTitle;
+    private String mLink;
+    private String mDescription;
+    private String mImgUrl;
+    private Date mPubDate;
+    private ArrayList<Schedule> mSchedules = new ArrayList<>();
     //endregion
 
     //region Getters and Setters
@@ -190,6 +191,63 @@ public class RssItem implements Parcelable {
         }
 
         return true;
+    }
+
+    @NonNull
+    public JSONObject toJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.putOpt("title", this.getTitle());
+        json.putOpt("desc", this.getDescription());
+        json.putOpt("img_url", this.getImgUrl());
+        json.putOpt("link", this.getLink());
+        json.putOpt("pub_date", this.getPubDate()==null? 0: this.getPubDate().getTime());
+        json.putOpt("schedule", Schedule.toJSONArray(this.getSchedules()));
+        return json;
+    }
+
+    public boolean setJSON(@Nullable JSONObject json) {
+        if (json == null || json.length() == 0) { return false; }
+        setTitle(json.optString("title", null));
+        setDescription(json.optString("desc", null));
+        setImgUrl(json.optString("img_url", null));
+        setLink(json.optString("link", null));
+
+        long time = json.optLong("pub_date", 0);
+        setPubDate(time==0? null: new Date(time));
+
+        ArrayList<Schedule> schedules = Schedule.setJSONArray(json.optJSONArray("schedule"));
+        this.getSchedules().clear();
+        this.getSchedules().addAll(schedules);
+
+        return true;
+    }
+
+    @NonNull
+    public static JSONArray toJSONArray(@Nullable List<RssItem> items) throws JSONException {
+        JSONArray jsonArray = new JSONArray();
+        if (items != null && !items.isEmpty()) {
+            for (RssItem item: items) {
+                jsonArray.put(item.toJSON());
+            }
+        }
+        return jsonArray;
+    }
+
+    @NonNull
+    public static ArrayList<RssItem> setJSONArray(@Nullable JSONArray jarr) {
+        ArrayList<RssItem> list = new ArrayList<>();
+        if (jarr != null && jarr.length() > 0) {
+            RssItem item=null;
+            for (int i=0; i<jarr.length(); i++) {
+                JSONObject json = jarr.optJSONObject(i);
+                if (item == null) { item = new RssItem(); }
+                if (item.setJSON(json)) {
+                    list.add(item);
+                    item = null;
+                }
+            }
+        }
+        return list;
     }
 
     @NonNull
@@ -355,6 +413,49 @@ public class RssItem implements Parcelable {
         @Override
         public int describeContents() {
             return 0;
+        }
+
+        @NonNull
+        public JSONObject toJSON() throws JSONException {
+            JSONObject json = new JSONObject();
+            json.putOpt("room", room);
+            json.putOpt("value", value);
+            return json;
+        }
+
+        public boolean setJSON(@Nullable JSONObject json) {
+            if (json == null) { return false; }
+            room = json.optString("room");
+            value = json.optString("value");
+            return true;
+        }
+
+        @NonNull
+        public static JSONArray toJSONArray(@Nullable List<Schedule> items) throws JSONException {
+            JSONArray jsonArray = new JSONArray();
+            if (items != null && !items.isEmpty()) {
+                for (Schedule item: items) {
+                    jsonArray.put(item.toJSON());
+                }
+            }
+            return jsonArray;
+        }
+
+        @NonNull
+        public static ArrayList<Schedule> setJSONArray(@Nullable JSONArray jarr) {
+            ArrayList<Schedule> list = new ArrayList<>();
+            if (jarr != null && jarr.length() > 0) {
+                Schedule item=null;
+                for (int i=0; i<jarr.length(); i++) {
+                    JSONObject json = jarr.optJSONObject(i);
+                    if (item == null) { item = new Schedule(); }
+                    if (item.setJSON(json)) {
+                        list.add(item);
+                        item = null;
+                    }
+                }
+            }
+            return list;
         }
 
         public static final Creator<Schedule> CREATOR = new Creator<Schedule>() {

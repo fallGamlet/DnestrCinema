@@ -3,6 +3,8 @@ package com.fallgamlet.dnestrcinema;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -26,6 +28,18 @@ import com.fallgamlet.dnestrcinema.network.DataSettings;
 import com.fallgamlet.dnestrcinema.network.Network;
 import com.fallgamlet.dnestrcinema.network.RssItem;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -140,6 +154,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadRss() {
+
+        readStorage();
+
         Network.RequestData requestData = new Network.RequestData();
         requestData.options = Network.Options.Default();
         requestData.options.contentType = Network.CONTENT_TYPE_XML;
@@ -181,6 +198,8 @@ public class MainActivity extends AppCompatActivity {
 
                 getRssList().clear();
                 if (rssItems != null) { getRssList().addAll(rssItems); }
+
+                writeStorage();
 
                 updateData(rssItems);
             }
@@ -228,6 +247,56 @@ public class MainActivity extends AppCompatActivity {
 
         getCinemaNowFragment().notifyDataSetChanged();
         getCinemaSoonFragment().notifyDataSetChanged();
+    }
+
+    private void writeStorage() {
+        if (getRssList().isEmpty()) {
+            return;
+        }
+
+        String filename = "data.json";
+        FileOutputStream outStream;
+
+        try {
+            String data = RssItem.toJSONArray(getRssList()).toString();
+            outStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            outStream.write(data.getBytes(Network.CHARSET_UTF8));
+            outStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void readStorage() {
+        String filename = "data.json";
+        FileInputStream inStream;
+
+        ArrayList<RssItem> items = null;
+
+        try {
+            inStream = openFileInput(filename);
+
+            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[8*1024];
+            int len;
+            while ((len = inStream.read(buffer)) != -1) {
+                byteStream.write(buffer, 0 ,len);
+            }
+            byte[] data = byteStream.toByteArray();
+            String dataStr = new String(data, Network.CHARSET_UTF8);
+            JSONArray jarr = new JSONArray(dataStr);
+            items = RssItem.setJSONArray(jarr);
+
+            inStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (items != null && !items.isEmpty()) {
+            getRssList().clear();
+            getRssList().addAll(items);
+            updateData(getRssList());
+        }
     }
     //endregion
 
