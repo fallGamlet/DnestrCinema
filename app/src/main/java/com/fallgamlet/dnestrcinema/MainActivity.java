@@ -2,6 +2,7 @@ package com.fallgamlet.dnestrcinema;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -80,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.actionRefresh) {
             res = true;
             loadRss();
+        } else if (id == R.id.actionShareApp) {
+            res = true;
+            shareApp();
         } else {
             res = super.onOptionsItemSelected(item);
         }
@@ -181,6 +185,21 @@ public class MainActivity extends AppCompatActivity {
                 updateData(rssItems);
             }
         });
+    }
+
+    private void shareApp() {
+        try {
+            String appID = getString(R.string.app_id);
+
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT,
+                    getString(R.string.app_name)+" https://play.google.com/store/apps/details?id="+appID);
+            sendIntent.setType("text/plain");;
+            startActivity(Intent.createChooser(sendIntent, "Поделиться"));
+        } catch (Exception e) {
+            Log.d("Share", "Error: "+e.toString());
+        }
     }
 
     protected void updateData(@Nullable List<RssItem> itemList) {

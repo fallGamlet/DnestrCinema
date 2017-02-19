@@ -9,4 +9,11 @@
         android:icon="@drawable/ic_sync_24dp"
         app:srcCompat="@drawable/ic_sync_24dp"
         app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/actionShareApp"
+        android:orderInCategory="1"
+        android:title="@string/update"
+        android:icon="@drawable/ic_share_24dp"
+        app:srcCompat="@drawable/ic_share_24dp"
+        app:showAsAction="ifRoom"/>
 </menu>

@@ -40,3 +40,11 @@ console.log(JSON.stringify(items));
 console.log('-------------------------');
 console.log(items);
 console.log('-------------------------');
+
+
+
+//-----------------------------------------------
+// kino-bendery.info
+var items = [];
+var viewItems = $("#dle-content > .binner > .baseshort > .basetext");
+viewItems.find(".heading")

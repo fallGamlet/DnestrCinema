@@ -30,5 +30,6 @@
     <string name="room_dvd">Малый зал</string>
     <string name="msg_not_found_intent_for_view_google_map">Не найдено приложения для показа Google карты</string>
     <string name="msg_not_found_intent_for_email">Не найдено приложения для отправки электронной почты</string>
+    <string name="app_id">com.fallgamlet.dnestrcinema</string>
 
 </resources>

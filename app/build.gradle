@@ -21,8 +21,8 @@ android {
         applicationId "com.fallgamlet.dnestrcinema"
         minSdkVersion 10
         targetSdkVersion 25
-        versionCode 13
-        versionName "0.1.13"
+        versionCode 15
+        versionName "0.1.15"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         signingConfig signingConfigs.config
