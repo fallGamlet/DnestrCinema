@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.network.DataSettings;
-import com.fallgamlet.dnestrcinema.network.RssItem;
+import com.fallgamlet.dnestrcinema.network.MovieItem;
 
 
 /**
@@ -214,17 +214,17 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         }
 
         if (view == mRoomBlueView) {
-            navigateToRoomView(RssItem.ROOM_BLUE);
+            navigateToRoomView(MovieItem.ROOM_BLUE);
             return;
         }
 
         if (view == mRoomBordoView) {
-            navigateToRoomView(RssItem.ROOM_BORDO);
+            navigateToRoomView(MovieItem.ROOM_BORDO);
             return;
         }
 
         if (view == mRoomDvdView) {
-            navigateToRoomView(RssItem.ROOM_DVD);
+            navigateToRoomView(MovieItem.ROOM_DVD);
             return;
         }
 
@@ -241,11 +241,11 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         }
 
         String imgURL = null;
-        if (RssItem.ROOM_BLUE.equalsIgnoreCase(roomName)) {
+        if (MovieItem.ROOM_BLUE.equalsIgnoreCase(roomName)) {
             imgURL = DataSettings.PATH_IMG_ROOM_BLUE;
-        } else if (RssItem.ROOM_BORDO.equalsIgnoreCase(roomName)) {
+        } else if (MovieItem.ROOM_BORDO.equalsIgnoreCase(roomName)) {
             imgURL = DataSettings.PATH_IMG_ROOM_BORDO;
-        } else if (RssItem.ROOM_DVD.equalsIgnoreCase(roomName)) {
+        } else if (MovieItem.ROOM_DVD.equalsIgnoreCase(roomName)) {
             imgURL = DataSettings.PATH_IMG_ROOM_DVD;
         }
 

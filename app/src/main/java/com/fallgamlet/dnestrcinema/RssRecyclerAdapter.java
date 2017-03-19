@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.network.NetworkImageTask;
-import com.fallgamlet.dnestrcinema.network.RssItem;
+import com.fallgamlet.dnestrcinema.network.MovieItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +23,8 @@ import java.util.List;
 public class RssRecyclerAdapter extends RecyclerView.Adapter<RssRecyclerAdapter.ViewHolder> {
     //region Sub classes and Interfaces
     public interface OnAdapterListener {
-        void onItemPressed(RssItem item, int pos);
-        void onItemSchedulePressed(RssItem item, int pos);
+        void onItemPressed(MovieItem item, int pos);
+        void onItemSchedulePressed(MovieItem item, int pos);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -36,7 +36,7 @@ public class RssRecyclerAdapter extends RecyclerView.Adapter<RssRecyclerAdapter.
         TextView mScheduleView;
 //        TextView mDescriptionView;
 
-        RssItem mItem;
+        MovieItem mItem;
         //endregion
 
         //region Constructors
@@ -47,7 +47,7 @@ public class RssRecyclerAdapter extends RecyclerView.Adapter<RssRecyclerAdapter.
         //endregion
 
         //region Getters
-        public RssItem getItem() { return mItem; }
+        public MovieItem getItem() { return mItem; }
         public View getRootView() { return mRootView; }
         public ImageView getImageView() { return mImageView; }
         public TextView getTitleView() { return mTitleView; }
@@ -67,14 +67,14 @@ public class RssRecyclerAdapter extends RecyclerView.Adapter<RssRecyclerAdapter.
             }
         }
 
-        public void initData(RssItem item) {
+        public void initData(MovieItem item) {
             mItem = item;
             if (item == null) { return; }
             Spanned desc = fromHtml(item.getDescription());
 
             ArrayList<String> arr = new ArrayList<>();
             StringBuilder strBuilder = new StringBuilder();
-            for (RssItem.Schedule schedule: mItem.getSchedules()) {
+            for (MovieItem.Schedule schedule: mItem.getSchedules()) {
                 strBuilder.append(schedule.room);
                 if (schedule.value != null) {
                     strBuilder.append(": ").append(schedule.value.trim());
@@ -106,7 +106,7 @@ public class RssRecyclerAdapter extends RecyclerView.Adapter<RssRecyclerAdapter.
 
     //region Fields
     protected OnAdapterListener mListener;
-    protected List<RssItem> mListData, mListDataFiltered;
+    protected List<MovieItem> mListData, mListDataFiltered;
 
     protected NetworkImageTask imageTask;
     //endregion
@@ -146,7 +146,7 @@ public class RssRecyclerAdapter extends RecyclerView.Adapter<RssRecyclerAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final RssItem item = getItem(position);
+        final MovieItem item = getItem(position);
         holder.initData(item);
 
         //region Load and set Image
@@ -197,16 +197,16 @@ public class RssRecyclerAdapter extends RecyclerView.Adapter<RssRecyclerAdapter.
         return mListDataFiltered == null? 0 : mListDataFiltered.size();
     }
 
-    public RssItem getItem(int position) {
+    public MovieItem getItem(int position) {
         return  (mListDataFiltered == null || position < 0 || position >= mListDataFiltered.size()) ? null : mListDataFiltered.get(position);
     }
 
-    public int getPosition(RssItem item) {
+    public int getPosition(MovieItem item) {
         if (mListDataFiltered == null) return -1;
         return mListDataFiltered.indexOf(item);
     }
 
-    public void setData(List<RssItem> list) {
+    public void setData(List<MovieItem> list) {
         if (mListData == null) { mListData = new ArrayList<>(); }
         else { mListData.clear(); }
 
@@ -223,7 +223,10 @@ public class RssRecyclerAdapter extends RecyclerView.Adapter<RssRecyclerAdapter.
 
     @SuppressWarnings("deprecation")
     public static Spanned fromHtml(String html){
-        Spanned result;
+        if (html == null) {
+            return null;
+        }
+        Spanned result = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
         } else {

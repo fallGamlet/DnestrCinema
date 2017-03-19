@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.fallgamlet.dnestrcinema.network.DataSettings;
 import com.fallgamlet.dnestrcinema.network.Network;
 import com.fallgamlet.dnestrcinema.network.NetworkImageTask;
-import com.fallgamlet.dnestrcinema.network.RssItem;
+import com.fallgamlet.dnestrcinema.network.MovieItem;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -31,8 +31,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class CinemaDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -43,7 +43,7 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
 
     //region Fields
     private List<String> mTrailerUrls;
-    private RssItem mRssItem;
+    private MovieItem mMovieItem;
     private RssRecyclerAdapter.ViewHolder mRssHolder;
     private TextView mDescriptionView;
     private RecyclerView mImageListView;
@@ -52,8 +52,8 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
     //endregion
 
     //region Getters and Setters
-    public RssItem getRssItem() { return mRssItem; }
-    public void setRssItem(RssItem item){ mRssItem = item; }
+    public MovieItem getRssItem() { return mMovieItem; }
+    public void setRssItem(MovieItem item){ mMovieItem = item; }
 
 
     //endregion
@@ -66,7 +66,7 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            RssItem item = bundle.getParcelable(ARG_RSSITEM);
+            MovieItem item = bundle.getParcelable(ARG_RSSITEM);
             setRssItem(item);
         }
 
@@ -143,17 +143,17 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void showData(RssItem rssItem) {
+    private void showData(MovieItem movieItem) {
         if (mDescriptionView != null) {
-            String desc = rssItem==null? null: rssItem.getDescription();
-            mDescriptionView.setText(RssItem.fromHtml(desc));
+            String desc = movieItem ==null? null: movieItem.getDescription();
+            mDescriptionView.setText(MovieItem.fromHtml(desc));
         }
 
         if (mRssHolder != null) {
-            mRssHolder.initData(rssItem);
+            mRssHolder.initData(movieItem);
 
             //region Load and set Image
-            String imgUrl = rssItem == null? null: rssItem.getImgUrl();
+            String imgUrl = movieItem == null? null: movieItem.getImgUrl();
             try {
                 mRssHolder.getImageView().setImageResource(R.drawable.ic_local_movies_black_24dp);
                 // если ссылка есть
@@ -179,7 +179,7 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
         }
 
         setImagesViewVisible(false);
-        loadInfo(rssItem==null? null: rssItem.getLink());
+        loadInfo(movieItem);
     }
 
     protected void setImagesViewVisible(boolean v) {
@@ -194,13 +194,20 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    protected void loadInfo(String url) {
-        if (url == null || url.isEmpty()) {
+    protected void loadInfo(MovieItem movieItem) {
+        if (movieItem == null) {
+            return;
+        }
+
+        Set<String> imgUrlSet = movieItem.getImgUrlSet();
+        Set<String> moveUrlSet = movieItem.getMoveUrlSet();
+
+        if (!imgUrlSet.isEmpty()) {
             return;
         }
 
         Network.RequestData request = new Network.RequestData();
-        request.url = url;
+        request.url = movieItem.getLink();
         Network.requestDataAsync(request, new Network.ResponseHandle() {
             @Override
             public void finished(Exception exception, Network.StrResult result) {
@@ -240,7 +247,7 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
                     }
 
                     ArrayList<String> trailerUrlList = new ArrayList<String>();
-                    elements = doc == null? null :doc.select(".trailer a");
+                    elements = doc == null? null: doc.select(".trailer a");
                     if (elements != null) {
                         for (int i = 0; i < elements.size(); i++) {
                             Element item = elements.get(i);
@@ -359,11 +366,11 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
         }
 
         String imgURL = null;
-        if (RssItem.ROOM_BLUE.equalsIgnoreCase(roomName)) {
+        if (MovieItem.ROOM_BLUE.equalsIgnoreCase(roomName)) {
             imgURL = DataSettings.PATH_IMG_ROOM_BLUE;
-        } else if (RssItem.ROOM_BORDO.equalsIgnoreCase(roomName)) {
+        } else if (MovieItem.ROOM_BORDO.equalsIgnoreCase(roomName)) {
             imgURL = DataSettings.PATH_IMG_ROOM_BORDO;
-        } else if (RssItem.ROOM_DVD.equalsIgnoreCase(roomName)) {
+        } else if (MovieItem.ROOM_DVD.equalsIgnoreCase(roomName)) {
             imgURL = DataSettings.PATH_IMG_ROOM_DVD;
         }
 
@@ -374,13 +381,13 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
     }
 
     AlertDialog dialog;
-    protected  void navigateToRoomView(RssItem rssItem) {
+    protected  void navigateToRoomView(MovieItem movieItem) {
         String[] rooms = null;
-        if (rssItem != null && !rssItem.getSchedules().isEmpty()) {
-            int count = rssItem.getSchedules().size();
+        if (movieItem != null && !movieItem.getSchedules().isEmpty()) {
+            int count = movieItem.getSchedules().size();
             rooms = new String[count];
             for (int i=0; i<count; i++) {
-                RssItem.Schedule item = rssItem.getSchedules().get(i);
+                MovieItem.Schedule item = movieItem.getSchedules().get(i);
                 if (item.room != null) {
                     rooms[i] = item.room;
                 }

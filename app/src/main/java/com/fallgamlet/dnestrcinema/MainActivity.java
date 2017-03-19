@@ -3,8 +3,6 @@ package com.fallgamlet.dnestrcinema;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -25,21 +23,15 @@ import android.widget.Toast;
 
 import com.fallgamlet.dnestrcinema.dialogs.MessageDialog;
 import com.fallgamlet.dnestrcinema.network.DataSettings;
+import com.fallgamlet.dnestrcinema.network.KinoTir;
 import com.fallgamlet.dnestrcinema.network.Network;
-import com.fallgamlet.dnestrcinema.network.RssItem;
+import com.fallgamlet.dnestrcinema.network.MovieItem;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,16 +98,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("rss", getRssList());
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        ArrayList<RssItem> list = savedInstanceState.getParcelableArrayList("rss");
-        getRssList().clear();
-        if (list != null) { getRssList().addAll(list); }
-
         super.onRestoreInstanceState(savedInstanceState);
     }
 
@@ -155,55 +142,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadRss() {
 
-        readStorage();
-
-        Network.RequestData requestData = new Network.RequestData();
-        requestData.options = Network.Options.Default();
-        requestData.options.contentType = Network.CONTENT_TYPE_XML;
-        requestData.url = DataSettings.BASE_URL + DataSettings.PATH_RSS;
-
-        getMessageDialog().showWaiting(null);
-        Network.requestDataAsync(requestData, new Network.ResponseHandle() {
-            @Override
-            public void finished(Exception exception, Network.StrResult result) {
-                if (exception != null) {
-                    String msg=null;
-                    if (exception instanceof UnknownHostException) {
-                        msg = "Веб сервис недоступен. Возможно нет соединение с сетью Интернет";
-                    } else {
-                        msg = exception.toString();
-                    }
-
-                    getMessageDialog().showMessage(getString(R.string.error), msg);
-                    pushToLog(exception.toString());
-                    return;
-                }
-
-                if (result.error != null) {
-                    getMessageDialog().showMessage(result.error);
-                    pushToLog(result.error);
-                    return;
-                }
-
-                ArrayList<RssItem> rssItems = null;
-                try {
-                    rssItems = RssItem.parseRSS(result.data);
-                } catch (Exception e) {
-                    pushToLog(e.toString());
-
-                    String msg = e.toString();
-                    getMessageDialog().showMessage(getString(R.string.error), msg);
-                }
-                dismissMessageDialog();
-
-                getRssList().clear();
-                if (rssItems != null) { getRssList().addAll(rssItems); }
-
-                writeStorage();
-
-                updateData(rssItems);
-            }
-        });
     }
 
     private void shareApp() {
@@ -221,32 +159,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected void updateData(@Nullable List<RssItem> itemList) {
-        Date now = new Date();
-
-        if (itemList != null) {
-            Collections.sort(itemList, RssItem.getDateTitleComparator());
-        }
-
-        ArrayList<RssItem> nowItems = getCinemaNowFragment().getDataItems();
-        ArrayList<RssItem> soonItems = getCinemaSoonFragment().getDataItems();
-
-        nowItems.clear();
-        soonItems.clear();
-
-        if (itemList != null) {
-            for (RssItem item: itemList) {
-                Date pubDate = item.getPubDate();
-                if (pubDate == null || pubDate.after(now)) {
-                    soonItems.add(item);
-                } else {
-                    nowItems.add(item);
-                }
-            }
-        }
-
-        getCinemaNowFragment().notifyDataSetChanged();
-        getCinemaSoonFragment().notifyDataSetChanged();
+    protected void updateData(@Nullable List<MovieItem> itemList) {
+//        Date now = new Date();
+//
+//        if (itemList != null) {
+//            Collections.sort(itemList, MovieItem.getDateTitleComparator());
+//        }
+//
+//        ArrayList<MovieItem> nowItems = getCinemaNowFragment().getDataItems();
+//        ArrayList<MovieItem> soonItems = getCinemaSoonFragment().getDataItems();
+//
+//        nowItems.clear();
+//        soonItems.clear();
+//
+//        if (itemList != null) {
+//            for (MovieItem item: itemList) {
+//                Date pubDate = item.getPubDate();
+//                if (pubDate == null || pubDate.after(now)) {
+//                    soonItems.add(item);
+//                } else {
+//                    nowItems.add(item);
+//                }
+//            }
+//        }
+//
+//        getCinemaNowFragment().notifyDataSetChanged();
+//        getCinemaSoonFragment().notifyDataSetChanged();
     }
 
     private void writeStorage() {
@@ -258,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         FileOutputStream outStream;
 
         try {
-            String data = RssItem.toJSONArray(getRssList()).toString();
+            String data = MovieItem.toJSONArray(getRssList()).toString();
             outStream = openFileOutput(filename, Context.MODE_PRIVATE);
             outStream.write(data.getBytes(Network.CHARSET_UTF8));
             outStream.close();
@@ -271,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
         String filename = "data.json";
         FileInputStream inStream;
 
-        ArrayList<RssItem> items = null;
+        ArrayList<MovieItem> items = null;
 
         try {
             inStream = openFileInput(filename);
@@ -285,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
             byte[] data = byteStream.toByteArray();
             String dataStr = new String(data, Network.CHARSET_UTF8);
             JSONArray jarr = new JSONArray(dataStr);
-            items = RssItem.setJSONArray(jarr);
+            items = MovieItem.setJSONArray(jarr);
 
             inStream.close();
         } catch (Exception e) {
@@ -330,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
     protected CinemaFragment cinemaNowFragment;
     protected CinemaFragment getCinemaNowFragment() {
         if (cinemaNowFragment == null) {
-            cinemaNowFragment = new CinemaFragment();
+            cinemaNowFragment = CinemaFragment.newInstance(KinoTir.BASE_URL+KinoTir.PATH_NOW);
         }
         return cinemaNowFragment;
     }
@@ -338,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
     protected CinemaFragment cinemaSoonFragment;
     protected CinemaFragment getCinemaSoonFragment() {
         if (cinemaSoonFragment == null) {
-            cinemaSoonFragment = new CinemaFragment();
+            cinemaSoonFragment = CinemaFragment.newInstance(KinoTir.BASE_URL+KinoTir.PATH_SOON);
         }
         return cinemaSoonFragment;
     }
@@ -371,8 +309,8 @@ public class MainActivity extends AppCompatActivity {
     //endregion
 
     //region RssList singleton
-    private ArrayList<RssItem> mRssList;
-    protected ArrayList<RssItem> getRssList() {
+    private ArrayList<MovieItem> mRssList;
+    protected ArrayList<MovieItem> getRssList() {
         if (mRssList == null) {
             mRssList = new ArrayList<>(100);
         }

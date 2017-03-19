@@ -29,6 +29,7 @@ public class Network {
 
     public static final String CONTENT_TYPE_TEXT = "text";
     public static final String CONTENT_TYPE_XML = "text/xml";
+    public static final String CONTENT_TYPE_HTML = "text/html";
     public static final String CONTENT_TYPE_JSON = "application/json";
     public static final String CHARSET_UTF8 = "UTF-8";
     public static final String METHOD_GET = "GET";

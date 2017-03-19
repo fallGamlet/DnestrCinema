@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.os.ParcelableCompat;
+import android.support.v4.util.ArraySet;
 import android.text.Html;
 import android.text.Spanned;
 
@@ -18,11 +18,11 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -30,7 +30,7 @@ import javax.xml.parsers.ParserConfigurationException;
  * Created by fallgamlet on 07.01.17.
  */
 
-public class RssItem implements Parcelable {
+public class MovieItem implements Parcelable {
     //region Static Constants
     public static final String ROOM_BLUE = "Синий зал";
     public static final String ROOM_BORDO = "Бордовый зал";
@@ -40,10 +40,15 @@ public class RssItem implements Parcelable {
     //region Fields
     private String mTitle;
     private String mLink;
+    private String mDuration;
     private String mDescription;
+    private String mGenre;
+    private String mAgeLimit;
     private String mImgUrl;
-    private Date mPubDate;
+    private Set<String> mImgUrlList;
+    private Set<String> mMoveUrlList;
     private ArrayList<Schedule> mSchedules = new ArrayList<>();
+    private Date mPubDate;
     //endregion
 
     //region Getters and Setters
@@ -63,6 +68,14 @@ public class RssItem implements Parcelable {
         this.mLink = link;
     }
 
+    public String getDuration() {
+        return mDuration;
+    }
+
+    public void setDuration(String duration) {
+        this.mDuration= duration;
+    }
+
     public String getDescription() {
         return mDescription;
     }
@@ -71,12 +84,42 @@ public class RssItem implements Parcelable {
         this.mDescription = description;
     }
 
+    public String getAgeLimit() {
+        return mAgeLimit;
+    }
+
+    public void setAgeLimit(String ageLimit) {
+        this.mAgeLimit = ageLimit;
+    }
+
+    public String getGenre() {
+        return mGenre;
+    }
+
+    public void setGenre(String genre) {
+        this.mGenre= genre;
+    }
+
     public String getImgUrl() {
         return mImgUrl;
     }
 
     public void setImgUrl(String imgUrl) {
         this.mImgUrl = imgUrl;
+    }
+
+    public Set<String> getImgUrlSet() {
+        if (mImgUrlList == null) {
+            mImgUrlList = new ArraySet<>();
+        }
+        return mImgUrlList;
+    }
+
+    public Set<String> getMoveUrlSet() {
+        if (mMoveUrlList == null) {
+            mMoveUrlList = new ArraySet<>();
+        }
+        return mMoveUrlList;
     }
 
     public Date getPubDate() {
@@ -97,23 +140,23 @@ public class RssItem implements Parcelable {
     //endregion
 
     //region Methods
-    public RssItem() {
+    public MovieItem() {
 
     }
 
-    protected RssItem(Parcel in) {
+    protected MovieItem(Parcel in) {
         setData(in);
     }
 
-    public static final Creator<RssItem> CREATOR = new Creator<RssItem>() {
+    public static final Creator<MovieItem> CREATOR = new Creator<MovieItem>() {
         @Override
-        public RssItem createFromParcel(Parcel in) {
-            return new RssItem(in);
+        public MovieItem createFromParcel(Parcel in) {
+            return new MovieItem(in);
         }
 
         @Override
-        public RssItem[] newArray(int size) {
-            return new RssItem[size];
+        public MovieItem[] newArray(int size) {
+            return new MovieItem[size];
         }
     };
 
@@ -127,21 +170,30 @@ public class RssItem implements Parcelable {
         dest.writeString(mTitle);
         dest.writeString(mLink);
         dest.writeString(mDescription);
+        dest.writeLong(mPubDate==null? 0: mPubDate.getTime());
         dest.writeString(mImgUrl);
         dest.writeTypedList(mSchedules);
-        dest.writeLong(mPubDate==null? 0: mPubDate.getTime());
+        dest.writeStringList(new ArrayList<String>(getImgUrlSet()));
+        dest.writeStringList(new ArrayList<String>(getMoveUrlSet()));
     }
 
     public void setData(Parcel in) {
+        List<String> imgUrlList = new ArrayList<>();
+        List<String> moveUrlList = new ArrayList<>();
+
         mTitle = in.readString();
         mLink = in.readString();
         mDescription = in.readString();
+        long d = in.readLong();
         mImgUrl = in.readString();
         mSchedules = in.createTypedArrayList(Schedule.CREATOR);
+        in.readStringList(imgUrlList);
+        in.readStringList(moveUrlList);
 
-        long d = in.readLong();
+        getImgUrlSet().addAll(imgUrlList);
+        getMoveUrlSet().addAll(moveUrlList);
+
         mPubDate = d == 0? null: new Date(d);
-
     }
 
     public boolean setData(@NonNull JSONObject jObj) throws JSONException {
@@ -199,6 +251,8 @@ public class RssItem implements Parcelable {
         json.putOpt("title", this.getTitle());
         json.putOpt("desc", this.getDescription());
         json.putOpt("img_url", this.getImgUrl());
+        json.putOpt("img_url_list", new JSONArray(getImgUrlSet()));
+        json.putOpt("move_url_list", new JSONArray(getMoveUrlSet()));
         json.putOpt("link", this.getLink());
         json.putOpt("pub_date", this.getPubDate()==null? 0: this.getPubDate().getTime());
         json.putOpt("schedule", Schedule.toJSONArray(this.getSchedules()));
@@ -211,9 +265,28 @@ public class RssItem implements Parcelable {
         setDescription(json.optString("desc", null));
         setImgUrl(json.optString("img_url", null));
         setLink(json.optString("link", null));
-
+        JSONArray jarrImgUrls = json.optJSONArray("img_url_list");
+        JSONArray jarrMoveUrls = json.optJSONArray("move_url_list");
         long time = json.optLong("pub_date", 0);
         setPubDate(time==0? null: new Date(time));
+
+        if (jarrImgUrls != null && jarrImgUrls.length() > 0) {
+            Set<String> urls = getImgUrlSet();
+            urls.clear();
+            for (int i=0; i<jarrImgUrls.length(); i++) {
+                String val = jarrImgUrls.optString(i, null);
+                if (val != null && !val.isEmpty()) { urls.add(val); }
+            }
+        }
+
+        if (jarrMoveUrls != null && jarrMoveUrls.length() > 0) {
+            Set<String> urls = getMoveUrlSet();
+            urls.clear();
+            for (int i=0; i<jarrMoveUrls.length(); i++) {
+                String val = jarrMoveUrls.optString(i, null);
+                if (val != null && !val.isEmpty()) { urls.add(val); }
+            }
+        }
 
         ArrayList<Schedule> schedules = Schedule.setJSONArray(json.optJSONArray("schedule"));
         this.getSchedules().clear();
@@ -223,10 +296,10 @@ public class RssItem implements Parcelable {
     }
 
     @NonNull
-    public static JSONArray toJSONArray(@Nullable List<RssItem> items) throws JSONException {
+    public static JSONArray toJSONArray(@Nullable List<MovieItem> items) throws JSONException {
         JSONArray jsonArray = new JSONArray();
         if (items != null && !items.isEmpty()) {
-            for (RssItem item: items) {
+            for (MovieItem item: items) {
                 jsonArray.put(item.toJSON());
             }
         }
@@ -234,13 +307,13 @@ public class RssItem implements Parcelable {
     }
 
     @NonNull
-    public static ArrayList<RssItem> setJSONArray(@Nullable JSONArray jarr) {
-        ArrayList<RssItem> list = new ArrayList<>();
+    public static ArrayList<MovieItem> setJSONArray(@Nullable JSONArray jarr) {
+        ArrayList<MovieItem> list = new ArrayList<>();
         if (jarr != null && jarr.length() > 0) {
-            RssItem item=null;
+            MovieItem item=null;
             for (int i=0; i<jarr.length(); i++) {
                 JSONObject json = jarr.optJSONObject(i);
-                if (item == null) { item = new RssItem(); }
+                if (item == null) { item = new MovieItem(); }
                 if (item.setJSON(json)) {
                     list.add(item);
                     item = null;
@@ -251,26 +324,26 @@ public class RssItem implements Parcelable {
     }
 
     @NonNull
-    public static ArrayList<RssItem> getItems(JSONArray jArr) throws JSONException {
-        ArrayList<RssItem> rssItems = new ArrayList<>();
+    public static ArrayList<MovieItem> getItems(JSONArray jArr) throws JSONException {
+        ArrayList<MovieItem> movies = new ArrayList<>();
         if (jArr == null || jArr.length() == 0) {
-            return rssItems;
+            return movies;
         }
 
         for (int i=0; i<jArr.length(); i++) {
             JSONObject jObj = jArr.optJSONObject(i);
             if (jObj != null) {
-                RssItem item = new RssItem();
+                MovieItem item = new MovieItem();
                 item.setData(jObj);
-                rssItems.add(item);
+                movies.add(item);
             }
         }
 
-        return rssItems;
+        return movies;
     }
 
     @NonNull
-    public static ArrayList<RssItem> parseRSS(String rssText) throws JSONException, ParserConfigurationException, SAXException, IOException {
+    public static ArrayList<MovieItem> parseRSS(String rssText) throws JSONException, ParserConfigurationException, SAXException, IOException {
         Document doc = Xml2JSON.getDocument(rssText);
         JSONObject jsonFull = Xml2JSON.getJSON(doc);
         JSONObject jRes = (JSONObject) Xml2JSON.makeShort(jsonFull);
@@ -289,10 +362,10 @@ public class RssItem implements Parcelable {
         return getItems(jItems);
     }
 
-    public static Comparator<RssItem> getDateComparator() {
-        return new Comparator<RssItem>() {
+    public static Comparator<MovieItem> getDateComparator() {
+        return new Comparator<MovieItem>() {
             @Override
-            public int compare(RssItem item1, RssItem item2) {
+            public int compare(MovieItem item1, MovieItem item2) {
                 if (item1 == null) {
                     if (item2 == null) { return 0; }
                     else { return -1; }
@@ -313,10 +386,10 @@ public class RssItem implements Parcelable {
         };
     }
 
-    public static Comparator<RssItem> getTitleComparator() {
-        return new Comparator<RssItem>() {
+    public static Comparator<MovieItem> getTitleComparator() {
+        return new Comparator<MovieItem>() {
             @Override
-            public int compare(RssItem item1, RssItem item2) {
+            public int compare(MovieItem item1, MovieItem item2) {
                 if (item1 == null) {
                     if (item2 == null) { return 0; }
                     else { return -1; }
@@ -337,10 +410,10 @@ public class RssItem implements Parcelable {
         };
     }
 
-    public static Comparator<RssItem> getDateTitleComparator() {
-        return new Comparator<RssItem>() {
+    public static Comparator<MovieItem> getDateTitleComparator() {
+        return new Comparator<MovieItem>() {
             @Override
-            public int compare(RssItem item1, RssItem item2) {
+            public int compare(MovieItem item1, MovieItem item2) {
                 if (item1 == null) {
                     if (item2 == null) { return 0; }
                     else { return -1; }
@@ -376,6 +449,9 @@ public class RssItem implements Parcelable {
     }
 
     public static Spanned fromHtml(String html) {
+        if (html == null) {
+            return null;
+        }
         Spanned result;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);

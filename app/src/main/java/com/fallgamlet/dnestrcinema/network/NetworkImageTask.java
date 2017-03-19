@@ -7,10 +7,16 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import org.json.JSONArray;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -274,6 +280,8 @@ public class NetworkImageTask {
             return;
         }
 
+
+
         ImageRequest request = getRequest(url);
         if (request == null) {
             request = new ImageRequest(url);
@@ -290,13 +298,13 @@ public class NetworkImageTask {
 
     public void clearFinishedTasks() {
         LinkedList<ImageRequest> requests = getRequests();
-        LinkedList<ImageRequest> finifedList = new LinkedList<>();
+        LinkedList<ImageRequest> finishedList = new LinkedList<>();
         for (ImageRequest request : requests) {
             if (request.mTask.getStatus() == AsyncTask.Status.FINISHED) {
-                finifedList.add(request);
+                finishedList.add(request);
             }
         }
-        if (finifedList.isEmpty()) { requests.removeAll(finifedList); }
+        if (finishedList.isEmpty()) { requests.removeAll(finishedList); }
     }
 
     public void dispose() {
@@ -312,10 +320,61 @@ public class NetworkImageTask {
         requests.clear();
     }
 
-    public static boolean saveToCache(Context context, String urlStr, Bitmap bitmap) {
-        File file = new File(context.getFilesDir(), urlStr);
+    private void writeToCatch(Context context, Bitmap bitmap, String key) {
+        if (context == null || bitmap==null || key == null  || key.isEmpty()) {
+            return;
+        }
 
-        return false;
+        FileOutputStream outStream;
+        try {
+            outStream = context.openFileOutput(key, Context.MODE_PRIVATE);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Bitmap readCatch(Context context, String key) {
+        if (context == null || key == null || key.isEmpty()) {
+            return null;
+        }
+
+        FileInputStream inStream;
+        Bitmap bitmap;
+        try {
+            inStream = context.openFileInput(key);
+            bitmap = BitmapFactory.decodeStream(inStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+            bitmap = null;
+        }
+        return bitmap;
+    }
+
+    private String md5(final String s) {
+        final String MD5 = "MD5";
+        String hash;
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = MessageDigest.getInstance(MD5);
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuilder hexString = new StringBuilder();
+            for (byte aMessageDigest : messageDigest) {
+                String h = Integer.toHexString(0xFF & aMessageDigest);
+                while (h.length() < 2)
+                    h = "0" + h;
+                hexString.append(h);
+            }
+            hash = hexString.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            hash = null;
+        }
+        return hash;
     }
     //endregion
 }

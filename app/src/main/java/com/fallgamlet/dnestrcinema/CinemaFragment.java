@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,11 +19,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.network.DataSettings;
-import com.fallgamlet.dnestrcinema.network.RssItem;
+import com.fallgamlet.dnestrcinema.network.KinoTir;
+import com.fallgamlet.dnestrcinema.network.MovieItem;
+import com.fallgamlet.dnestrcinema.network.Network;
 
-import java.lang.reflect.Array;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -33,14 +37,22 @@ import java.util.Arrays;
  * create an instance of this fragment.
  */
 public class CinemaFragment extends Fragment {
+    //region Constants
+    public static final String ARG_URL = "arg_url";
+    public static final String ARG_PARSER = "arg_parser";
+    public static final String ARG_DATA = "arg_data";
+    //endregion
+
     //region Fields
     private ViewGroup mRootView;
     private RecyclerView mlistView;
     private TextView mPlaceholderView;
 
     private RssRecyclerAdapter mAdapter;
-    private ArrayList<RssItem> dataItems;
+    private String mUrl;
+    private ArrayList<MovieItem> dataItems;
     private OnFragmentInteractionListener mListener;
+    AsyncTask mTask;
 
     AlertDialog dialog;
     //endregion
@@ -56,29 +68,131 @@ public class CinemaFragment extends Fragment {
      * @return A new instance of fragment CinemaFragment.
      */
     public static CinemaFragment newInstance() {
+        return newInstance(null, null);
+    }
+
+    public static CinemaFragment newInstance(String url) {
+        return newInstance(url, null);
+    }
+
+    public static CinemaFragment newInstance(ArrayList<MovieItem> data) {
+        return newInstance(null, data);
+    }
+
+    public static CinemaFragment newInstance(String url, ArrayList<MovieItem> data) {
         CinemaFragment fragment = new CinemaFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
+        Bundle args = new Bundle();
+        if (url != null) { args.putString(ARG_URL, url); }
+        if (data != null) { args.putParcelableArrayList(ARG_DATA, data); }
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//
-//        }
+        Bundle args = getArguments();
+
+        if (args != null) {
+            mUrl = args.getString(ARG_URL);
+            dataItems = args.getParcelableArrayList(ARG_DATA);
+        } else {
+            mUrl = null;
+            dataItems = new ArrayList<>();
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = (ViewGroup) inflater.inflate(R.layout.fragment_cinema, container, false);
+        return inflater.inflate(R.layout.fragment_cinema, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (view == null) {
+            return;
+        }
+
+        initViews((ViewGroup) view);
+        initData();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRootView = null;
+        mlistView = null;
+        mPlaceholderView = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mAdapter = null;
+        dataItems = null;
+        mUrl = null;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            mListener = null;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+        if (mTask != null && mTask.getStatus() == AsyncTask.Status.RUNNING) {
+            mTask.cancel(true);
+        }
+        mTask = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(outState != null) {
+            outState.putParcelableArrayList(ARG_DATA, getDataItems());
+            outState.putString(ARG_URL, mUrl);
+        }
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            String url = savedInstanceState.getString(ARG_URL);
+            ArrayList<MovieItem> items = savedInstanceState.getParcelableArrayList(ARG_DATA);
+
+            if (url != null) {
+                mUrl = url;
+            }
+            if (items != null) {
+                setDataItems(items);
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getDataItems().isEmpty()) {
+            loadData(mUrl);
+        }
+    }
+
+    protected void initViews(ViewGroup view) {
+        mRootView = view;
         mlistView = (RecyclerView) mRootView.findViewById(R.id.listView);
         mPlaceholderView = (TextView) mRootView.findViewById(R.id.placeholderView);
-
 
         if (mPlaceholderView != null) { mPlaceholderView.setVisibility(View.GONE); }
 
@@ -96,33 +210,62 @@ public class CinemaFragment extends Fragment {
             mlistView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
             mlistView.setAdapter(getAdapter());
         }
-
-        getAdapter().setData(dataItems);
-
-        return mRootView;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            mListener = null;
+    protected void initData() {
+        getAdapter().setData(getDataItems());
+    }
+
+    protected void loadData(String url) {
+        if (url == null || url.isEmpty()) {
+            return;
         }
+
+        Network.RequestData requestData = new Network.RequestData();
+        requestData.options = Network.Options.Default();
+        requestData.options.contentType = Network.CONTENT_TYPE_HTML;
+        requestData.url = url;
+
+        mTask = Network.requestDataAsync(requestData, new Network.ResponseHandle() {
+            @Override
+            public void finished(Exception exception, Network.StrResult result) {
+                mTask = null;
+                if (exception != null) {
+                    String msg = null;
+                    if (exception instanceof UnknownHostException) {
+                        msg = "Веб сервис недоступен. Возможно нет соединение с сетью Интернет";
+                    } else {
+                        msg = exception.toString();
+                    }
+
+                    System.err.println(exception);
+                    return;
+                }
+
+                if (result.error != null) {
+                    System.err.println(exception);
+                    return;
+                }
+
+                List<MovieItem> items = new KinoTir.MovieListParser().parse(result.data);
+                setDataItems(items);
+            }
+        });
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public ArrayList<RssItem> getDataItems() {
+    public ArrayList<MovieItem> getDataItems() {
         if (dataItems == null) {
             dataItems = new ArrayList<>();
         }
         return dataItems;
+    }
+
+    protected void setDataItems(List<MovieItem> items) {
+        getDataItems().clear();
+        if (items != null && !items.isEmpty()) {
+            getDataItems().addAll(items);
+        }
+        notifyDataSetChanged();
     }
 
     public void notifyDataSetChanged() {
@@ -139,12 +282,12 @@ public class CinemaFragment extends Fragment {
             mAdapter = new RssRecyclerAdapter();
             mAdapter.setListener(new RssRecyclerAdapter.OnAdapterListener() {
                 @Override
-                public void onItemPressed(RssItem item, int pos) {
+                public void onItemPressed(MovieItem item, int pos) {
                     navigateToDetail(item);
                 }
 
                 @Override
-                public void onItemSchedulePressed(RssItem item, int pos) {
+                public void onItemSchedulePressed(MovieItem item, int pos) {
 //                    navigateToRoomView(item);
                 }
             });
@@ -152,10 +295,10 @@ public class CinemaFragment extends Fragment {
         return mAdapter;
     }
 
-    protected void navigateToDetail(RssItem rssItem) {
-        if (rssItem != null) {
+    protected void navigateToDetail(MovieItem movieItem) {
+        if (movieItem != null) {
             Bundle bundle = new Bundle();
-            bundle.putParcelable(CinemaDetailActivity.ARG_RSSITEM, rssItem);
+            bundle.putParcelable(CinemaDetailActivity.ARG_RSSITEM, movieItem);
 
             Intent intent = new Intent(getContext(), CinemaDetailActivity.class);
             intent.putExtras(bundle);
@@ -169,11 +312,11 @@ public class CinemaFragment extends Fragment {
         }
 
         String imgURL = null;
-        if (RssItem.ROOM_BLUE.equalsIgnoreCase(roomName)) {
+        if (MovieItem.ROOM_BLUE.equalsIgnoreCase(roomName)) {
             imgURL = DataSettings.PATH_IMG_ROOM_BLUE;
-        } else if (RssItem.ROOM_BORDO.equalsIgnoreCase(roomName)) {
+        } else if (MovieItem.ROOM_BORDO.equalsIgnoreCase(roomName)) {
             imgURL = DataSettings.PATH_IMG_ROOM_BORDO;
-        } else if (RssItem.ROOM_DVD.equalsIgnoreCase(roomName)) {
+        } else if (MovieItem.ROOM_DVD.equalsIgnoreCase(roomName)) {
             imgURL = DataSettings.PATH_IMG_ROOM_DVD;
         }
 
@@ -189,13 +332,13 @@ public class CinemaFragment extends Fragment {
 
     }
 
-    protected  void navigateToRoomView(RssItem rssItem) {
+    protected  void navigateToRoomView(MovieItem movieItem) {
         String[] rooms = null;
-        if (rssItem != null && !rssItem.getSchedules().isEmpty()) {
-            int count = rssItem.getSchedules().size();
+        if (movieItem != null && !movieItem.getSchedules().isEmpty()) {
+            int count = movieItem.getSchedules().size();
             rooms = new String[count];
             for (int i=0; i<count; i++) {
-                RssItem.Schedule item = rssItem.getSchedules().get(i);
+                MovieItem.Schedule item = movieItem.getSchedules().get(i);
                 if (item.room != null) {
                     rooms[i] = item.room;
                 }
