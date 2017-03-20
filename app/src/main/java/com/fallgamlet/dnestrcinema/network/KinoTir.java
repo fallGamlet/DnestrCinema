@@ -167,4 +167,28 @@ public class KinoTir {
         }
     }
 
+    public static class MovieDetailParser implements Parser<MovieItem> {
+
+        @Override
+        public MovieItem parse(String html) {
+            if (html == null) {return null;}
+
+            Document doc = Jsoup.parse(html);
+            if (doc == null) { return null;}
+
+            Element info = doc.select(".info fr").first();
+            if (info == null) {return null;}
+
+            String posterUrl = info.select(">.additional-poster>.image>img").attr("src");
+
+            info = info.select(".main-info").first();
+            if (info == null) {return null;}
+
+
+
+
+            return null;
+        }
+    }
+
 }
