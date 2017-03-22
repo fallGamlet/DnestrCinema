@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by fallgamlet on 08.07.16.
  */
-public class RssRecyclerAdapter extends RecyclerView.Adapter<RssRecyclerAdapter.ViewHolder> {
+public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdapter.ViewHolder> {
     //region Sub classes and Interfaces
     public interface OnAdapterListener {
         void onItemPressed(MovieItem item, int pos);
@@ -112,13 +112,13 @@ public class RssRecyclerAdapter extends RecyclerView.Adapter<RssRecyclerAdapter.
     //endregion
 
     //region Methods
-    public RssRecyclerAdapter() {
+    public MovieRecyclerAdapter() {
         imageTask = new NetworkImageTask();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rss_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false);
         final ViewHolder holder = new ViewHolder(view);
 
         holder.getRootView().setOnClickListener(new View.OnClickListener() {
