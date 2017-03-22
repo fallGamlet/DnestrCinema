@@ -31,6 +31,17 @@
     <string name="msg_not_found_intent_for_view_google_map">Не найдено приложения для показа Google карты</string>
     <string name="msg_not_found_intent_for_email">Не найдено приложения для отправки электронной почты</string>
     <string name="app_id">com.fallgamlet.dnestrcinema</string>
+
     <string name="label_from">с</string>
+    <string name="label_trailer">Трейлер</string>
+
+    <string name="label_country">Страна:</string>
+    <string name="label_director">Режисер:</string>
+    <string name="label_scenario">Сценарий:</string>
+    <string name="label_actors">Актеры:</string>
+    <string name="label_agelimit">Возрастное ограничение:</string>
+    <string name="label_duration">Продолжительность:</string>
+    <string name="label_genre">Жанр:</string>
+    <string name="label_budget">Бюджет:</string>
 
 </resources>
