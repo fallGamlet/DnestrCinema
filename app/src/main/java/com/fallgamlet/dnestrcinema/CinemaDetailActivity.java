@@ -21,30 +21,36 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.network.DataSettings;
+import com.fallgamlet.dnestrcinema.network.HttpUtils;
+import com.fallgamlet.dnestrcinema.network.KinoTir;
 import com.fallgamlet.dnestrcinema.network.Network;
 import com.fallgamlet.dnestrcinema.network.NetworkImageTask;
 import com.fallgamlet.dnestrcinema.network.MovieItem;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class CinemaDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     //region Static fields
-    public static String ARG_RSSITEM = "rss_item";
+    public static String ARG_MOVIE = "movie_item";
+    public static String ARG_MOVIE_DETAIL = "movie_detail";
     public static String YOUTUBE = "youtube.com";
     //endregion
 
     //region Fields
     private List<String> mTrailerUrls;
-    private MovieItem mMovieItem;
-    private RssRecyclerAdapter.ViewHolder mRssHolder;
+    private MovieItem mMovie;
+    private MovieItem mMovieDetail;
+    private MovieRecyclerAdapter.ViewHolder mMovieHolder;
+    private FieldHolder directorHolder;
+    private FieldHolder scenarioHolder;
+    private FieldHolder actorsHolder;
+    private FieldHolder ageLimitHolder;
+    private FieldHolder durationHolder;
+    private FieldHolder budgetHolder;
+    private FieldHolder genreHolder;
+    private FieldHolder countryHolder;
     private TextView mDescriptionView;
     private RecyclerView mImageListView;
     View mTrailerBtn;
@@ -52,10 +58,8 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
     //endregion
 
     //region Getters and Setters
-    public MovieItem getRssItem() { return mMovieItem; }
-    public void setRssItem(MovieItem item){ mMovieItem = item; }
-
-
+    public MovieItem getMovie() { return mMovie; }
+    public void setMovie(MovieItem item){ mMovie = item; }
     //endregion
 
     //region Override methods
@@ -66,12 +70,34 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            MovieItem item = bundle.getParcelable(ARG_RSSITEM);
-            setRssItem(item);
+            mMovie = bundle.getParcelable(ARG_MOVIE);
+            mMovieDetail = bundle.getParcelable(ARG_MOVIE_DETAIL);
         }
 
         initViews();
-        showData(getRssItem());
+        showData();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(ARG_MOVIE, mMovie);
+        outState.putParcelable(ARG_MOVIE_DETAIL, mMovieDetail);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            mMovie = savedInstanceState.getParcelable(ARG_MOVIE);
+            mMovieDetail = savedInstanceState.getParcelable(ARG_MOVIE_DETAIL);
+        }
+        showData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -99,8 +125,8 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         if (view == null) { return; }
 
-        if (mRssHolder != null && view == mRssHolder.getScheduleView()) {
-            navigateToRoomView(getRssItem());
+        if (mMovieHolder != null && view == mMovieHolder.getScheduleView()) {
+            navigateToRoomView(getMovie());
             return;
         }
 
@@ -118,14 +144,13 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            if (getRssItem() != null) {
-                actionBar.setTitle(getRssItem().getTitle());
+            if (getMovie() != null) {
+                actionBar.setTitle(getMovie().getTitle());
             }
         }
 
-
-        mRssHolder = new RssRecyclerAdapter.ViewHolder(findViewById(R.id.itemRootView));
-        mRssHolder.getScheduleView().setOnClickListener(this);
+        mMovieHolder = new MovieRecyclerAdapter.ViewHolder(findViewById(R.id.itemRootView));
+        mMovieHolder.getScheduleView().setOnClickListener(this);
 
         mDescriptionView = (TextView) findViewById(R.id.descriptionView);
 
@@ -141,45 +166,80 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
             mImageListView.setItemAnimator(new DefaultItemAnimator());
             mImageListView.setHasFixedSize(false);
         }
+
+        directorHolder = new FieldHolder();
+        scenarioHolder = new FieldHolder();
+        actorsHolder = new FieldHolder();
+        ageLimitHolder = new FieldHolder();
+        durationHolder = new FieldHolder();
+        budgetHolder = new FieldHolder();
+        genreHolder = new FieldHolder();
+        countryHolder = new FieldHolder();
+
+        directorHolder.initViews(findViewById(R.id.directorView));
+        scenarioHolder.initViews(findViewById(R.id.scenarioView));
+        actorsHolder.initViews(findViewById(R.id.actorsView));
+        ageLimitHolder.initViews(findViewById(R.id.ageLimitView));
+        durationHolder.initViews(findViewById(R.id.durationView));
+        budgetHolder.initViews(findViewById(R.id.budgetView));
+        genreHolder.initViews(findViewById(R.id.genreView));
+        countryHolder.initViews(findViewById(R.id.countryView));
+
+        directorHolder.setVisible(false);
+        scenarioHolder.setVisible(false);
+        actorsHolder.setVisible(false);
+        ageLimitHolder.setVisible(false);
+        durationHolder.setVisible(false);
+        budgetHolder.setVisible(false);
+        genreHolder.setVisible(false);
+        countryHolder.setVisible(false);
     }
 
-    private void showData(MovieItem movieItem) {
+    private void showData() {
+        if (mMovie == null) { mMovie = mMovieDetail; }
+        MovieItem movieItem = mMovie;
+
         if (mDescriptionView != null) {
             String desc = movieItem ==null? null: movieItem.getDescription();
-            mDescriptionView.setText(MovieItem.fromHtml(desc));
+            showDescription(HttpUtils.fromHtml(desc));
         }
 
-        if (mRssHolder != null) {
-            mRssHolder.initData(movieItem);
+        if (mMovieHolder != null) {
+            mMovieHolder.initData(movieItem);
 
             //region Load and set Image
             String imgUrl = movieItem == null? null: movieItem.getImgUrl();
             try {
-                mRssHolder.getImageView().setImageResource(R.drawable.ic_local_movies_black_24dp);
+                mMovieHolder.getImageView().setImageResource(R.drawable.ic_local_movies_black_24dp);
                 // если ссылка есть
                 if (imgUrl != null) {
                     Bitmap img = NetworkImageTask.cachedImages.get(imgUrl);
                     if (img != null) {
-                        mRssHolder.mImageView.setImageBitmap(img);
+                        mMovieHolder.mImageView.setImageBitmap(img);
                     } else {
                         getImageTask().requestImage(imgUrl, new NetworkImageTask.NetworkImageCallback() {
                             @Override
                             public void onImageLoaded(NetworkImageTask.UrlImage urlImg) {
-                                if (mRssHolder != null && urlImg.img != null && urlImg.url != null && urlImg.url.equalsIgnoreCase(mRssHolder.getItem().getImgUrl())) {
-                                    mRssHolder.getImageView().setImageBitmap(urlImg.img);
+                                if (mMovieHolder != null && urlImg.img != null && urlImg.url != null && urlImg.url.equalsIgnoreCase(mMovieHolder.getItem().getImgUrl())) {
+                                    mMovieHolder.getImageView().setImageBitmap(urlImg.img);
                                 }
                             }
                         });
                     }
                 }
             } catch (Exception ignored) {
-                mRssHolder.getImageView().setImageResource(R.drawable.ic_local_movies_black_24dp);
+                mMovieHolder.getImageView().setImageResource(R.drawable.ic_local_movies_black_24dp);
             }
             //endregion
         }
 
         setImagesViewVisible(false);
-        loadInfo(movieItem);
+
+        if (mMovieDetail == null){
+            loadInfo(movieItem);
+        } else {
+            showDetailData(mMovieDetail);
+        }
     }
 
     protected void setImagesViewVisible(boolean v) {
@@ -194,20 +254,22 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    protected void showDescription(CharSequence text) {
+        if (mDescriptionView != null) {
+            mDescriptionView.setText(text);
+            mDescriptionView.setVisibility(text==null || text.length()==0? View.GONE: View.VISIBLE);
+        }
+    }
+
     protected void loadInfo(MovieItem movieItem) {
         if (movieItem == null) {
             return;
         }
 
-        Set<String> imgUrlSet = movieItem.getImgUrlSet();
-        Set<String> moveUrlSet = movieItem.getMoveUrlSet();
-
-        if (!imgUrlSet.isEmpty()) {
-            return;
-        }
+        showDetailData(movieItem);
 
         Network.RequestData request = new Network.RequestData();
-        request.url = movieItem.getLink();
+        request.url = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, movieItem.getLink());
         Network.requestDataAsync(request, new Network.ResponseHandle() {
             @Override
             public void finished(Exception exception, Network.StrResult result) {
@@ -232,39 +294,57 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
                 }
 
                 try {
-                    ArrayList<String> urlList = new ArrayList<String>();
                     String htmlStr = result.data;
-                    Document doc = Jsoup.parse(htmlStr);
-                    Elements elements = doc == null? null : doc.select("a[rel='photos']");
-                    if (elements != null && !elements.isEmpty()) {
-                        for (int i = 0; i < elements.size(); i++) {
-                            Element item = elements.get(i);
-                            String imgUrl = item.attr("href");
-                            if (imgUrl != null && !imgUrl.isEmpty()) {
-                                urlList.add(DataSettings.BASE_URL + imgUrl);
-                            }
-                        }
-                    }
-
-                    ArrayList<String> trailerUrlList = new ArrayList<String>();
-                    elements = doc == null? null: doc.select(".trailer a");
-                    if (elements != null) {
-                        for (int i = 0; i < elements.size(); i++) {
-                            Element item = elements.get(i);
-                            String imgUrl = item.attr("href");
-                            if (imgUrl != null && !imgUrl.isEmpty() && imgUrl.contains(YOUTUBE)) {
-                                trailerUrlList.add(imgUrl);
-                            }
-                        }
-                    }
-
-                    loadImages(urlList);
-                    showTrailers(trailerUrlList);
+                    mMovieDetail = new KinoTir.MovieDetailParser().parse(htmlStr);
+                    showDetailData(mMovieDetail);
                 } catch (Exception e) {
                     Log.d("LoadPage", "Error: "+e.toString());
                 }
             }
         });
+    }
+
+    protected void showDetailData(MovieItem movieItem) {
+        if (movieItem != null) {
+            ArrayList<String> urlList = new ArrayList<>(movieItem.getImgUrlSet());
+            ArrayList<String> trailerUrlList = new ArrayList<>(movieItem.getTrailerUrlSet());
+
+            loadImages(urlList);
+            showTrailers(trailerUrlList);
+            showDescription(HttpUtils.fromHtml(movieItem.getDescription()));
+
+            if (durationHolder != null) {
+                durationHolder.setDataAndVisible(getString(R.string.label_duration), movieItem.getDuration());
+            }
+
+            if (ageLimitHolder != null) {
+                ageLimitHolder.setDataAndVisible(getString(R.string.label_agelimit), movieItem.getAgeLimit());
+            }
+
+            if (genreHolder != null) {
+                genreHolder.setDataAndVisible(getString(R.string.label_genre), movieItem.getGenre());
+            }
+
+            if (countryHolder != null) {
+                countryHolder.setDataAndVisible(getString(R.string.label_country), movieItem.getCountry());
+            }
+
+            if (directorHolder != null) {
+                directorHolder.setDataAndVisible(getString(R.string.label_director), movieItem.getDirector());
+            }
+
+            if (scenarioHolder != null) {
+                scenarioHolder.setDataAndVisible(getString(R.string.label_scenario), movieItem.getScenario());
+            }
+
+            if (actorsHolder != null) {
+                actorsHolder.setDataAndVisible(getString(R.string.label_actors), movieItem.getActors());
+            }
+            if (budgetHolder != null) {
+                budgetHolder.setDataAndVisible(getString(R.string.label_budget), movieItem.getBudget());
+            }
+
+        }
     }
 
     protected void loadImages(List<String> urlList) {
@@ -367,15 +447,15 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
 
         String imgURL = null;
         if (MovieItem.ROOM_BLUE.equalsIgnoreCase(roomName)) {
-            imgURL = DataSettings.PATH_IMG_ROOM_BLUE;
+            imgURL = KinoTir.PATH_IMG_ROOM_BLUE;
         } else if (MovieItem.ROOM_BORDO.equalsIgnoreCase(roomName)) {
-            imgURL = DataSettings.PATH_IMG_ROOM_BORDO;
+            imgURL = KinoTir.PATH_IMG_ROOM_BORDO;
         } else if (MovieItem.ROOM_DVD.equalsIgnoreCase(roomName)) {
-            imgURL = DataSettings.PATH_IMG_ROOM_DVD;
+            imgURL = KinoTir.PATH_IMG_ROOM_DVD;
         }
 
         if (imgURL != null) {
-            imgURL = DataSettings.BASE_URL + imgURL;
+            imgURL = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgURL);
             ImageActivity.showActivity(this, imgURL);
         }
     }

@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/rss_item" />
+            <include layout="@layout/movie_item" />
 
             <android.support.v7.widget.RecyclerView android:id="@+id/imageList"
                 android:layout_width="match_parent"
@@ -54,14 +54,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/SpaceSmall"
-                android:text="Трейлер"
+                android:text="@string/label_trailer"
                 android:visibility="gone"
                 tools:visibility="visible"/>
+
+            <include android:id="@+id/durationView"
+                layout="@layout/property_item" />
+
+            <include android:id="@+id/genreView"
+                layout="@layout/property_item" />
+
+            <include android:id="@+id/ageLimitView"
+                layout="@layout/property_item" />
+
+            <include android:id="@+id/countryView"
+                layout="@layout/property_item" />
+
+            <include android:id="@+id/directorView"
+                layout="@layout/property_item" />
+
+            <include android:id="@+id/scenarioView"
+                layout="@layout/property_item" />
+
+            <include android:id="@+id/actorsView"
+                layout="@layout/property_item" />
+
+            <include android:id="@+id/budgetView"
+                layout="@layout/property_item" />
 
             <TextView android:id="@+id/descriptionView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/SpaceSmall"/>
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
