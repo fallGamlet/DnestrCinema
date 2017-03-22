@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.network.DataSettings;
+import com.fallgamlet.dnestrcinema.network.HttpUtils;
 import com.fallgamlet.dnestrcinema.network.KinoTir;
 import com.fallgamlet.dnestrcinema.network.MovieItem;
 import com.fallgamlet.dnestrcinema.network.Network;
@@ -48,7 +49,7 @@ public class CinemaFragment extends Fragment {
     private RecyclerView mlistView;
     private TextView mPlaceholderView;
 
-    private RssRecyclerAdapter mAdapter;
+    private MovieRecyclerAdapter mAdapter;
     private String mUrl;
     private ArrayList<MovieItem> dataItems;
     private OnFragmentInteractionListener mListener;
@@ -277,10 +278,10 @@ public class CinemaFragment extends Fragment {
         }
     }
 
-    protected RssRecyclerAdapter getAdapter() {
+    protected MovieRecyclerAdapter getAdapter() {
         if (mAdapter == null) {
-            mAdapter = new RssRecyclerAdapter();
-            mAdapter.setListener(new RssRecyclerAdapter.OnAdapterListener() {
+            mAdapter = new MovieRecyclerAdapter();
+            mAdapter.setListener(new MovieRecyclerAdapter.OnAdapterListener() {
                 @Override
                 public void onItemPressed(MovieItem item, int pos) {
                     navigateToDetail(item);
@@ -298,7 +299,7 @@ public class CinemaFragment extends Fragment {
     protected void navigateToDetail(MovieItem movieItem) {
         if (movieItem != null) {
             Bundle bundle = new Bundle();
-            bundle.putParcelable(CinemaDetailActivity.ARG_RSSITEM, movieItem);
+            bundle.putParcelable(CinemaDetailActivity.ARG_MOVIE, movieItem);
 
             Intent intent = new Intent(getContext(), CinemaDetailActivity.class);
             intent.putExtras(bundle);
@@ -313,15 +314,15 @@ public class CinemaFragment extends Fragment {
 
         String imgURL = null;
         if (MovieItem.ROOM_BLUE.equalsIgnoreCase(roomName)) {
-            imgURL = DataSettings.PATH_IMG_ROOM_BLUE;
+            imgURL = KinoTir.PATH_IMG_ROOM_BLUE;
         } else if (MovieItem.ROOM_BORDO.equalsIgnoreCase(roomName)) {
-            imgURL = DataSettings.PATH_IMG_ROOM_BORDO;
+            imgURL = KinoTir.PATH_IMG_ROOM_BORDO;
         } else if (MovieItem.ROOM_DVD.equalsIgnoreCase(roomName)) {
-            imgURL = DataSettings.PATH_IMG_ROOM_DVD;
+            imgURL = KinoTir.PATH_IMG_ROOM_DVD;
         }
 
         if (imgURL != null) {
-            imgURL = DataSettings.BASE_URL + imgURL;
+            imgURL = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgURL);
             Bundle bundle = new Bundle();
             bundle.putString(ImageActivity.ARG_IMG_URL, imgURL);
 

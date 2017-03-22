@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.network.DataSettings;
+import com.fallgamlet.dnestrcinema.network.HttpUtils;
+import com.fallgamlet.dnestrcinema.network.KinoTir;
 import com.fallgamlet.dnestrcinema.network.MovieItem;
 
 
@@ -242,15 +244,15 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
 
         String imgURL = null;
         if (MovieItem.ROOM_BLUE.equalsIgnoreCase(roomName)) {
-            imgURL = DataSettings.PATH_IMG_ROOM_BLUE;
+            imgURL = KinoTir.PATH_IMG_ROOM_BLUE;
         } else if (MovieItem.ROOM_BORDO.equalsIgnoreCase(roomName)) {
-            imgURL = DataSettings.PATH_IMG_ROOM_BORDO;
+            imgURL = KinoTir.PATH_IMG_ROOM_BORDO;
         } else if (MovieItem.ROOM_DVD.equalsIgnoreCase(roomName)) {
-            imgURL = DataSettings.PATH_IMG_ROOM_DVD;
+            imgURL = KinoTir.PATH_IMG_ROOM_DVD;
         }
 
         if (imgURL != null) {
-            imgURL = DataSettings.BASE_URL + imgURL;
+            imgURL = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL,imgURL);
             Bundle bundle = new Bundle();
             bundle.putString(ImageActivity.ARG_IMG_URL, imgURL);
 
