@@ -84,10 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         int id = item.getItemId();
         boolean res = false;
-        if (id == R.id.actionRefresh) {
-            res = true;
-            loadRss();
-        } else if (id == R.id.actionShareApp) {
+        if (id == R.id.actionShareApp) {
             res = true;
             shareApp();
         } else {
@@ -108,11 +105,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        if (getRssList().isEmpty()) {
-            loadRss();
-        } else {
-            updateData(getRssList());
-        }
         super.onResume();
     }
 
@@ -140,10 +132,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    private void loadRss() {
-
-    }
-
     private void shareApp() {
         try {
             String appID = getString(R.string.app_id);
@@ -157,34 +145,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.d("Share", "Error: "+e.toString());
         }
-    }
-
-    protected void updateData(@Nullable List<MovieItem> itemList) {
-//        Date now = new Date();
-//
-//        if (itemList != null) {
-//            Collections.sort(itemList, MovieItem.getDateTitleComparator());
-//        }
-//
-//        ArrayList<MovieItem> nowItems = getCinemaNowFragment().getDataItems();
-//        ArrayList<MovieItem> soonItems = getCinemaSoonFragment().getDataItems();
-//
-//        nowItems.clear();
-//        soonItems.clear();
-//
-//        if (itemList != null) {
-//            for (MovieItem item: itemList) {
-//                Date pubDate = item.getPubDate();
-//                if (pubDate == null || pubDate.after(now)) {
-//                    soonItems.add(item);
-//                } else {
-//                    nowItems.add(item);
-//                }
-//            }
-//        }
-//
-//        getCinemaNowFragment().notifyDataSetChanged();
-//        getCinemaSoonFragment().notifyDataSetChanged();
     }
 
     private void writeStorage() {
@@ -228,12 +188,6 @@ public class MainActivity extends AppCompatActivity {
             inStream.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-
-        if (items != null && !items.isEmpty()) {
-            getRssList().clear();
-            getRssList().addAll(items);
-            updateData(getRssList());
         }
     }
     //endregion

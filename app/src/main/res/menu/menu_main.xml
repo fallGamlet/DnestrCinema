@@ -3,16 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="ru.hellix.fallgamlet.fitness.MainActivity">
 
-    <item android:id="@+id/actionRefresh"
-        android:orderInCategory="1"
-        android:title="@string/update"
-        android:icon="@drawable/ic_sync_24dp"
-        app:srcCompat="@drawable/ic_sync_24dp"
-        app:showAsAction="ifRoom"/>
-
     <item android:id="@+id/actionShareApp"
         android:orderInCategory="1"
-        android:title="@string/update"
+        android:title="@string/share"
         android:icon="@drawable/ic_share_24dp"
         app:srcCompat="@drawable/ic_share_24dp"
         app:showAsAction="ifRoom"/>

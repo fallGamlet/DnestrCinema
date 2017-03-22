@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.BoolRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,6 +48,7 @@ public class CinemaFragment extends Fragment {
 
     //region Fields
     private ViewGroup mRootView;
+    private SwipeRefreshLayout mSwipeLayout;
     private RecyclerView mlistView;
     private TextView mPlaceholderView;
 
@@ -192,6 +195,13 @@ public class CinemaFragment extends Fragment {
 
     protected void initViews(ViewGroup view) {
         mRootView = view;
+
+        if (view == null) { return; }
+
+        mSwipeLayout = (SwipeRefreshLayout) mRootView.findViewById(R.id.swipeLayout);
+        mSwipeLayout.setColorSchemeResources(R.color.colorPrimary, R.color.colorPrimaryDark, R.color.colorAccent);
+        mSwipeLayout.setOnRefreshListener(getOnRefreshListener());
+
         mlistView = (RecyclerView) mRootView.findViewById(R.id.listView);
         mPlaceholderView = (TextView) mRootView.findViewById(R.id.placeholderView);
 
@@ -213,6 +223,28 @@ public class CinemaFragment extends Fragment {
         }
     }
 
+    //region OnRefreshListener and methods
+    SwipeRefreshLayout.OnRefreshListener mOnRefreshListener;
+    private SwipeRefreshLayout.OnRefreshListener getOnRefreshListener() {
+        if (mOnRefreshListener == null) {
+            mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    loadData(mUrl);
+                }
+            };
+        }
+        return mOnRefreshListener;
+    }
+
+    private void setRefreshVisible(boolean v) {
+        if (mSwipeLayout != null) {
+            mSwipeLayout.setRefreshing(v);
+        }
+    }
+    //endregion
+
+
     protected void initData() {
         getAdapter().setData(getDataItems());
     }
@@ -227,9 +259,12 @@ public class CinemaFragment extends Fragment {
         requestData.options.contentType = Network.CONTENT_TYPE_HTML;
         requestData.url = url;
 
+//        setRefreshVisible(true);
+
         mTask = Network.requestDataAsync(requestData, new Network.ResponseHandle() {
             @Override
             public void finished(Exception exception, Network.StrResult result) {
+                setRefreshVisible(false);
                 mTask = null;
                 if (exception != null) {
                     String msg = null;
@@ -267,6 +302,8 @@ public class CinemaFragment extends Fragment {
             getDataItems().addAll(items);
         }
         notifyDataSetChanged();
+
+        showPlaceholder(items.isEmpty());
     }
 
     public void notifyDataSetChanged() {
@@ -294,6 +331,12 @@ public class CinemaFragment extends Fragment {
             });
         }
         return mAdapter;
+    }
+
+    protected void showPlaceholder(boolean v) {
+        if (mPlaceholderView != null) {
+            mPlaceholderView.setVisibility(v? View.VISIBLE: View.GONE);
+        }
     }
 
     protected void navigateToDetail(MovieItem movieItem) {
