@@ -19,16 +19,36 @@ import java.util.Locale;
  */
 
 public class KinoTir {
-    public static String BASE_URL = "http://kinotir.md";
-    public static String PATH_NOW = "/";
-    public static String PATH_SOON = "/skoro-v-kino";
-    public static String PATH_NEWS = "/novosti";
-    public static String PATH_ROOMS = "/zaly-kinoteatra";
-    public static String PATH_QA = "/vopros-otvet";
-    public static String PATH_ABOUT = "/o-kinoteatre";
+    public static final String BASE_URL = "http://kinotir.md";
+    public static final String PATH_NOW = "/";
+    public static final String PATH_SOON = "/skoro-v-kino";
+    public static final String PATH_NEWS = "/novosti";
+    public static final String PATH_ROOMS = "/zaly-kinoteatra";
+    public static final String PATH_QA = "/vopros-otvet";
+    public static final String PATH_ABOUT = "/o-kinoteatre";
+
+    public static final String PATH_IMG_ROOM_BLUE = "/files/uploads/img_03.jpg";
+    public static final String PATH_IMG_ROOM_BORDO = "/files/uploads/img_07.jpg";
+    public static final String PATH_IMG_ROOM_DVD = "/files/uploads/img_11.jpg";
 
     public interface Parser<T> {
         T parse(String body);
+    }
+
+    private static Date parseDate(String val) {
+        if (val == null) {
+            return null;
+        }
+        Date date = null;
+        // с 16 марта, 2017
+        String[] arr = val.split(" ");
+        SimpleDateFormat format = new SimpleDateFormat("'с' d MMMM, yyyy", Locale.getDefault());
+        try {
+            date = format.parse(val.trim());
+        } catch (ParseException ignored) {
+            System.out.println(ignored);
+        }
+        return date;
     }
 
     public static class MovieListParser implements Parser<List<MovieItem>> {
@@ -136,22 +156,6 @@ public class KinoTir {
             }
         }
 
-        private Date parseDate(String val) {
-            if (val == null) {
-                return null;
-            }
-            Date date = null;
-            // с 16 марта, 2017
-            String[] arr = val.split(" ");
-            SimpleDateFormat format = new SimpleDateFormat("'с' d MMMM, yyyy", Locale.getDefault());
-            try {
-                date = format.parse(val.trim());
-            } catch (ParseException ignored) {
-                System.out.println(ignored);
-            }
-            return date;
-        }
-
         private void parseTrailers(Elements src, MovieItem movieItem) {
             if (src == null || movieItem == null) {
                 return;
@@ -160,7 +164,7 @@ public class KinoTir {
             for (Element el: src) {
                 String url = el.attr("href");
                 if (url != null && !url.isEmpty()) {
-                    movieItem.getMoveUrlSet().add(url);
+                    movieItem.getTrailerUrlSet().add(url);
                 }
             }
 
@@ -176,18 +180,123 @@ public class KinoTir {
             Document doc = Jsoup.parse(html);
             if (doc == null) { return null;}
 
-            Element info = doc.select(".info fr").first();
+            Element info = doc.select(".film .info").first();
             if (info == null) {return null;}
 
             String posterUrl = info.select(">.additional-poster>.image>img").attr("src");
 
-            info = info.select(".main-info").first();
-            if (info == null) {return null;}
+            MovieItem movieItem = new MovieItem();
+            movieItem.setImgUrl(posterUrl);
 
+            Element mainInfo  = info.select(".main-info").first();
+            if (mainInfo != null) {
+                parseFeatures(info.select(".features"), movieItem);
+                String description = info.select(".description").text(); // span
+                movieItem.setDescription(description);
+            }
 
+            parseImages(info.select(".slider"), movieItem);
+            parseTrailers(info.select(".trailer"), movieItem);
 
+            return movieItem;
+        }
 
-            return null;
+        private void parseFeatures(Elements src, MovieItem movieItem) {
+            if (src == null || movieItem == null) {
+                return;
+            }
+
+//            <ul class="features">
+//                <li> <label>Старт:</label> <div>с 16 марта, 2017</div> </li>
+//                <li> <label>Страна: </label> <div>США</div> </li>
+//                <li> <label>Режисер: </label> <div>М. Найт Шьямалан</div> </li>
+//                <li> <label>Сценарий: </label> <div>М. Найт Шьямалан</div> </li>
+//                <li> <label>В ролях: </label> <div>Джеймс МакЭвой, Аня Тейлор-Джой, Бетти Бакли, Хейли Лу Ричардсон, Джессика Сула, Иззи Коффи, Брэд Уильям Хенке, Себастьян Арселус, Нил Хафф, Уки Вашингтон</div> </li>
+//                <li> <label>Жанр: </label> <div>ужасы, триллер</div> </li>
+//                <li> <label>Бюджет: </label> <div>$9 000 000</div> </li>
+//                <li> <label>Возраст: </label> <div>16+</div> </li>
+//                <li> <label>Продолжительность: </label> <div>117 минут</div> </li>
+//            </ul>
+
+            src = src.select(">li");
+            String strStart = null;
+            String strCountry = null;
+            String strDirector = null;
+            String strScenario = null;
+            String strActors = null;
+            String strGenre = null;
+            String strBudget = null;
+            String strAgeLimit = null;
+            String strDuration = null;
+
+            for (Element el: src) {
+                String key = el.select("label").text().trim();
+                String val = el.select("div").text().trim();
+                if (val != null) {
+                    if ("Старт:".equals(key)) {
+                        strStart = val;
+                    } else if ("Страна:".equals(key)) {
+                        strCountry = val;
+                    } else if ("Режисер:".equals(key)) {
+                        strDirector= val;
+                    } else if ("Сценарий:".equals(key)) {
+                        strScenario= val;
+                    } else if ("В ролях:".equals(key)) {
+                        strActors = val;
+                    } else if ("Жанр:".equals(key)) {
+                        strGenre = val;
+                    } else if ("Бюджет:".equals(key)) {
+                        strBudget = val;
+                    } else if ("Возраст:".equals(key)) {
+                        strAgeLimit = val;
+                    } else if ("Продолжительность:".equals(key)) {
+                        strDuration = val;
+                    }
+                }
+            }
+
+            Date start = parseDate(strStart);
+
+            movieItem.setPubDate(start);
+            movieItem.setCountry(strCountry);
+            movieItem.setDirector(strDirector);
+            movieItem.setScenario(strScenario);
+            movieItem.setActors(strActors);
+            movieItem.setGenre(strGenre);
+            movieItem.setBudget(strBudget);
+            movieItem.setAgeLimit(strAgeLimit);
+            movieItem.setDuration(strDuration);
+        }
+
+        private void parseImages(Elements src, MovieItem movieItem) {
+            if (src == null || movieItem == null) {
+                return;
+            }
+
+            src = src.select(">a");
+            for (Element el: src) {
+                String bigImg = el.attr("href");
+                String smallImg = el.select("img").attr("src");
+
+                if (smallImg != null && !smallImg.isEmpty()) {
+                    movieItem.getImgUrlSet().add(smallImg);
+                }
+            }
+        }
+
+        private void parseTrailers(Elements src, MovieItem movieItem) {
+            if (src == null || movieItem == null) {
+                return;
+            }
+
+            src = src.select(">iframe");
+            for (Element el: src) {
+                String url = el.attr("src");
+
+                if (url != null && !url.isEmpty()) {
+                    movieItem.getTrailerUrlSet().add(url);
+                }
+            }
         }
     }
 
