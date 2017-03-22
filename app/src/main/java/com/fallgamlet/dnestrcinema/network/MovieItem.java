@@ -44,9 +44,15 @@ public class MovieItem implements Parcelable {
     private String mDescription;
     private String mGenre;
     private String mAgeLimit;
+    private String mCountry;
+    private String mDirector;
+    private String mScenario;
+    private String mActors;
+    private String mBudget;
+
     private String mImgUrl;
     private Set<String> mImgUrlList;
-    private Set<String> mMoveUrlList;
+    private Set<String> mTrailerUrlList;
     private ArrayList<Schedule> mSchedules = new ArrayList<>();
     private Date mPubDate;
     //endregion
@@ -100,6 +106,47 @@ public class MovieItem implements Parcelable {
         this.mGenre= genre;
     }
 
+    public String getCountry() {
+        return mCountry;
+    }
+
+    public void setCountry(String country) {
+        this.mCountry = country;
+    }
+
+    public String getDirector() {
+        return mDirector;
+    }
+
+    public void setDirector(String director) {
+        this.mDirector = director;
+    }
+
+    public String getScenario() {
+        return mScenario;
+    }
+
+    public void setScenario(String scenario) {
+        this.mScenario = scenario;
+    }
+
+    public String getActors() {
+        return mActors;
+    }
+
+    public void setActors(String actors) {
+        this.mActors= actors;
+    }
+
+    public String getBudget() {
+        return mBudget;
+    }
+
+    public void setBudget(String budget) {
+        this.mBudget = budget;
+    }
+
+
     public String getImgUrl() {
         return mImgUrl;
     }
@@ -115,11 +162,11 @@ public class MovieItem implements Parcelable {
         return mImgUrlList;
     }
 
-    public Set<String> getMoveUrlSet() {
-        if (mMoveUrlList == null) {
-            mMoveUrlList = new ArraySet<>();
+    public Set<String> getTrailerUrlSet() {
+        if (mTrailerUrlList == null) {
+            mTrailerUrlList = new ArraySet<>();
         }
-        return mMoveUrlList;
+        return mTrailerUrlList;
     }
 
     public Date getPubDate() {
@@ -174,7 +221,7 @@ public class MovieItem implements Parcelable {
         dest.writeString(mImgUrl);
         dest.writeTypedList(mSchedules);
         dest.writeStringList(new ArrayList<String>(getImgUrlSet()));
-        dest.writeStringList(new ArrayList<String>(getMoveUrlSet()));
+        dest.writeStringList(new ArrayList<String>(getTrailerUrlSet()));
     }
 
     public void setData(Parcel in) {
@@ -191,7 +238,7 @@ public class MovieItem implements Parcelable {
         in.readStringList(moveUrlList);
 
         getImgUrlSet().addAll(imgUrlList);
-        getMoveUrlSet().addAll(moveUrlList);
+        getTrailerUrlSet().addAll(moveUrlList);
 
         mPubDate = d == 0? null: new Date(d);
     }
@@ -252,7 +299,7 @@ public class MovieItem implements Parcelable {
         json.putOpt("desc", this.getDescription());
         json.putOpt("img_url", this.getImgUrl());
         json.putOpt("img_url_list", new JSONArray(getImgUrlSet()));
-        json.putOpt("move_url_list", new JSONArray(getMoveUrlSet()));
+        json.putOpt("move_url_list", new JSONArray(getTrailerUrlSet()));
         json.putOpt("link", this.getLink());
         json.putOpt("pub_date", this.getPubDate()==null? 0: this.getPubDate().getTime());
         json.putOpt("schedule", Schedule.toJSONArray(this.getSchedules()));
@@ -280,7 +327,7 @@ public class MovieItem implements Parcelable {
         }
 
         if (jarrMoveUrls != null && jarrMoveUrls.length() > 0) {
-            Set<String> urls = getMoveUrlSet();
+            Set<String> urls = getTrailerUrlSet();
             urls.clear();
             for (int i=0; i<jarrMoveUrls.length(); i++) {
                 String val = jarrMoveUrls.optString(i, null);
@@ -448,18 +495,7 @@ public class MovieItem implements Parcelable {
         };
     }
 
-    public static Spanned fromHtml(String html) {
-        if (html == null) {
-            return null;
-        }
-        Spanned result;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            result = Html.fromHtml(html);
-        }
-        return result;
-    }
+
     //endregion
 
     //region Sub classes and interfaces
