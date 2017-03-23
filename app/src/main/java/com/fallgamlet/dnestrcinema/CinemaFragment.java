@@ -128,6 +128,7 @@ public class CinemaFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mRootView = null;
+        mSwipeLayout = null;
         mlistView = null;
         mPlaceholderView = null;
     }
@@ -259,7 +260,7 @@ public class CinemaFragment extends Fragment {
         requestData.options.contentType = Network.CONTENT_TYPE_HTML;
         requestData.url = url;
 
-//        setRefreshVisible(true);
+        setRefreshVisible(true);
 
         mTask = Network.requestDataAsync(requestData, new Network.ResponseHandle() {
             @Override
@@ -274,12 +275,13 @@ public class CinemaFragment extends Fragment {
                         msg = exception.toString();
                     }
 
+                    System.err.println(msg);
                     System.err.println(exception);
                     return;
                 }
 
                 if (result.error != null) {
-                    System.err.println(exception);
+                    System.err.println(result.error);
                     return;
                 }
 
