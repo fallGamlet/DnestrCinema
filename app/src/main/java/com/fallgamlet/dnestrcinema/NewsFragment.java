@@ -222,7 +222,7 @@ public class NewsFragment extends Fragment {
     }
     //endregion
 
-    //region MEthods
+    //region Methods
     protected void initViews(ViewGroup view) {
         mRootView = view;
 
@@ -519,6 +519,9 @@ public class NewsFragment extends Fragment {
                             public void onImageLoaded(NetworkImageTask.UrlImage urlImg) {
                                 Iterator<String> iterator = item.getImgUrls().iterator();
                                 String imgUrl = iterator.hasNext()? iterator.next(): null;
+                                if (imgUrl != null) {
+                                    imgUrl = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgUrl);
+                                }
                                 if (urlImg.img != null && urlImg.url != null && urlImg.url.equalsIgnoreCase(imgUrl)) {
                                     int pos = getPosition(item);
                                     // посылаем сигнал, что элемент нужно обновить - установить картинку
