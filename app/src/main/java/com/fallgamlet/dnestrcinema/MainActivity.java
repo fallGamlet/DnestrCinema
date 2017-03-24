@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.addFragment(getCinemaNowFragment(), getString(R.string.title_now));
         adapter.addFragment(getCinemaSoonFragment(), getString(R.string.title_soon));
+        adapter.addFragment(getCinemaNewsFragment(), getString(R.string.title_news));
         adapter.addFragment(getAboutFragment(), getString(R.string.title_about));
 
         adapter.notifyDataSetChanged();
@@ -144,50 +145,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(Intent.createChooser(sendIntent, "Поделиться"));
         } catch (Exception e) {
             Log.d("Share", "Error: "+e.toString());
-        }
-    }
-
-    private void writeStorage() {
-        if (getRssList().isEmpty()) {
-            return;
-        }
-
-        String filename = "data.json";
-        FileOutputStream outStream;
-
-        try {
-            String data = MovieItem.toJSONArray(getRssList()).toString();
-            outStream = openFileOutput(filename, Context.MODE_PRIVATE);
-            outStream.write(data.getBytes(Network.CHARSET_UTF8));
-            outStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void readStorage() {
-        String filename = "data.json";
-        FileInputStream inStream;
-
-        ArrayList<MovieItem> items = null;
-
-        try {
-            inStream = openFileInput(filename);
-
-            ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            byte[] buffer = new byte[8*1024];
-            int len;
-            while ((len = inStream.read(buffer)) != -1) {
-                byteStream.write(buffer, 0 ,len);
-            }
-            byte[] data = byteStream.toByteArray();
-            String dataStr = new String(data, Network.CHARSET_UTF8);
-            JSONArray jarr = new JSONArray(dataStr);
-            items = MovieItem.setJSONArray(jarr);
-
-            inStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
     //endregion
@@ -235,6 +192,14 @@ public class MainActivity extends AppCompatActivity {
         return cinemaSoonFragment;
     }
 
+    protected NewsFragment cinemaNewsFragment;
+    protected NewsFragment getCinemaNewsFragment() {
+        if (cinemaNewsFragment == null) {
+            cinemaNewsFragment = NewsFragment.newInstance(KinoTir.BASE_URL+KinoTir.PATH_NEWS);
+        }
+        return cinemaNewsFragment;
+    }
+
     protected AboutFragment aboutFragment;
     protected AboutFragment getAboutFragment() {
         if (aboutFragment == null) {
@@ -260,15 +225,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //endregion
-
-    //region RssList singleton
-    private ArrayList<MovieItem> mRssList;
-    protected ArrayList<MovieItem> getRssList() {
-        if (mRssList == null) {
-            mRssList = new ArrayList<>(100);
-        }
-        return mRssList;
-    }
     //endregion
 }
