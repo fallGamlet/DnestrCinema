@@ -25,11 +25,12 @@
         <TextView android:id="@+id/dateView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:paddingLeft="@dimen/SpaceSmall"
             android:paddingRight="@dimen/SpaceSmall"
             android:paddingTop="@dimen/SpaceTini"
             android:paddingBottom="@dimen/SpaceTini"
-            android:textSize="@dimen/TextMedium"
+            android:textSize="@dimen/TextTin"
             tools:text="Text of news" />
 
         <ImageView android:id="@+id/imageView"
