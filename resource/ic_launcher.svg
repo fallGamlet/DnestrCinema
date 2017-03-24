@@ -49,7 +49,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="273.20547"
+     inkscape:cx="67.13435"
      inkscape:cy="181.84822"
      inkscape:document-units="mm"
      inkscape:current-layer="g4644"
@@ -102,11 +102,6 @@
            x="34.616936"
            y="186.85487"
            ry="3.9519966" />
-        <path
-           style="fill:#000000;fill-opacity:0.2627451;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           d="M 386.25781 79.78125 L 225.79688 166.25 L 180.93555 121.30664 L 65.480469 212.66602 L 112.82812 260.82617 L 112.8418 386.25 L 128.6582 402.06836 L 131.79688 419.49219 L 221.19531 508 L 480.93359 508 C 497.03591 508 510 495.03591 510 478.93359 L 510 203.48633 L 386.25781 79.78125 z "
-           transform="matrix(0.13596836,0,0,0.13596836,34.345,186.85488)"
-           id="path4647" />
         <path
            sodipodi:nodetypes="ccsscc"
            inkscape:transform-center-y="-5.3409408"
