@@ -155,14 +155,14 @@ public class MovieItem implements Parcelable {
         this.mImgUrl = imgUrl;
     }
 
-    public Set<String> getImgUrlSet() {
+    public synchronized Set<String> getImgUrlSet() {
         if (mImgUrlList == null) {
             mImgUrlList = new ArraySet<>();
         }
         return mImgUrlList;
     }
 
-    public Set<String> getTrailerUrlSet() {
+    public synchronized Set<String> getTrailerUrlSet() {
         if (mTrailerUrlList == null) {
             mTrailerUrlList = new ArraySet<>();
         }
