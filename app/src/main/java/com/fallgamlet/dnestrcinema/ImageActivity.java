@@ -10,7 +10,11 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.fallgamlet.dnestrcinema.network.DataSettings;
+import com.fallgamlet.dnestrcinema.network.HttpUtils;
+import com.fallgamlet.dnestrcinema.network.KinoTir;
 import com.fallgamlet.dnestrcinema.network.NetworkImageTask;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 public class ImageActivity extends AppCompatActivity {
     //region Static felds
@@ -63,31 +67,25 @@ public class ImageActivity extends AppCompatActivity {
         mImageView.setImageResource(R.drawable.ic_photo_empty_240dp);
     }
 
-    private void showImage(final String imgUrl) {
-        try {
-            // если ссылка есть
-            if (imgUrl != null) {
-                Bitmap img = NetworkImageTask.cachedImages.get(imgUrl);
-                if (img != null) {
-                    mImageView.setImageBitmap(img);
-                } else {
-                    showProgressBar(true);
-                    getImageTask().requestImage(imgUrl, new NetworkImageTask.NetworkImageCallback() {
-                        @Override
-                        public void onImageLoaded(NetworkImageTask.UrlImage urlImg) {
-                            showProgressBar(false);
-                            if (urlImg.img != null && urlImg.url != null && urlImg.url.equalsIgnoreCase(imgUrl)) {
-                                showImage(urlImg.img);
-                            } else {
-                                showImageEmpty();
-                            }
-                        }
-                    });
-                }
-            }
-        } catch (Exception ignored) {
-            showProgressBar(false);
+    private void showImage(String imgUrl) {
+        imgUrl = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgUrl);
+
+        if (imgUrl == null) {
             showImageEmpty();
+        } else {
+            showProgressBar(true);
+            Picasso.with(this).load(imgUrl).into(mImageView, new Callback() {
+                @Override
+                public void onSuccess() {
+                    showProgressBar(false);
+                }
+
+                @Override
+                public void onError() {
+                    showProgressBar(false);
+                    showImageEmpty();
+                }
+            });
         }
     }
 

@@ -1,6 +1,9 @@
 package com.fallgamlet.dnestrcinema;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
@@ -11,8 +14,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fallgamlet.dnestrcinema.network.HttpUtils;
+import com.fallgamlet.dnestrcinema.network.KinoTir;
 import com.fallgamlet.dnestrcinema.network.NetworkImageTask;
 import com.fallgamlet.dnestrcinema.network.MovieItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +27,7 @@ import java.util.List;
  * Created by fallgamlet on 08.07.16.
  */
 public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdapter.ViewHolder> {
+
     //region Sub classes and Interfaces
     public interface OnAdapterListener {
         void onItemPressed(MovieItem item, int pos);
@@ -151,28 +158,15 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
 
         //region Load and set Image
         String imgUrl = item.getImgUrl();
-        try {
-            holder.mImageView.setImageResource(R.drawable.ic_local_movies_black_24dp);
-            // если ссылка есть
-            if (imgUrl != null) {
-                Bitmap img = NetworkImageTask.cachedImages.get(imgUrl);
-                if (img != null) {
-                    holder.mImageView.setImageBitmap(img);
-                } else {
-                    imageTask.requestImage(imgUrl, new NetworkImageTask.NetworkImageCallback() {
-                        @Override
-                        public void onImageLoaded(NetworkImageTask.UrlImage urlImg) {
-                            if (urlImg.img != null && urlImg.url != null && urlImg.url.equalsIgnoreCase(item.getImgUrl())) {
-                                int pos = getPosition(item);
-                                // посылаем сигнал, что элемент нужно обновить - установить картинку
-                                notifyItemChanged(pos, urlImg.img);
-                            }
-                        }
-                    });
-                }
-            }
-        } catch (Exception ignored) {
-            holder.mImageView.setImageResource(R.drawable.ic_local_movies_black_24dp);
+
+        if (imgUrl != null) {
+            imgUrl = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgUrl);
+        }
+
+        if (imgUrl != null) {
+            holder.getImageView().setImageResource(R.drawable.ic_local_movies_24dp);
+            Picasso.with(holder.getImageView().getContext()).load(imgUrl)
+                    .into(holder.getImageView());
         }
         //endregion
     }

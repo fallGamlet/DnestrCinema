@@ -14,7 +14,7 @@
         android:layout_gravity="center_vertical"
         android:layout_margin="@dimen/SpaceSmall"
         android:contentDescription="@null"
-        app:srcCompat="@drawable/ic_local_movies_black_24dp"/>
+        app:srcCompat="@drawable/ic_local_movies_24dp"/>
 
     <LinearLayout
         android:layout_weight="1"

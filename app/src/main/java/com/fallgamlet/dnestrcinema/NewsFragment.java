@@ -26,6 +26,7 @@ import com.fallgamlet.dnestrcinema.network.MovieItem;
 import com.fallgamlet.dnestrcinema.network.Network;
 import com.fallgamlet.dnestrcinema.network.NetworkImageTask;
 import com.fallgamlet.dnestrcinema.network.NewsItem;
+import com.squareup.picasso.Picasso;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -501,39 +502,13 @@ public class NewsFragment extends Fragment {
             //region Load and set Image
             Iterator<String> iterator = item.getImgUrls().iterator();
             String imgUrl = iterator.hasNext()? iterator.next(): null;
+
             if (imgUrl != null) {
                 imgUrl = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgUrl);
             }
-            try {
-                holder.getImageView().setImageResource(R.drawable.ic_photo_empty_240dp);
-                holder.getImageView().setVisibility(View.GONE);
-                // если ссылка есть
-                if (imgUrl != null) {
-                    Bitmap img = NetworkImageTask.cachedImages.get(imgUrl);
-                    if (img != null) {
-                        holder.getImageView().setImageBitmap(img);
-                        holder.getImageView().setVisibility(View.VISIBLE);
-                    } else {
-                        imageTask.requestImage(imgUrl, new NetworkImageTask.NetworkImageCallback() {
-                            @Override
-                            public void onImageLoaded(NetworkImageTask.UrlImage urlImg) {
-                                Iterator<String> iterator = item.getImgUrls().iterator();
-                                String imgUrl = iterator.hasNext()? iterator.next(): null;
-                                if (imgUrl != null) {
-                                    imgUrl = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgUrl);
-                                }
-                                if (urlImg.img != null && urlImg.url != null && urlImg.url.equalsIgnoreCase(imgUrl)) {
-                                    int pos = getPosition(item);
-                                    // посылаем сигнал, что элемент нужно обновить - установить картинку
-                                    notifyItemChanged(pos, urlImg.img);
-                                }
-                            }
-                        });
-                    }
-                }
-            } catch (Exception ignored) {
-                holder.getImageView().setImageResource(R.drawable.ic_photo_empty_240dp);
-                holder.getImageView().setVisibility(View.GONE);
+
+            if (imgUrl != null) {
+                Picasso.with(holder.getImageView().getContext()).load(imgUrl).into(holder.getImageView());
             }
             //endregion
         }

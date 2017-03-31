@@ -14,4 +14,4 @@
     android:contentDescription="@null"
     android:scaleType="fitCenter"
     android:id="@+id/imageView"
-    app:srcCompat="@drawable/ic_local_movies_black_24dp" />
+    app:srcCompat="@drawable/ic_local_movies_24dp" />

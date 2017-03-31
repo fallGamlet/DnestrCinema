@@ -20,12 +20,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.fallgamlet.dnestrcinema.network.DataSettings;
 import com.fallgamlet.dnestrcinema.network.HttpUtils;
 import com.fallgamlet.dnestrcinema.network.KinoTir;
 import com.fallgamlet.dnestrcinema.network.Network;
-import com.fallgamlet.dnestrcinema.network.NetworkImageTask;
 import com.fallgamlet.dnestrcinema.network.MovieItem;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -207,28 +207,11 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
         if (mMovieHolder != null) {
             mMovieHolder.initData(movieItem);
 
-            //region Load and set Image
-            String imgUrl = movieItem == null? null: movieItem.getImgUrl();
-            try {
-                mMovieHolder.getImageView().setImageResource(R.drawable.ic_local_movies_black_24dp);
-                // если ссылка есть
-                if (imgUrl != null) {
-                    Bitmap img = NetworkImageTask.cachedImages.get(imgUrl);
-                    if (img != null) {
-                        mMovieHolder.mImageView.setImageBitmap(img);
-                    } else {
-                        getImageTask().requestImage(imgUrl, new NetworkImageTask.NetworkImageCallback() {
-                            @Override
-                            public void onImageLoaded(NetworkImageTask.UrlImage urlImg) {
-                                if (mMovieHolder != null && urlImg.img != null && urlImg.url != null && urlImg.url.equalsIgnoreCase(mMovieHolder.getItem().getImgUrl())) {
-                                    mMovieHolder.getImageView().setImageBitmap(urlImg.img);
-                                }
-                            }
-                        });
-                    }
-                }
-            } catch (Exception ignored) {
-                mMovieHolder.getImageView().setImageResource(R.drawable.ic_local_movies_black_24dp);
+            //region Load and set poster image
+            String imgUrl = movieItem == null? null: HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, movieItem.getImgUrl());
+
+            if (imgUrl != null) {
+                Picasso.with(this).load(imgUrl).into(mMovieHolder.getImageView());
             }
             //endregion
         }
@@ -355,26 +338,30 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    private void addImage(final String imgUrl) {
-        try {
-            // если ссылка есть
-            if (imgUrl != null) {
-                Bitmap img = NetworkImageTask.cachedImages.get(imgUrl);
-                if (img != null) {
-                    addImage(img);
-                } else {
-                    final NetworkImageTask imageTask = new NetworkImageTask();
-                    imageTask.requestImage(imgUrl, new NetworkImageTask.NetworkImageCallback() {
-                        @Override
-                        public void onImageLoaded(NetworkImageTask.UrlImage urlImg) {
-                            if (urlImg.img != null && urlImg.url != null && urlImg.url.equalsIgnoreCase(imgUrl)) {
-                                addImage(urlImg.img);
-                            }
-                        }
-                    });
+    private void addImage(String imgUrl) {
+
+        if (imgUrl != null) {
+            imgUrl = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgUrl);
+        }
+
+        if (imgUrl != null) {
+            Picasso.with(this).load(imgUrl).into(new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    addImage(bitmap);
                 }
-            }
-        } catch (Exception ignored) {}
+
+                @Override
+                public void onBitmapFailed(Drawable errorDrawable) {
+
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                }
+            });
+        }
     }
 
     private void addImage(Bitmap image) {
@@ -496,16 +483,6 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
                 dialog.show();
             }
         }
-    }
-    //endregion
-
-    //region Imagetask singleton
-    private NetworkImageTask imageTask;
-    private NetworkImageTask getImageTask() {
-        if (imageTask == null) {
-            imageTask = new NetworkImageTask();
-        }
-        return imageTask;
     }
     //endregion
 
