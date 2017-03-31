@@ -142,8 +142,8 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
 //            @Override
 //            public void onClick(View view) {
 //                if (mListener != null) {
-//                    int pos = getPosition(holder.getItem());
-//                    mListener.onItemSchedulePressed(holder.getItem(), pos);
+//                    int pos = getPosition(holder.getDrawable());
+//                    mListener.onItemSchedulePressed(holder.getDrawable(), pos);
 //                }
 //            }
 //        });

@@ -42,6 +42,7 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
     private List<String> mTrailerUrls;
     private MovieItem mMovie;
     private MovieItem mMovieDetail;
+
     private MovieRecyclerAdapter.ViewHolder mMovieHolder;
     private FieldHolder directorHolder;
     private FieldHolder scenarioHolder;
@@ -226,8 +227,8 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
     }
 
     protected void setImagesViewVisible(boolean v) {
-        if (mImageListView != null) {
-            mImageListView.setVisibility(v? View.VISIBLE: View.GONE);
+        if (mImageListView != null && v != (mImageListView.getVisibility() == View.VISIBLE)) {
+            mImageListView.setVisibility(v ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -287,7 +288,7 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
-    protected void showDetailData(MovieItem movieItem) {
+    protected synchronized void showDetailData(MovieItem movieItem) {
         if (movieItem != null) {
             ArrayList<String> urlList = new ArrayList<>(movieItem.getImgUrlSet());
             ArrayList<String> trailerUrlList = new ArrayList<>(movieItem.getTrailerUrlSet());
@@ -330,50 +331,29 @@ public class CinemaDetailActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    protected void loadImages(List<String> urlList) {
-        if (urlList != null) {
-            for (String url: urlList) {
-                addImage(url);
-            }
+    protected synchronized void loadImages(List<String> urlList) {
+        System.out.println("loadImages method begin");
+        if (urlList == null || urlList.isEmpty()) {
+            System.out.println("--- image array is empty");
+            return;
         }
+
+        System.out.println("Image array load start");
+        for (String url: urlList) {
+            addImage(url);
+        }
+        System.out.println("Image array load end");
     }
 
     private void addImage(String imgUrl) {
-
         if (imgUrl != null) {
             imgUrl = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgUrl);
         }
 
         if (imgUrl != null) {
-            Picasso.with(this).load(imgUrl).into(new Target() {
-                @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    addImage(bitmap);
-                }
-
-                @Override
-                public void onBitmapFailed(Drawable errorDrawable) {
-
-                }
-
-                @Override
-                public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                }
-            });
-        }
-    }
-
-    private void addImage(Bitmap image) {
-        if (image == null) {
-            return;
-        }
-        try {
-            Drawable drawable = new BitmapDrawable(null, image);
-            getImagesAdapter().addItem(drawable);
+            System.out.println("Image load by url: "+imgUrl);
+            getImagesAdapter().addItem(imgUrl);
             setImagesViewVisible(true);
-        } catch (Exception e) {
-
         }
     }
 

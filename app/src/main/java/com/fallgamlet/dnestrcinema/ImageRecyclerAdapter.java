@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.fallgamlet.dnestrcinema.network.NetworkImageTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +19,14 @@ import java.util.List;
 public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdapter.ViewHolder> {
     //region Sub classes and Interfaces
     public interface OnAdapterListener {
-        void onItemPressed(Drawable item, int pos);
+        void onItemPressed(ViewHolder item, int pos);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         //region Fields
         private View mRootView;
         private ImageView mImageView;
-        private Drawable mDrawable;
+        private String mUrl;
         //endregion
 
         //region Constructors
@@ -37,22 +37,35 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
         //endregion
 
         //region Getters
-        public Drawable getItem() { return mDrawable; }
+        public String getUrl() {
+            return mUrl;
+        }
+
         public View getRootView() { return mRootView; }
+
         public ImageView getImageView() { return mImageView; }
         //endregion
 
         //region Setters
-        public void setItem(Drawable drawable) {
-            mDrawable = drawable;
+        public void setDrawable(Drawable drawable) {
             if (mImageView != null) {
                 mImageView.setImageDrawable(drawable);
             }
         }
+
         public void setImageView(ImageView imageView) {
             mImageView = imageView;
-            if (mImageView != null) {
-                mImageView.setImageDrawable(mDrawable);
+        }
+
+        public void setUrl(String url) {
+            if (mUrl != null && mUrl.equals(url)) {
+                return;
+            }
+
+            mUrl = url;
+
+            if (mUrl != null) {
+                notifyUrlChanged();
             }
         }
         //endregion
@@ -66,8 +79,14 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
             }
         }
 
-        public void initData(Drawable drawable) {
-            setItem(drawable);
+        public void notifyUrlChanged() {
+            if (mUrl != null && mImageView != null) {
+                if (mImageView.getDrawable() == null) {
+                    mImageView.setImageResource(R.drawable.ic_photo_empty_240dp);
+                }
+
+                Picasso.with(mImageView.getContext()).load(mUrl).into(mImageView);
+            }
         }
         //endregion
     }
@@ -75,14 +94,11 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
 
     //region Fields
     protected OnAdapterListener mListener;
-    protected ArrayList<Drawable> mListData;
-
-    protected NetworkImageTask imageTask;
+    protected ArrayList<String> mListData;
     //endregion
 
     //region Methods
     public ImageRecyclerAdapter() {
-        imageTask = new NetworkImageTask();
     }
 
     @Override
@@ -94,8 +110,8 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
             @Override
             public void onClick(View view) {
                 if (getListener() != null) {
-                    int pos = getPosition(holder.getItem());
-                    getListener().onItemPressed(holder.getItem(), pos);
+                    int pos = getPosition(holder.getUrl());
+                    getListener().onItemPressed(holder, pos);
                 }
             }
         });
@@ -104,7 +120,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.initData(getItem(position));
+        holder.setUrl(getItem(position));
     }
 
     @Override
@@ -133,31 +149,31 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
         return getData().size();
     }
 
-    public Drawable getItem(int position) {
-        ArrayList<Drawable> data = getData();
+    public String getItem(int position) {
+        ArrayList<String> data = getData();
         return  (position < 0 || position >= data.size())? null: data.get(position);
     }
 
-    public int getPosition(Drawable item) {
+    public int getPosition(String item) {
         return getData().indexOf(item);
     }
 
-    public void setData(List<Drawable> list) {
+    public void setData(List<String> list) {
         if (list != null && !list.isEmpty()) {
-            ArrayList<Drawable> data = getData();
+            ArrayList<String> data = getData();
             data.clear();
             data.addAll(list);
         }
     }
 
-    public ArrayList<Drawable> getData() {
+    protected ArrayList<String> getData() {
         if (mListData == null) {
             mListData = new ArrayList<>(10);
         }
         return mListData;
     }
 
-    public void addItem(Drawable item) {
+    public void addItem(String item) {
         if (item != null) {
             int pos = getPosition(item);
             if (pos == -1) {
