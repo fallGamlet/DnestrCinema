@@ -1,9 +1,6 @@
 package com.fallgamlet.dnestrcinema;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
@@ -21,6 +18,7 @@ import com.fallgamlet.dnestrcinema.network.MovieItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,7 +39,6 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
         TextView mTitleView;
         TextView mPubdateView;
         TextView mScheduleView;
-//        TextView mDescriptionView;
 
         MovieItem mItem;
         //endregion
@@ -70,14 +67,12 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
                 mTitleView = (TextView) mRootView.findViewById(R.id.titleView);
                 mPubdateView = (TextView) mRootView.findViewById(R.id.pubdateView);
                 mScheduleView = (TextView) mRootView.findViewById(R.id.roomView);
-//                mDescriptionView = (TextView) mRootView.findViewById(R.id.descriptionView);
             }
         }
 
         public void initData(MovieItem item) {
             mItem = item;
             if (item == null) { return; }
-            Spanned desc = fromHtml(item.getDescription());
 
             ArrayList<String> arr = new ArrayList<>();
             StringBuilder strBuilder = new StringBuilder();
@@ -91,21 +86,29 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
             }
 
             String roomsStr = TextUtils.join("\n", arr);
-
             String titleStr = item.getTitle() == null? null: item.getTitle().replaceAll("[ ]/[ ]", "\n").trim();
-//            String[] titleArr = item.getTitle()==null? null: item.getTitle().split("/");
-//            if (titleArr != null) {
-//                for (int i=0; i<titleArr.length; i++) {
-//                    if (titleArr[i] != null) { titleArr[i] = titleArr[i].trim(); }
-//                }
-//                titleStr = TextUtils.join("\n", titleArr);
-//            }
 
-            if (mTitleView != null) { mTitleView.setText(titleStr); }
-            if (mPubdateView != null) { mPubdateView.setText(DateTimeFormatter.getDateNamed(item.getPubDate())); }
-//            if (mPubdateView != null) { mPubdateView.setText(DateTimeFormatter.getDateDotWithoutTime(item.getPubDate())); }
-            if (mScheduleView != null) { mScheduleView.setText(roomsStr); }
-//            if (mDescriptionView != null) { mDescriptionView.setText(desc); }
+            setTitle(titleStr);
+            setPubDate(item.getPubDate());
+            setSchedule(roomsStr);
+        }
+
+        public void setTitle(CharSequence title) {
+            if (mTitleView != null) {
+                mTitleView.setText(title);
+            }
+        }
+
+        public void setPubDate(Date date) {
+            if (mPubdateView != null) {
+                mPubdateView.setText(DateTimeFormatter.getDateNamed(date));
+            }
+        }
+
+        public void setSchedule(CharSequence schedule) {
+            if (mScheduleView != null) {
+                mScheduleView.setText(schedule);
+            }
         }
         //endregion
     }
@@ -157,7 +160,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
         holder.initData(item);
 
         //region Load and set Image
-        String imgUrl = item.getImgUrl();
+        String imgUrl = item.getPosterUrl();
 
         if (imgUrl != null) {
             imgUrl = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgUrl);
