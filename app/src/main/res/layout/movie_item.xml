@@ -55,12 +55,7 @@
         <TextView android:id="@+id/roomView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Tooms"/>
-
-        <!--TextView android:id="@+id/descriptionView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Description"/-->
+            tools:text="Rooms"/>
 
     </LinearLayout>
 
