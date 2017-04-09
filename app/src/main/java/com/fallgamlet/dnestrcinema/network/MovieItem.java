@@ -5,8 +5,6 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.ArraySet;
-import android.text.Html;
-import android.text.Spanned;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,7 +48,7 @@ public class MovieItem implements Parcelable {
     private String mActors;
     private String mBudget;
 
-    private String mImgUrl;
+    private String mPosterUrl;
     private Set<String> mImgUrlList;
     private Set<String> mTrailerUrlList;
     private ArrayList<Schedule> mSchedules = new ArrayList<>();
@@ -147,12 +145,12 @@ public class MovieItem implements Parcelable {
     }
 
 
-    public String getImgUrl() {
-        return mImgUrl;
+    public String getPosterUrl() {
+        return mPosterUrl;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.mImgUrl = imgUrl;
+    public void setPosterUrl(String imgUrl) {
+        this.mPosterUrl = imgUrl;
     }
 
     public synchronized Set<String> getImgUrlSet() {
@@ -218,7 +216,7 @@ public class MovieItem implements Parcelable {
         dest.writeString(mLink);
         dest.writeString(mDescription);
         dest.writeLong(mPubDate==null? 0: mPubDate.getTime());
-        dest.writeString(mImgUrl);
+        dest.writeString(mPosterUrl);
         dest.writeTypedList(mSchedules);
         dest.writeStringList(new ArrayList<String>(getImgUrlSet()));
         dest.writeStringList(new ArrayList<String>(getTrailerUrlSet()));
@@ -232,7 +230,7 @@ public class MovieItem implements Parcelable {
         mLink = in.readString();
         mDescription = in.readString();
         long d = in.readLong();
-        mImgUrl = in.readString();
+        mPosterUrl = in.readString();
         mSchedules = in.createTypedArrayList(Schedule.CREATOR);
         in.readStringList(imgUrlList);
         in.readStringList(moveUrlList);
@@ -256,7 +254,7 @@ public class MovieItem implements Parcelable {
         if (jtmp != null) {
             jtmp = jtmp.optJSONObject("_attr");
             if (jtmp != null) {
-                mImgUrl = jtmp.optString("url");
+                mPosterUrl = jtmp.optString("url");
             }
         }
 
@@ -292,12 +290,82 @@ public class MovieItem implements Parcelable {
         return true;
     }
 
+    public void mergeLeft(MovieItem item) {
+        if (item == null) {
+            return;
+        }
+
+        if (getTitle() == null || getTitle().isEmpty()) {
+            setTitle(item.getTitle());
+        }
+
+        if (getPubDate() == null) {
+            setPubDate(item.getPubDate());
+        }
+
+        if (getLink() == null || getLink().isEmpty()) {
+            setLink(item.getLink());
+        }
+
+        if (getPosterUrl() == null || getPosterUrl().isEmpty()) {
+            setPosterUrl(item.getPosterUrl());
+        }
+
+        if (getDirector() == null || getDirector().isEmpty()) {
+            setDirector(item.getDirector());
+        }
+
+        if (getActors() == null || getActors().isEmpty()) {
+            setActors(item.getActors());
+        }
+
+        if (getScenario() == null || getScenario().isEmpty()) {
+            setScenario(item.getScenario());
+        }
+
+        if (getGenre() == null || getGenre().isEmpty()) {
+            setGenre(item.getGenre());
+        }
+
+        if (getDuration() == null || getDuration().isEmpty()) {
+            setDuration(item.getDuration());
+        }
+
+        if (getAgeLimit() == null || getAgeLimit().isEmpty()) {
+            setAgeLimit(item.getAgeLimit());
+        }
+
+        if (getBudget() == null || getBudget().isEmpty()) {
+            setBudget(item.getBudget());
+        }
+
+        if (getCountry() == null || getCountry().isEmpty()) {
+            setCountry(item.getCountry());
+        }
+
+        if (getDescription() == null || getDescription().isEmpty()) {
+            setDescription(item.getDescription());
+        }
+
+        if (getSchedules().isEmpty()) {
+            getSchedules().addAll(item.getSchedules());
+        }
+
+        if (getImgUrlSet().isEmpty()) {
+            getImgUrlSet().addAll(item.getImgUrlSet());
+        }
+
+        if (getTrailerUrlSet().isEmpty()) {
+            getTrailerUrlSet().addAll(item.getTrailerUrlSet());
+        }
+    }
+
     @NonNull
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
         json.putOpt("title", this.getTitle());
         json.putOpt("desc", this.getDescription());
-        json.putOpt("img_url", this.getImgUrl());
+        json.putOpt("img_url", this.getPosterUrl());
         json.putOpt("img_url_list", new JSONArray(getImgUrlSet()));
         json.putOpt("move_url_list", new JSONArray(getTrailerUrlSet()));
         json.putOpt("link", this.getLink());
@@ -310,7 +378,7 @@ public class MovieItem implements Parcelable {
         if (json == null || json.length() == 0) { return false; }
         setTitle(json.optString("title", null));
         setDescription(json.optString("desc", null));
-        setImgUrl(json.optString("img_url", null));
+        setPosterUrl(json.optString("img_url", null));
         setLink(json.optString("link", null));
         JSONArray jarrImgUrls = json.optJSONArray("img_url_list");
         JSONArray jarrMoveUrls = json.optJSONArray("move_url_list");
@@ -494,8 +562,6 @@ public class MovieItem implements Parcelable {
             }
         };
     }
-
-
     //endregion
 
     //region Sub classes and interfaces
