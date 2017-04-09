@@ -1,27 +1,17 @@
-package com.fallgamlet.dnestrcinema.mvp.views;
+package com.fallgamlet.dnestrcinema;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
+
+import com.fallgamlet.dnestrcinema.mvp.views.IView;
 
 /**
  * Created by fallgamlet on 09.04.17.
  */
 
 abstract class BaseActivity extends AppCompatActivity implements IView {
-    Context mContext = null;
-
-    @Override
-    public void attached() {
-
-    }
-
-    @Override
-    public void detached() {
-
-    }
-
     @Override
     public Context getContext() {
-        return mContext;
+        return null;
     }
 }
