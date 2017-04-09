@@ -2,6 +2,7 @@ package com.fallgamlet.dnestrcinema.mvp.views;
 
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 
 import java.util.Collection;
 import java.util.Date;
@@ -10,13 +11,15 @@ import java.util.Date;
  * Created by fallgamlet on 09.04.17.
  */
 
-public interface CinemaDetailView extends IView {
+public interface ICinemaDetailView extends IView {
     void setImageAdapter(RecyclerView.Adapter adapter);
+    ImageView getPosterImageView();
     void setPosterImage(Drawable drawable);
     void setTitle(CharSequence title);
     void setPubDate(Date date);
-    void setRooms(Collection<CharSequence> rooms);
+    void setRooms(Collection<? extends CharSequence> rooms);
 
+    void showImages(boolean v);
     void showTrailerButton(boolean v);
     void showDuration(boolean v);
     void showGenre(boolean v);
