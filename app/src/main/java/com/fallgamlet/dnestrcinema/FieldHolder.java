@@ -28,6 +28,18 @@ public class FieldHolder {
     public void setValueView(TextView textView) { valueView = textView; }
     //endregion
 
+    //region Constructors
+    public FieldHolder() {}
+
+    public FieldHolder(View view) {
+        initViews(view);
+    }
+
+    public FieldHolder(View view, int keyViewID, int valueViewID) {
+        initViews(view, keyViewID, valueViewID);
+    }
+    //endregion
+
     //region Methods
     public void initViews(View view) {
         initViews(view, FIELD_KEY_ID, FIELD_VALUE_ID);
