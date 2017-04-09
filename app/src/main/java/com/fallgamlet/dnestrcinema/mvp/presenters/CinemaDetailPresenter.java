@@ -137,6 +137,8 @@ public class CinemaDetailPresenter
         getView().setDuration(movieItem.getDuration());
         getView().setDescription(HttpUtils.fromHtml(movieItem.getDescription()));
 
+        getView().showTrailerButton(!movieItem.getTrailerUrlSet().isEmpty());
+
         String imgUrl = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, movieItem.getPosterUrl());
         if (imgUrl != null && getView().getPosterImageView().getDrawable() == null) {
             Picasso.with(getView().getContext()).load(imgUrl).into(getView().getPosterImageView());

@@ -240,6 +240,13 @@ public class CinemaDetailActivity
     }
 
     @Override
+    public void setTitle(CharSequence title) {
+//        super.setTitle(title);
+//        mToolbar.setTitle(title);
+        mMovieHolder.setTitle(title);
+    }
+
+    @Override
     public void setPubDate(Date date) {
         mMovieHolder.setPubDate(date);
     }
@@ -248,12 +255,6 @@ public class CinemaDetailActivity
     public void setRooms(Collection<? extends CharSequence> rooms) {
         String roomsStr = TextUtils.join("\n", rooms);
         mMovieHolder.setSchedule(roomsStr);
-    }
-
-    @Override
-    public void setTitle(CharSequence title) {
-//        super.setTitle(title);
-        mMovieHolder.setTitle(title);
     }
 
     @Override
