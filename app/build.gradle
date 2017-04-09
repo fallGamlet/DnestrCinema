@@ -24,15 +24,15 @@ android {
         applicationId "com.fallgamlet.dnestrcinema"
         minSdkVersion 10
         targetSdkVersion 25
-        versionCode 23
-        versionName "0.1.23"
+        versionCode 24
+        versionName "0.1.24"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         signingConfig signingConfigs.config
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
