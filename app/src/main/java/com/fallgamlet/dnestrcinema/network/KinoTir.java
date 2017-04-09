@@ -95,7 +95,7 @@ public class KinoTir {
             parseFeatures(element.select(">.overlay .features"), movieItem);
 
             movieItem.setTitle(title);
-            movieItem.setImgUrl(posterUrl);
+            movieItem.setPosterUrl(posterUrl);
             movieItem.setLink(linkUrl);
 
             parseSchedule(element.select(">.overlay .halls>li"), movieItem.getSchedules());
@@ -186,7 +186,7 @@ public class KinoTir {
             String posterUrl = info.select(">.additional-poster>.image>img").attr("src");
 
             MovieItem movieItem = new MovieItem();
-            movieItem.setImgUrl(posterUrl);
+            movieItem.setPosterUrl(posterUrl);
 
             Element mainInfo  = info.select(".main-info").first();
             if (mainInfo != null) {
