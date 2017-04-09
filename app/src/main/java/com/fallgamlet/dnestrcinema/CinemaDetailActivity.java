@@ -188,7 +188,6 @@ public class CinemaDetailActivity
 
         mImageListView = (RecyclerView) findViewById(R.id.imageList);
         if (mImageListView != null) {
-//            mImageListView.setAdapter(getImagesAdapter());
             mImageListView.setHasFixedSize(false);
             mImageListView.setItemAnimator(new DefaultItemAnimator());
             mImageListView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -211,15 +210,6 @@ public class CinemaDetailActivity
         budgetHolder = new FieldHolder(mBudgetView);
         genreHolder = new FieldHolder(mgenreView);
         countryHolder = new FieldHolder(mCountryView);
-
-//        directorHolder.setVisible(false);
-//        scenarioHolder.setVisible(false);
-//        actorsHolder.setVisible(false);
-//        ageLimitHolder.setVisible(false);
-//        durationHolder.setVisible(false);
-//        budgetHolder.setVisible(false);
-//        genreHolder.setVisible(false);
-//        countryHolder.setVisible(false);
     }
     //endregion
 
