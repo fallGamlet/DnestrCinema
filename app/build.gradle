@@ -4,6 +4,9 @@ def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
+repositories {
+    maven {url "https://clojars.org/repo/"}
+}
 
 android {
     signingConfigs {
@@ -56,11 +59,14 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:cardview-v7:25.3.1'
 
-//    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
 
-//    compile 'com.jakewharton:butterknife:8.5.1'
-//    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'frankiesardo:icepick:3.2.0'
+    provided 'frankiesardo:icepick-processor:3.2.0'
+
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
     compile 'org.jsoup:jsoup:1.10.2'
 
