@@ -1,9 +1,11 @@
 package com.fallgamlet.dnestrcinema.mvp.presenters;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.MainThread;
@@ -26,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import icepick.Icepick;
 import icepick.State;
@@ -70,7 +73,7 @@ public class CinemaDetailPresenter
 
     @Override
     public void onTrailerButtonPressed() {
-
+        navigateToTrailer();
     }
 
     @Override
@@ -278,6 +281,61 @@ public class CinemaDetailPresenter
         if (imgURL != null) {
             imgURL = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgURL);
             ImageActivity.showActivity(getView().getContext(), imgURL);
+        }
+    }
+
+    protected void navigateToTrailer() {
+        if (getView() == null || getView().getContext() == null) {
+            return;
+        }
+
+        if (mMovie == null || mMovie.getTrailerUrlSet().isEmpty()) {
+            return;
+        }
+
+        final ArrayList<String> trailerUrls = new ArrayList<>(mMovie.getTrailerUrlSet());
+
+        if (trailerUrls.size() == 1) {
+            navigateToTrailer(trailerUrls.get(0));
+            return;
+        }
+
+        String[] items = new String[trailerUrls.size()];
+        for (int i=0; i<trailerUrls.size(); i++) {
+            items[i] = "Трейлер "+(i+1);
+        }
+
+        mDialog = new AlertDialog.Builder(getView().getContext(), R.style.AppTheme_Dialog)
+                .setTitle("Выберите")
+                .setCancelable(true)
+                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (mDialog != null) {
+                            mDialog.dismiss();
+                            mDialog = null;
+                        }
+                        navigateToTrailer(trailerUrls.get(i));
+                    }
+                })
+                .create();
+        mDialog.show();
+    }
+
+    protected void navigateToTrailer(String url) {
+        if (url == null || url.isEmpty()) {
+            return;
+        }
+
+        if (getView() == null || getView().getContext() == null) {
+            return;
+        }
+
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            getView().getContext().startActivity(intent);
+        } catch (Exception e) {
+            LogUtils.log("Intent", "Uri intent error", e);
         }
     }
 
