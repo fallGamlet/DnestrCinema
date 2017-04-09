@@ -176,7 +176,7 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
             startActivity(intent);
         } catch (Exception ignored) {
-            Log.d("Intent start", "Type: tel, Value: "+phone+". Error: "+ignored.toString());
+            Log.d("Intent onStart", "Type: tel, Value: "+phone+". Error: "+ignored.toString());
         }
     }
 
@@ -186,12 +186,13 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
             intent.putExtra(Intent.EXTRA_SUBJECT, "Приложение К.Тирасполь - Афиша");
             startActivity(intent);
         } catch (Exception ignored) {
-            Log.d("Intent start", "Type: email, Value: "+email+". Error: "+ignored.toString());
-                new AlertDialog.Builder(getContext(), R.style.AppTheme_Dialog)
-                        .setTitle(R.string.error)
-                        .setMessage(R.string.msg_not_found_intent_for_email)
-                        .create()
-                        .show();
+            LogUtils.log("IntentStart", "Type: email, Value: "+email+" fail intent start", ignored);
+            new AlertDialog.Builder(getContext(), R.style.AppTheme_Dialog)
+                    .setTitle(R.string.error)
+                    .setCancelable(true)
+                    .setMessage(R.string.msg_not_found_intent_for_email)
+                    .create()
+                    .show();
         }
     }
 
@@ -278,8 +279,6 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
                 ImageActivity.showActivity(getContext(), imgURL);
             }
         }
-
-
     }
 
     public interface OnFragmentInteractionListener {
