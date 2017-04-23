@@ -274,10 +274,6 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
             startActivity(mapIntent);
         } catch (Exception e) {
             Log.e("Map", e.toString());
-            if (e instanceof ActivityNotFoundException) {
-                String imgURL = DataSettings.BASE_URL + DataSettings.PATH_IMG_SCHEME;
-                ImageActivity.showActivity(getContext(), imgURL);
-            }
         }
     }
 

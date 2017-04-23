@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.network.HttpUtils;
 import com.fallgamlet.dnestrcinema.network.KinoTir;
-import com.fallgamlet.dnestrcinema.network.NetworkImageTask;
 import com.fallgamlet.dnestrcinema.network.MovieItem;
 import com.squareup.picasso.Picasso;
 
@@ -117,13 +116,10 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
     //region Fields
     protected OnAdapterListener mListener;
     protected List<MovieItem> mListData, mListDataFiltered;
-
-    protected NetworkImageTask imageTask;
     //endregion
 
     //region Methods
     public MovieRecyclerAdapter() {
-        imageTask = new NetworkImageTask();
     }
 
     @Override

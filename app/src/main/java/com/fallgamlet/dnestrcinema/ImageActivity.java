@@ -9,10 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.fallgamlet.dnestrcinema.network.DataSettings;
 import com.fallgamlet.dnestrcinema.network.HttpUtils;
 import com.fallgamlet.dnestrcinema.network.KinoTir;
-import com.fallgamlet.dnestrcinema.network.NetworkImageTask;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -88,16 +86,6 @@ public class ImageActivity extends AppCompatActivity {
             });
         }
     }
-
-    //region Imagetask singleton
-    private NetworkImageTask imageTask;
-    private NetworkImageTask getImageTask() {
-        if (imageTask == null) {
-            imageTask = new NetworkImageTask();
-        }
-        return imageTask;
-    }
-    //endregion
 
     //region Start activity
     public static void showActivity(Context context, String imgUrl) {

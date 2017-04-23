@@ -21,5 +21,7 @@
     <color name="colorTextMiddle">@color/colorTextSecondary</color>
     <color name="colorTextLight">#f2f2f2</color>
 
-    <color name="colorDevider">#BDBDBD</color>
+    <color name="colorDivider">#BDBDBD</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="semiTransparent">#88673AB7</color>
 </resources>

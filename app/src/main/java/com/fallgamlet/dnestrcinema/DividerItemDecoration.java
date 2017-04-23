@@ -19,12 +19,13 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     };
 
     public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
-
     public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
 
     private Drawable mDivider;
 
     private int mOrientation;
+    private int paddingStart = 0,
+            paddingEnd = 0;
 
     public DividerItemDecoration(Context context, int orientation) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
@@ -40,6 +41,16 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         mOrientation = orientation;
     }
 
+    public DividerItemDecoration setPaddingStart(int paddingStart) {
+        this.paddingStart = paddingStart;
+        return this;
+    }
+
+    public DividerItemDecoration setPaddingEnd(int paddingEnd) {
+        this.paddingEnd = paddingEnd;
+        return this;
+    }
+
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         if (mOrientation == VERTICAL_LIST) {
@@ -50,8 +61,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     public void drawVertical(Canvas c, RecyclerView parent) {
-        final int left = parent.getPaddingLeft();
-        final int right = parent.getWidth() - parent.getPaddingRight();
+        final int left = parent.getPaddingLeft() + paddingStart;
+        final int right = parent.getWidth() - parent.getPaddingRight() - paddingEnd;
 
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -66,8 +77,8 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     public void drawHorizontal(Canvas c, RecyclerView parent) {
-        final int top = parent.getPaddingTop();
-        final int bottom = parent.getHeight() - parent.getPaddingBottom();
+        final int top = parent.getPaddingTop() + paddingStart;
+        final int bottom = parent.getHeight() - parent.getPaddingBottom() - paddingEnd;
 
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {

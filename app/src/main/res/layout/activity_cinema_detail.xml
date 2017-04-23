@@ -7,43 +7,10 @@
     android:layout_height="match_parent"
     tools:context="com.fallgamlet.dnestrcinema.CinemaDetailActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|snap|enterAlways|enterAlwaysCollapsed"
-            app:contentScrim="?attr/colorPrimary">
-            <!--app:expandedTitleMarginStart="48dp"-->
-            <!--app:expandedTitleMarginEnd="64dp"-->
-
-            <ImageView android:id="@+id/posterImageView"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:scaleType="centerCrop"
-                android:contentDescription="@null"
-                app:layout_scrollFlags="scroll|snap"
-                app:layout_collapseMode="parallax" />
-
-            <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:title="@null"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:layout_collapseMode="pin"/>
-            <!--android:background="?attr/colorPrimary"-->
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-
-    </android.support.design.widget.AppBarLayout>
-
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="match_parent">
+        <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,6 +18,15 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/SpaceMiddle"
             android:animateLayoutChanges="true">
+
+            <ImageView android:id="@+id/posterImageView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:contentDescription="@null"
+                app:layout_scrollFlags="scroll|snap"
+                app:layout_collapseMode="parallax"
+                tools:background="@drawable/ic_photo_empty_240dp"/>
 
             <LinearLayout android:id="@+id/shortInfoContainer"
                 android:layout_width="match_parent"
@@ -141,10 +117,24 @@
             <TextView android:id="@+id/descriptionView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/SpaceSmall"/>
+                android:layout_margin="@dimen/SpaceSmall" />
 
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:background="@color/semiTransparent">
+
+        <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="@null" />
+
+    </android.support.design.widget.AppBarLayout>
 
 </android.support.design.widget.CoordinatorLayout>

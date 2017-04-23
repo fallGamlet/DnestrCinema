@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.BoolRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,15 +19,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.fallgamlet.dnestrcinema.network.DataSettings;
 import com.fallgamlet.dnestrcinema.network.HttpUtils;
 import com.fallgamlet.dnestrcinema.network.KinoTir;
 import com.fallgamlet.dnestrcinema.network.MovieItem;
 import com.fallgamlet.dnestrcinema.network.Network;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -211,15 +213,22 @@ public class CinemaFragment extends Fragment {
         if (mlistView != null) {
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+
             DefaultItemAnimator itemAnimator = new DefaultItemAnimator() {
                 @Override
                 public boolean canReuseUpdatedViewHolder(@NonNull RecyclerView.ViewHolder viewHolder) {
                     return true;
                 }
             };
+
+            DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
+
+            int left = (int) getResources().getDimension(R.dimen.DividerLeft);
+            decoration.setPaddingStart(left);
+
             mlistView.setLayoutManager(layoutManager);
             mlistView.setItemAnimator(itemAnimator);
-            mlistView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+            mlistView.addItemDecoration(decoration);
             mlistView.setAdapter(getAdapter());
         }
     }
@@ -255,40 +264,31 @@ public class CinemaFragment extends Fragment {
             return;
         }
 
-        Network.RequestData requestData = new Network.RequestData();
-        requestData.options = Network.Options.Default();
-        requestData.options.contentType = Network.CONTENT_TYPE_HTML;
-        requestData.url = url;
-
         setRefreshVisible(true);
 
-        mTask = Network.requestDataAsync(requestData, new Network.ResponseHandle() {
-            @Override
-            public void finished(Exception exception, Network.StrResult result) {
-                setRefreshVisible(false);
-                mTask = null;
-                if (exception != null) {
-                    String msg = null;
-                    if (exception instanceof UnknownHostException) {
-                        msg = "Веб сервис недоступен. Возможно нет соединение с сетью Интернет";
-                    } else {
-                        msg = exception.toString();
+        Network.get(url)
+                .observeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.io())
+                .map(new Function<String, List<MovieItem>>() {
+                    @Override
+                    public List<MovieItem> apply(@io.reactivex.annotations.NonNull String s) throws Exception {
+                        return new KinoTir.MovieListParser().parse(s);
                     }
-
-                    System.err.println(msg);
-                    System.err.println(exception);
-                    return;
-                }
-
-                if (result.error != null) {
-                    System.err.println(result.error);
-                    return;
-                }
-
-                List<MovieItem> items = new KinoTir.MovieListParser().parse(result.data);
-                setDataItems(items);
-            }
-        });
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<MovieItem>>() {
+                       @Override
+                       public void accept(@io.reactivex.annotations.NonNull List<MovieItem> movieItems) throws Exception {
+                           setDataItems(movieItems);
+                           setRefreshVisible(false);
+                       }
+                   },
+                    new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                            setRefreshVisible(false);
+                        }
+                });
     }
 
     public ArrayList<MovieItem> getDataItems() {

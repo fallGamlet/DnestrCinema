@@ -6,23 +6,29 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:theme="@style/AppTheme"
+    android:paddingTop="@dimen/SpaceSmall"
+    android:paddingBottom="@dimen/SpaceSmall"
+    android:background="?attr/selectableItemBackground"
     android:id="@+id/itemRootView">
     
     <ImageView android:id="@+id/imageView"
-        android:layout_width="64dp"
-        android:layout_height="96dp"
+        android:layout_width="@dimen/ImageWidth"
+        android:layout_height="@dimen/ImageHeight"
         android:layout_gravity="center_vertical"
-        android:layout_margin="@dimen/SpaceSmall"
+        android:scaleType="centerCrop"
         android:contentDescription="@null"
         app:srcCompat="@drawable/ic_local_movies_24dp"/>
+
+    <android.support.v4.widget.Space
+        android:layout_width="@dimen/SpaceSmall"
+        android:layout_height="0dp" />
 
     <LinearLayout
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="@dimen/SpaceSmall"
         android:orientation="vertical"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="top">
 
         <TextView android:id="@+id/titleView"
             style="@style/AppTheme.TextView"
@@ -58,6 +64,5 @@
             tools:text="Rooms"/>
 
     </LinearLayout>
-
 
 </LinearLayout>

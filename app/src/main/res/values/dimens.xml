@@ -17,4 +17,8 @@
     <dimen name="TextTin">12sp</dimen>
     <dimen name="TextBig">18sp</dimen>
     <dimen name="TextBigest">20sp</dimen>
+
+    <dimen name="ImageWidth">64dp</dimen>
+    <dimen name="ImageHeight">96dp</dimen>
+    <dimen name="DividerLeft">72dp</dimen>
 </resources>

@@ -2,6 +2,7 @@ package com.fallgamlet.dnestrcinema;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,7 +25,6 @@ import com.fallgamlet.dnestrcinema.network.HttpUtils;
 import com.fallgamlet.dnestrcinema.network.KinoTir;
 import com.fallgamlet.dnestrcinema.network.MovieItem;
 import com.fallgamlet.dnestrcinema.network.Network;
-import com.fallgamlet.dnestrcinema.network.NetworkImageTask;
 import com.fallgamlet.dnestrcinema.network.NewsItem;
 import com.squareup.picasso.Picasso;
 
@@ -33,6 +33,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -247,10 +252,16 @@ public class NewsFragment extends Fragment {
                     return true;
                 }
             };
+
+            int space = (int) getResources().getDimension(R.dimen.SpaceSmall);
+
+            SpacerItemDecoration decoration = new SpacerItemDecoration();
+            decoration.setSpace(space);
+
             mlistView.setLayoutManager(layoutManager);
             mlistView.setItemAnimator(itemAnimator);
-//            mlistView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
             mlistView.setAdapter(getAdapter());
+            mlistView.addItemDecoration(decoration);
         }
     }
 
@@ -263,40 +274,31 @@ public class NewsFragment extends Fragment {
             return;
         }
 
-        Network.RequestData requestData = new Network.RequestData();
-        requestData.options = Network.Options.Default();
-        requestData.options.contentType = Network.CONTENT_TYPE_HTML;
-        requestData.url = url;
-
         setRefreshVisible(true);
 
-        mTask = Network.requestDataAsync(requestData, new Network.ResponseHandle() {
-            @Override
-            public void finished(Exception exception, Network.StrResult result) {
-                setRefreshVisible(false);
-                mTask = null;
-                if (exception != null) {
-                    String msg = null;
-                    if (exception instanceof UnknownHostException) {
-                        msg = "Веб сервис недоступен. Возможно нет соединение с сетью Интернет";
-                    } else {
-                        msg = exception.toString();
+        Network.get(url)
+                .observeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.io())
+                .map(new Function<String, List<NewsItem>>() {
+                    @Override
+                    public List<NewsItem> apply(@io.reactivex.annotations.NonNull String s) throws Exception {
+                        return new KinoTir.NewsParser().parse(s);
                     }
-
-                    System.err.println(msg);
-                    System.err.println(exception);
-                    return;
-                }
-
-                if (result.error != null) {
-                    System.err.println(result.error);
-                    return;
-                }
-
-                List<NewsItem> items = new KinoTir.NewsParser().parse(result.data);
-                setDataItems(items);
-            }
-        });
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<NewsItem>>() {
+                               @Override
+                               public void accept(@io.reactivex.annotations.NonNull List<NewsItem> newsItems) throws Exception {
+                                   setDataItems(newsItems);
+                                   setRefreshVisible(false);
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                                setRefreshVisible(false);
+                            }
+                        });
     }
 
     public ArrayList<NewsItem> getDataItems() {
@@ -467,13 +469,10 @@ public class NewsFragment extends Fragment {
         //region Fields
         protected NewsRecyclerAdapter.OnAdapterListener mListener;
         protected List<NewsItem> mListData, mListDataFiltered;
-
-        protected NetworkImageTask imageTask;
         //endregion
 
         //region Methods
         public NewsRecyclerAdapter() {
-            imageTask = new NetworkImageTask();
         }
 
         @Override

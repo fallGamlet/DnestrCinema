@@ -24,14 +24,24 @@ import com.fallgamlet.dnestrcinema.network.MovieItem;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Observable;
 import java.util.Set;
 
 import icepick.Icepick;
 import icepick.State;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.AsyncSubject;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -157,8 +167,6 @@ public class CinemaDetailPresenter
             return;
         }
 
-//        showDetailData(movieItem);
-
         String urlStr = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, movieItem.getLink());
 
         if (urlStr == null) {
@@ -166,35 +174,50 @@ public class CinemaDetailPresenter
         }
 
         Request request = new Request.Builder().url(urlStr).build();
-        httpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                LogUtils.log("Http", "Fail to load cinema detail", e);
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    LogUtils.log("Http", "Detail cinema info loaded ok");
-                    String htmlStr = response.body().string();
+        io.reactivex.Observable
+                .just(request)
+                .observeOn(Schedulers.io())
+                .map(new Function<Request, Response>() {
+                    @Override
+                    public Response apply(@io.reactivex.annotations.NonNull Request request) throws Exception {
+                        return new OkHttpClient().newCall(request).execute();
+                    }
+                })
+                .observeOn(Schedulers.computation())
+                .map(new Function<Response, MovieItem>() {
+                    @Override
+                    public MovieItem apply(@io.reactivex.annotations.NonNull Response response) throws Exception {
+                        MovieItem movieItem;
 
-                    MovieItem loadedMovie = new KinoTir.MovieDetailParser().parse(htmlStr);
-                    mMovie.mergeLeft(loadedMovie);
-
-                    Handler mainHandler = new Handler(getView().getContext().getMainLooper());
-                    mainHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            showData(mMovie);
+                        if (response.isSuccessful()) {
+                            String htmlStr = response.body().string();
+                            movieItem = new KinoTir.MovieDetailParser().parse(htmlStr);
+                        } else {
+                            movieItem = new MovieItem();
                         }
-                    });
 
+                        return movieItem;
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<MovieItem>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull MovieItem movieItem) throws Exception {
+                        if (mMovie == null) {
+                            mMovie = movieItem;
+                        } else {
+                            mMovie.mergeLeft(movieItem);
+                        }
 
-                } else {
-                    LogUtils.log("Http", response.message());
-                }
-            }
-        });
+                        showData(mMovie);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                        System.out.println("Error: " + throwable.toString());
+                    }
+                });
     }
 
     protected synchronized void loadImages(Collection<String> urlList) {
