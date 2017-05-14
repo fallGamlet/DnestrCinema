@@ -20,6 +20,7 @@ public interface ICinemaDetailView extends IView {
     void setRooms(Collection<? extends CharSequence> rooms);
 
     void showImages(boolean v);
+    void showBuyTicketButton(boolean v);
     void showTrailerButton(boolean v);
     void showDuration(boolean v);
     void showGenre(boolean v);

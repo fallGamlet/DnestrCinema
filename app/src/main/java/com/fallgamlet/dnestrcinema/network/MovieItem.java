@@ -38,6 +38,7 @@ public class MovieItem implements Parcelable {
     //region Fields
     private String mTitle;
     private String mLink;
+    private String mBuyTicketLink;
     private String mDuration;
     private String mDescription;
     private String mGenre;
@@ -70,6 +71,14 @@ public class MovieItem implements Parcelable {
 
     public void setLink(String link) {
         this.mLink = link;
+    }
+
+    public String getBuyTicketLink() {
+        return mBuyTicketLink;
+    }
+
+    public void setBuyTicketLink(String link) {
+        this.mBuyTicketLink = link;
     }
 
     public String getDuration() {
@@ -214,6 +223,7 @@ public class MovieItem implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mTitle);
         dest.writeString(mLink);
+        dest.writeString(mBuyTicketLink);
         dest.writeString(mDescription);
         dest.writeLong(mPubDate==null? 0: mPubDate.getTime());
         dest.writeString(mPosterUrl);
@@ -228,6 +238,7 @@ public class MovieItem implements Parcelable {
 
         mTitle = in.readString();
         mLink = in.readString();
+        mBuyTicketLink = in.readString();
         mDescription = in.readString();
         long d = in.readLong();
         mPosterUrl = in.readString();
@@ -239,55 +250,6 @@ public class MovieItem implements Parcelable {
         getTrailerUrlSet().addAll(moveUrlList);
 
         mPubDate = d == 0? null: new Date(d);
-    }
-
-    public boolean setData(@NonNull JSONObject jObj) throws JSONException {
-        mTitle = jObj.optString("title");
-        mLink = jObj.optString("link");
-        mDescription = jObj.optString("description");
-
-        String hall = jObj.optString("hall");
-        String pubDate = jObj.optString("pubDate");
-        String seanses = jObj.optString("seanses");
-
-        JSONObject jtmp = jObj.optJSONObject("enclosure");
-        if (jtmp != null) {
-            jtmp = jtmp.optJSONObject("_attr");
-            if (jtmp != null) {
-                mPosterUrl = jtmp.optString("url");
-            }
-        }
-
-        if (pubDate != null) {
-            try {
-                DateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
-                mPubDate = df.parse(pubDate);
-            } catch (Exception e) {
-                System.out.println("Date parse fail: "+e.toString());
-            }
-        }
-
-        //"16.30, 21.30 от 12 лет; борд.: 19.00 от 12 лет; DVD: 15.10 от 12 лет"
-        seanses = hall+": "+seanses;
-        String[] strArr = seanses.trim().split(";");
-
-        for (int i=0; i<strArr.length; i++) {
-            String str = strArr[i];
-            String[] arr = str.trim().split(":");
-            Schedule schedule = new Schedule();
-            if (arr.length >= 1) {
-                String roomVal = arr[0];
-                if ("борд.".equals(roomVal)) { roomVal = ROOM_BORDO; }
-                else if ("DVD".equals(roomVal)) { roomVal = ROOM_DVD; }
-                schedule.room = roomVal;
-                if (arr.length >= 2) {
-                    schedule.value = arr[1];
-                }
-                getSchedules().add(schedule);
-            }
-        }
-
-        return true;
     }
 
     public void mergeLeft(MovieItem item) {
@@ -305,6 +267,10 @@ public class MovieItem implements Parcelable {
 
         if (getLink() == null || getLink().isEmpty()) {
             setLink(item.getLink());
+        }
+
+        if (getBuyTicketLink() == null || getBuyTicketLink().isEmpty()) {
+            setBuyTicketLink(item.getBuyTicketLink());
         }
 
         if (getPosterUrl() == null || getPosterUrl().isEmpty()) {
@@ -359,124 +325,9 @@ public class MovieItem implements Parcelable {
             getTrailerUrlSet().addAll(item.getTrailerUrlSet());
         }
     }
+    //endregion
 
-    @NonNull
-    public JSONObject toJSON() throws JSONException {
-        JSONObject json = new JSONObject();
-        json.putOpt("title", this.getTitle());
-        json.putOpt("desc", this.getDescription());
-        json.putOpt("img_url", this.getPosterUrl());
-        json.putOpt("img_url_list", new JSONArray(getImgUrlSet()));
-        json.putOpt("move_url_list", new JSONArray(getTrailerUrlSet()));
-        json.putOpt("link", this.getLink());
-        json.putOpt("pub_date", this.getPubDate()==null? 0: this.getPubDate().getTime());
-        json.putOpt("schedule", Schedule.toJSONArray(this.getSchedules()));
-        return json;
-    }
-
-    public boolean setJSON(@Nullable JSONObject json) {
-        if (json == null || json.length() == 0) { return false; }
-        setTitle(json.optString("title", null));
-        setDescription(json.optString("desc", null));
-        setPosterUrl(json.optString("img_url", null));
-        setLink(json.optString("link", null));
-        JSONArray jarrImgUrls = json.optJSONArray("img_url_list");
-        JSONArray jarrMoveUrls = json.optJSONArray("move_url_list");
-        long time = json.optLong("pub_date", 0);
-        setPubDate(time==0? null: new Date(time));
-
-        if (jarrImgUrls != null && jarrImgUrls.length() > 0) {
-            Set<String> urls = getImgUrlSet();
-            urls.clear();
-            for (int i=0; i<jarrImgUrls.length(); i++) {
-                String val = jarrImgUrls.optString(i, null);
-                if (val != null && !val.isEmpty()) { urls.add(val); }
-            }
-        }
-
-        if (jarrMoveUrls != null && jarrMoveUrls.length() > 0) {
-            Set<String> urls = getTrailerUrlSet();
-            urls.clear();
-            for (int i=0; i<jarrMoveUrls.length(); i++) {
-                String val = jarrMoveUrls.optString(i, null);
-                if (val != null && !val.isEmpty()) { urls.add(val); }
-            }
-        }
-
-        ArrayList<Schedule> schedules = Schedule.setJSONArray(json.optJSONArray("schedule"));
-        this.getSchedules().clear();
-        this.getSchedules().addAll(schedules);
-
-        return true;
-    }
-
-    @NonNull
-    public static JSONArray toJSONArray(@Nullable List<MovieItem> items) throws JSONException {
-        JSONArray jsonArray = new JSONArray();
-        if (items != null && !items.isEmpty()) {
-            for (MovieItem item: items) {
-                jsonArray.put(item.toJSON());
-            }
-        }
-        return jsonArray;
-    }
-
-    @NonNull
-    public static ArrayList<MovieItem> setJSONArray(@Nullable JSONArray jarr) {
-        ArrayList<MovieItem> list = new ArrayList<>();
-        if (jarr != null && jarr.length() > 0) {
-            MovieItem item=null;
-            for (int i=0; i<jarr.length(); i++) {
-                JSONObject json = jarr.optJSONObject(i);
-                if (item == null) { item = new MovieItem(); }
-                if (item.setJSON(json)) {
-                    list.add(item);
-                    item = null;
-                }
-            }
-        }
-        return list;
-    }
-
-    @NonNull
-    public static ArrayList<MovieItem> getItems(JSONArray jArr) throws JSONException {
-        ArrayList<MovieItem> movies = new ArrayList<>();
-        if (jArr == null || jArr.length() == 0) {
-            return movies;
-        }
-
-        for (int i=0; i<jArr.length(); i++) {
-            JSONObject jObj = jArr.optJSONObject(i);
-            if (jObj != null) {
-                MovieItem item = new MovieItem();
-                item.setData(jObj);
-                movies.add(item);
-            }
-        }
-
-        return movies;
-    }
-
-    @NonNull
-    public static ArrayList<MovieItem> parseRSS(String rssText) throws JSONException, ParserConfigurationException, SAXException, IOException {
-        Document doc = Xml2JSON.getDocument(rssText);
-        JSONObject jsonFull = Xml2JSON.getJSON(doc);
-        JSONObject jRes = (JSONObject) Xml2JSON.makeShort(jsonFull);
-        Object objItem = jRes.getJSONObject("rss")
-                .getJSONObject("channel")
-                .get("item");
-
-        JSONArray jItems = null;
-        if (objItem instanceof JSONObject) {
-            jItems = new JSONArray();
-            jItems.put(objItem);
-        } else if (objItem instanceof JSONArray) {
-            jItems = (JSONArray) objItem;
-        }
-
-        return getItems(jItems);
-    }
-
+    //region Methods for get Comparator
     public static Comparator<MovieItem> getDateComparator() {
         return new Comparator<MovieItem>() {
             @Override

@@ -87,6 +87,24 @@ public class CinemaDetailPresenter
     }
 
     @Override
+    public void onBuyTicketButtonPressed() {
+        if (mMovie == null)
+            return;
+
+        String url = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, mMovie.getBuyTicketLink());
+        navigateToUrl(url);
+    }
+
+    private void navigateToUrl(String url) {
+        if (url == null)
+            return;
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        getView().getContext().startActivity(intent);
+    }
+
+    @Override
     public void onRoomsPressed() {
         navigateToRoomView(mMovie);
     }
@@ -150,6 +168,7 @@ public class CinemaDetailPresenter
         getView().setDuration(movieItem.getDuration());
         getView().setDescription(HttpUtils.fromHtml(movieItem.getDescription()));
 
+        getView().showBuyTicketButton(movieItem.getBuyTicketLink() != null && !movieItem.getBuyTicketLink().isEmpty());
         getView().showTrailerButton(!movieItem.getTrailerUrlSet().isEmpty());
 
         String imgUrl = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, movieItem.getPosterUrl());

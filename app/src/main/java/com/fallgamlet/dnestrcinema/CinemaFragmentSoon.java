@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fallgamlet.dnestrcinema.network.HttpUtils;
 import com.fallgamlet.dnestrcinema.network.KinoTir;
@@ -28,7 +27,6 @@ import com.fallgamlet.dnestrcinema.network.Network;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.internal.Utils;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -38,12 +36,12 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CinemaFragment.OnFragmentInteractionListener} interface
+ * {@link CinemaFragmentSoon.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CinemaFragment#newInstance} factory method to
+ * Use the {@link CinemaFragmentSoon#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CinemaFragment extends Fragment {
+public class CinemaFragmentSoon extends Fragment {
     //region Constants
     public static final String ARG_URL = "arg_url";
     public static final String ARG_PARSER = "arg_parser";
@@ -65,7 +63,7 @@ public class CinemaFragment extends Fragment {
     AlertDialog dialog;
     //endregion
 
-    public CinemaFragment() {
+    public CinemaFragmentSoon() {
         // Required empty public constructor
     }
 
@@ -75,20 +73,20 @@ public class CinemaFragment extends Fragment {
      *
      * @return A new instance of fragment CinemaFragment.
      */
-    public static CinemaFragment newInstance() {
+    public static CinemaFragmentSoon newInstance() {
         return newInstance(null, null);
     }
 
-    public static CinemaFragment newInstance(String url) {
+    public static CinemaFragmentSoon newInstance(String url) {
         return newInstance(url, null);
     }
 
-    public static CinemaFragment newInstance(ArrayList<MovieItem> data) {
+    public static CinemaFragmentSoon newInstance(ArrayList<MovieItem> data) {
         return newInstance(null, data);
     }
 
-    public static CinemaFragment newInstance(String url, ArrayList<MovieItem> data) {
-        CinemaFragment fragment = new CinemaFragment();
+    public static CinemaFragmentSoon newInstance(String url, ArrayList<MovieItem> data) {
+        CinemaFragmentSoon fragment = new CinemaFragmentSoon();
         Bundle args = new Bundle();
         if (url != null) { args.putString(ARG_URL, url); }
         if (data != null) { args.putParcelableArrayList(ARG_DATA, data); }
@@ -318,7 +316,7 @@ public class CinemaFragment extends Fragment {
 
     protected MovieRecyclerAdapter getAdapter() {
         if (mAdapter == null) {
-            mAdapter = new MovieRecyclerAdapter(R.layout.movie_item_now);
+            mAdapter = new MovieRecyclerAdapter(R.layout.movie_item_soon);
             mAdapter.setListener(new MovieRecyclerAdapter.OnAdapterListener() {
                 @Override
                 public void onItemPressed(MovieItem item, int pos) {
@@ -332,9 +330,7 @@ public class CinemaFragment extends Fragment {
 
                 @Override
                 public void onItemBuyTicketPressed(MovieItem item, int pos) {
-                    String url = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, item.getBuyTicketLink());
-                    navigateToUrl(url);
-//                    Toast.makeText(getContext(), "Movie buy ticket lins: "+item.getBuyTicketLink(), Toast.LENGTH_SHORT).show();
+
                 }
             });
         }
@@ -356,22 +352,6 @@ public class CinemaFragment extends Fragment {
             intent.putExtras(bundle);
             startActivity(intent);
         }
-    }
-
-    private void navigateToUrl(String url) {
-        if (url == null)
-            return;
-
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        startActivity(intent);
-    }
-
-    private void navigateToUrlOnLocalWebPage(String url) {
-        Intent intent = new Intent(getContext(), CinemaBuyTicketActivity.class);
-        intent.putExtra(CinemaBuyTicketActivity.ARG_TITLE, "Покупка билета");
-        intent.putExtra(CinemaBuyTicketActivity.ARG_URL, url);
-        startActivity(intent);
     }
 
     public interface OnFragmentInteractionListener {

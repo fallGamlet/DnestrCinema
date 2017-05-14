@@ -48,7 +48,7 @@ public class CinemaDetailActivity
         implements View.OnClickListener, ICinemaDetailView
 {
     //region Static fields
-    public static String ARG_MOVIE = "movie_item";
+    public static String ARG_MOVIE = "movie_item_now";
     public static String ARG_MOVIE_DETAIL = "movie_detail";
     public static String YOUTUBE = "youtube.com";
     //endregion
@@ -78,6 +78,7 @@ public class CinemaDetailActivity
     @BindView(R.id.descriptionView) TextView mDescriptionView;
     @BindView(R.id.imageList) RecyclerView mImageListView;
     @BindView(R.id.trailerBtn) View mTrailerBtn;
+    @BindView(R.id.buyTicketButton) View mBuyTicketButton;
 
     ICinemaDetailPresenter<ICinemaDetailView> mPresenter;
     //endregion
@@ -166,6 +167,11 @@ public class CinemaDetailActivity
             mPresenter.onTrailerButtonPressed();
             return;
         }
+
+        if (view == mBuyTicketButton) {
+            mPresenter.onBuyTicketButtonPressed();
+            return;
+        }
     }
     //endregion
 
@@ -181,6 +187,10 @@ public class CinemaDetailActivity
 
         mMovieHolder = new MovieRecyclerAdapter.ViewHolder(mShortInfoContainer);
         mMovieHolder.getScheduleView().setOnClickListener(this);
+
+        if (mBuyTicketButton != null) {
+            mBuyTicketButton.setOnClickListener(this);
+        }
 
         if (mTrailerBtn != null) {
             mTrailerBtn.setOnClickListener(this);
@@ -307,6 +317,13 @@ public class CinemaDetailActivity
     @Override
     public void showImages(boolean v) {
         mImageListView.setVisibility(v? View.VISIBLE: View.GONE);
+    }
+
+    @Override
+    public void showBuyTicketButton(boolean v) {
+        if (mBuyTicketButton != null) {
+            mBuyTicketButton.setVisibility(v? View.VISIBLE: View.GONE);
+        }
     }
 
     @Override

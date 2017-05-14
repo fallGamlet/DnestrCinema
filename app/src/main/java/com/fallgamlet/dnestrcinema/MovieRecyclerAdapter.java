@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
     public interface OnAdapterListener {
         void onItemPressed(MovieItem item, int pos);
         void onItemSchedulePressed(MovieItem item, int pos);
+        void onItemBuyTicketPressed(MovieItem item, int pos);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -38,6 +40,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
         TextView mTitleView;
         TextView mPubdateView;
         TextView mScheduleView;
+        View mBuyTicketButton;
 
         MovieItem mItem;
         //endregion
@@ -56,6 +59,9 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
         public TextView getTitleView() { return mTitleView; }
         public TextView getPubdateView() { return mPubdateView; }
         public TextView getScheduleView() { return mScheduleView; }
+        public View getBuyTicketButton() {
+            return mBuyTicketButton;
+        }
         //endregion
 
         //region Methods
@@ -66,11 +72,13 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
                 mTitleView = (TextView) mRootView.findViewById(R.id.titleView);
                 mPubdateView = (TextView) mRootView.findViewById(R.id.pubdateView);
                 mScheduleView = (TextView) mRootView.findViewById(R.id.roomView);
+                mBuyTicketButton = mRootView.findViewById(R.id.buyTicketButton);
             }
         }
 
         public void initData(MovieItem item) {
             mItem = item;
+
             if (item == null) { return; }
 
             ArrayList<String> arr = new ArrayList<>();
@@ -114,17 +122,19 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
     //endregion
 
     //region Fields
-    protected OnAdapterListener mListener;
-    protected List<MovieItem> mListData, mListDataFiltered;
+    private int itemLayoutId;
+    private OnAdapterListener mListener;
+    private List<MovieItem> mListData, mListDataFiltered;
     //endregion
 
     //region Methods
-    public MovieRecyclerAdapter() {
+    public MovieRecyclerAdapter(int itemLayoutId) {
+        this.itemLayoutId = itemLayoutId;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(itemLayoutId, parent, false);
         final ViewHolder holder = new ViewHolder(view);
 
         holder.getRootView().setOnClickListener(new View.OnClickListener() {
@@ -137,15 +147,17 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
             }
         });
 
-//        holder.getScheduleView().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (mListener != null) {
-//                    int pos = getPosition(holder.getDrawable());
-//                    mListener.onItemSchedulePressed(holder.getDrawable(), pos);
-//                }
-//            }
-//        });
+        if (holder.getBuyTicketButton() != null) {
+            holder.getBuyTicketButton().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mListener != null) {
+                        int pos = getPosition(holder.getItem());
+                        mListener.onItemBuyTicketPressed(holder.getItem(), pos);
+                    }
+                }
+            });
+        }
 
         return holder;
     }
@@ -212,20 +224,6 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
 
     public void setListener(OnAdapterListener listener) {
         mListener = listener;
-    }
-
-    @SuppressWarnings("deprecation")
-    public static Spanned fromHtml(String html){
-        if (html == null) {
-            return null;
-        }
-        Spanned result = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            result = Html.fromHtml(html,Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            result = Html.fromHtml(html);
-        }
-        return result;
     }
     //endregion
 }

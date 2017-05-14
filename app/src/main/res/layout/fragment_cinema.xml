@@ -15,7 +15,7 @@
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/SpaceSmall"
             android:paddingRight="@dimen/SpaceSmall"
-            tools:listitem="@layout/movie_item"/>
+            tools:listitem="@layout/movie_item_now"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

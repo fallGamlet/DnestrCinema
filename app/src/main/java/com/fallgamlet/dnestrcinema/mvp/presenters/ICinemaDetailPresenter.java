@@ -9,6 +9,7 @@ import com.fallgamlet.dnestrcinema.network.MovieItem;
 
 public interface ICinemaDetailPresenter<T extends IView> extends IPresenter<T> {
     void onTrailerButtonPressed();
+    void onBuyTicketButtonPressed();
     void onRoomsPressed();
     void setData(MovieItem item);
 }

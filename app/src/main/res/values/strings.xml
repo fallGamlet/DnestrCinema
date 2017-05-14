@@ -45,5 +45,6 @@
     <string name="label_duration">Продолжительность:</string>
     <string name="label_genre">Жанр:</string>
     <string name="label_budget">Бюджет:</string>
+    <string name="label_buy_ticket">Купить билет</string>
 
 </resources>

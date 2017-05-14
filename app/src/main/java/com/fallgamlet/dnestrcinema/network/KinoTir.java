@@ -31,6 +31,7 @@ public class KinoTir {
     public static final String PATH_IMG_ROOM_BORDO = "/files/uploads/img_07.jpg";
     public static final String PATH_IMG_ROOM_DVD = "/files/uploads/img_11.jpg";
 
+
     public interface Parser<T> {
         T parse(String body);
     }
@@ -90,6 +91,7 @@ public class KinoTir {
             String posterUrl = element.select(">.poster>img").attr("src");
             String title = element.select(">h2").text();
             String linkUrl = element.select(">.overlay>a").attr("href");
+            String buyTicketUrl = element.select(">.overlay>.by-ticket>a").attr("href");
 
             MovieItem movieItem = new MovieItem();
             parseFeatures(element.select(">.overlay .features"), movieItem);
@@ -97,6 +99,7 @@ public class KinoTir {
             movieItem.setTitle(title);
             movieItem.setPosterUrl(posterUrl);
             movieItem.setLink(linkUrl);
+            movieItem.setBuyTicketLink(buyTicketUrl);
 
             parseSchedule(element.select(">.overlay .halls>li"), movieItem.getSchedules());
             parseTrailers(element.select(">.overlay>.links>a.trailer"), movieItem);
@@ -180,6 +183,8 @@ public class KinoTir {
             Document doc = Jsoup.parse(html);
             if (doc == null) { return null;}
 
+            String buyTicketUrl = doc.select("a.buy-ticket-btn").attr("href");
+
             Element info = doc.select(".film .info").first();
             if (info == null) {return null;}
 
@@ -187,6 +192,7 @@ public class KinoTir {
 
             MovieItem movieItem = new MovieItem();
             movieItem.setPosterUrl(posterUrl);
+            movieItem.setBuyTicketLink(buyTicketUrl);
 
             Element mainInfo  = info.select(".main-info").first();
             if (mainInfo != null) {
@@ -384,5 +390,4 @@ public class KinoTir {
             return date;
         }
     }
-
 }

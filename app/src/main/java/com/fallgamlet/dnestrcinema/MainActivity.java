@@ -184,10 +184,10 @@ public class MainActivity extends AppCompatActivity {
         return cinemaNowFragment;
     }
 
-    protected CinemaFragment cinemaSoonFragment;
-    protected CinemaFragment getCinemaSoonFragment() {
+    protected CinemaFragmentSoon cinemaSoonFragment;
+    protected CinemaFragmentSoon getCinemaSoonFragment() {
         if (cinemaSoonFragment == null) {
-            cinemaSoonFragment = CinemaFragment.newInstance(KinoTir.BASE_URL+KinoTir.PATH_SOON);
+            cinemaSoonFragment = CinemaFragmentSoon.newInstance(KinoTir.BASE_URL+KinoTir.PATH_SOON);
         }
         return cinemaSoonFragment;
     }

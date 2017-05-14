@@ -19,13 +19,14 @@ android {
         }
     }
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
+
     defaultConfig {
         applicationId "com.fallgamlet.dnestrcinema"
         minSdkVersion 10
         targetSdkVersion 25
-        versionCode 25
-        versionName "0.1.25"
+        versionCode 26
+        versionName "0.1.${versionCode}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         signingConfig signingConfigs.config
@@ -46,18 +47,22 @@ android {
     }
 }
 
+ext {
+    androidLibVersion = "25.3.1"
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:palette-v7:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.android.support:cardview-v7:25.3.1'
+    compile "com.android.support:multidex:1.0.1"
+    compile "com.android.support:appcompat-v7:${androidLibVersion}"
+    compile "com.android.support:support-v4:${androidLibVersion}"
+    compile "com.android.support:design:${androidLibVersion}"
+    compile "com.android.support:palette-v7:${androidLibVersion}"
+    compile "com.android.support:recyclerview-v7:${androidLibVersion}"
+    compile "com.android.support:cardview-v7:${androidLibVersion}"
 
     compile 'com.squareup.okhttp3:okhttp:3.7.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
