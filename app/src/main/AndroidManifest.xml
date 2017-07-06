@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.start.StartActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,16 +20,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CinemaDetailActivity"
+            android:name=".ui.movie.detail.CinemaDetailActivity"
             android:theme="@style/AppTheme">
 
         </activity>
         <activity
-            android:name=".ImageActivity"
+            android:name=".ui.ImageActivity"
             android:theme="@style/AppTheme">
         </activity>
         <activity
-            android:name=".CinemaBuyTicketActivity"
+            android:name=".ui.CinemaBuyTicketActivity"
             android:theme="@style/AppTheme">
         </activity>
     </application>

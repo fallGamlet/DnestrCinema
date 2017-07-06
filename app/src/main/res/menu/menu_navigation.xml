@@ -1,0 +1,34 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item android:id="@+id/actionToday"
+        android:title="@string/today"
+        tools:icon="@drawable/ic_local_movies_black_24dp"
+        app:srcCompat="@drawable/ic_local_movies_black_24dp"
+        />
+
+    <item android:id="@+id/actionSoon"
+        android:title="@string/soon"
+        tools:icon="@drawable/ic_watch_later_black_24dp"
+        app:srcCompat="@drawable/ic_watch_later_black_24dp"
+        />
+
+    <item android:id="@+id/actionTickets"
+        android:title="@string/tickets"
+        tools:icon="@drawable/ic_home_black_24dp"
+        app:srcCompat="@drawable/ic_home_black_24dp"
+        />
+
+    <item android:id="@+id/actionNews"
+        android:title="@string/news"
+        tools:icon="@drawable/ic_library_books_black_24dp"
+        app:srcCompat="@drawable/ic_library_books_black_24dp"
+        />
+
+    <item android:id="@+id/actionAbout"
+        android:title="@string/about"
+        tools:icon="@drawable/ic_info_black_24dp"
+        app:srcCompat="@drawable/ic_info_black_24dp"
+        />
+</menu>

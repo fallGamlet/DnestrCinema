@@ -1,6 +1,9 @@
 package com.fallgamlet.dnestrcinema.network;
 
 
+import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
+import com.fallgamlet.dnestrcinema.mvp.models.NewsItem;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

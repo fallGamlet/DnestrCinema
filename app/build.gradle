@@ -5,16 +5,16 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 repositories {
-    maven {url "https://clojars.org/repo/"}
+    maven { url "https://clojars.org/repo/" }
 }
 
 android {
     signingConfigs {
         config {
-		keyAlias keystoreProperties['keyAlias']
-		keyPassword keystoreProperties['keyPassword']
-		storeFile file(keystoreProperties['storeFile'])
-		storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
 
         }
     }
@@ -56,7 +56,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile "com.android.support:multidex:1.0.1"
     compile "com.android.support:appcompat-v7:${androidLibVersion}"
     compile "com.android.support:support-v4:${androidLibVersion}"
     compile "com.android.support:design:${androidLibVersion}"
@@ -64,19 +63,21 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${androidLibVersion}"
     compile "com.android.support:cardview-v7:${androidLibVersion}"
 
-    compile 'com.squareup.okhttp3:okhttp:3.7.0'
+
+
+
+
+
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
-
     compile 'frankiesardo:icepick:3.2.0'
-    provided 'frankiesardo:icepick-processor:3.2.0'
-
     compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
-    compile "io.reactivex.rxjava2:rxjava:2.0.8"
+    compile 'io.reactivex.rxjava2:rxjava:2.0.8'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-
     compile 'org.jsoup:jsoup:1.10.2'
-
+    compile 'com.android.support:support-v4:25.3.1'
     testCompile 'junit:junit:4.12'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    provided 'frankiesardo:icepick-processor:3.2.0'
 }

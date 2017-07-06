@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Афиша к.Тирасполь</string>
+    <string name="accept">принять</string>
+    <string name="cancel">отменить</string>
+    <string name="error">Ошибка</string>
+    <string name="label_actors">Актеры:</string>
+    <string name="label_address">Адрес</string>
+    <string name="label_agelimit">Возрастное ограничение:</string>
+    <string name="label_budget">Бюджет:</string>
+    <string name="label_buy_ticket">Купить билет</string>
+    <string name="label_autoanswer">Автоответчик</string>
+    <string name="label_cashbox_with_worktime">Касса (с 10:00 до 22:00)</string>
+    <string name="label_country">Страна:</string>
+    <string name="label_director">Режисер:</string>
+    <string name="label_duration">Продолжительность:</string>
+    <string name="label_from">с</string>
+    <string name="label_genre">Жанр:</string>
+    <string name="label_scenario">Сценарий:</string>
+    <string name="label_trailer">Трейлер</string>
+    <string name="msg_not_found_intent_for_email">Не найдено приложения для отправки электронной почты</string>
+    <string name="msg_not_found_intent_for_view_google_map">Не найдено приложения для показа Google карты</string>
+    <string name="no">нет</string>
+    <string name="ok">ок</string>
+    <string name="org_address">г.Тирасполь, ул. 25 Октября, 53</string>
+    <string name="org_contact_info">Контактная информация кинотеатра Тирасполь</string>
+    <string name="org_desc_info">В расписании возможны изменения. Уточняйте время сеансов перед выходом в кино</string>
+    <string name="room_blue">Синий зал</string>
+    <string name="room_bordo">Бордовый зал</string>
+    <string name="room_dvd">Малый зал</string>
+    <string name="share">поделиться</string>
+    <string name="about">Контакты</string>
+    <string name="news">новости</string>
+    <string name="now">сейчас</string>
+    <string name="soon">скоро</string>
+    <string name="update">обновить</string>
+    <string name="yes">да</string>
+    <string name="yet_empty">Пока что пусто</string>
+    <string name="today">Сегодня</string>
+    <string name="tickets">билеты</string>
+    <string name="developer_contact_info">Контактная информация разработчика \nПсевдоним: fallGamlet</string>
+</resources>

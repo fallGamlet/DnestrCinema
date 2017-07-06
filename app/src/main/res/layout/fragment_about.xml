@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/AppTheme"
-    tools:context="com.fallgamlet.dnestrcinema.AboutFragment">
+    tools:context="com.fallgamlet.dnestrcinema.ui.about.AboutFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

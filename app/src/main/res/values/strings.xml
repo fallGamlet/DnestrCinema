@@ -1,50 +1,55 @@
 <resources>
-    <string name="app_name">Афиша к.Тирасполь</string>
-    <string name="title_main">@string/app_name</string>
+    <string name="app_name">Afisha c.Tiraspol</string>
+    <string name="title_main" translatable="false">@string/app_name</string>
 
-    <string name="title_now">Сейчас</string>
-    <string name="title_soon">Скоро</string>
-    <string name="title_news">Новости</string>
-    <string name="title_about">Контакты</string>
+    <string name="now">now</string>
+    <string name="soon">soon</string>
+    <string name="news">news</string>
+    <string name="about">contacts</string>
 
     <string name="ok">ок</string>
-    <string name="yes">да</string>
-    <string name="no">нет</string>
-    <string name="accept">принять</string>
-    <string name="cancel">отменить</string>
-    <string name="error">Ошибка</string>
-    <string name="update">Обновить</string>
-    <string name="share">Поделиться</string>
-    <string name="yet_empty">Пока что пусто</string>
-    <string name="developer_email">fallgamlet@yandex.ru</string>
-    <string name="developer_contact_info">Контактная информация разработчика \nПсевдоним: fallGamlet</string>
-    <string name="phone_org_autoanswer_1">0 (533) 8-15-19</string>
-    <string name="phone_org_autoanswer_2">14-04</string>
-    <string name="org_contact_info">Контактная информация кинотеатра Тирасполь</string>
-    <string name="phone_org_cashbox">0 (533) 7-35-26</string>
-    <string name="label_address">Адрес</string>
-    <string name="org_address">г.Тирасполь, ул. 25 Октября, 53</string>
-    <string name="org_desc_info">В расписании возможны изменения. Уточняйте время сеансов перед выходом в кино</string>
-    <string name="label_cashbox_with_worktime">Касса (с 10:00 до 22:00)</string>
-    <string name="label_autoanswer">Автоответчик</string>
-    <string name="room_blue">Синий зал</string>
-    <string name="room_bordo">Бордовый зал</string>
-    <string name="room_dvd">Малый зал</string>
-    <string name="msg_not_found_intent_for_view_google_map">Не найдено приложения для показа Google карты</string>
-    <string name="msg_not_found_intent_for_email">Не найдено приложения для отправки электронной почты</string>
-    <string name="app_id">com.fallgamlet.dnestrcinema</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="accept">applay</string>
+    <string name="cancel">cancel</string>
+    <string name="error">Error</string>
+    <string name="update">refresh</string>
+    <string name="share">share</string>
+    <string name="yet_empty">No content</string>
+    <string name="developer_email" translatable="false">fallgamlet@yandex.ru</string>
+    <string name="developer_contact_info">Developer contact info\nNickname: fallGamlet</string>
+    <string name="phone_org_autoanswer_1" translatable="false">0 (533) 8-15-19</string>
+    <string name="phone_org_autoanswer_2" translatable="false">14-04</string>
+    <string name="org_contact_info">Contact information of the cinema Tiraspol</string>
+    <string name="phone_org_cashbox" translatable="false">0 (533) 7-35-26</string>
+    <string name="label_address">Address</string>
+    <string name="org_address">Tiraspol, 25 October, 53</string>
+    <string name="org_desc_info">The schedule may change. Specify the time of sessions before going to the cinema</string>
+    <string name="label_cashbox_with_worktime">Cashbox (с 10:00 до 22:00)</string>
+    <string name="label_autoanswer">Autoanswer</string>
+    <string name="room_blue">blue room</string>
+    <string name="room_bordo">bordo room</string>
+    <string name="room_dvd">small room</string>
+    <string name="msg_not_found_intent_for_view_google_map">No apps found for Google Maps</string>
+    <string name="msg_not_found_intent_for_email">No apps found to send email</string>
+    <string name="app_id" translatable="false">com.fallgamlet.dnestrcinema</string>
 
-    <string name="label_from">с</string>
-    <string name="label_trailer">Трейлер</string>
+    <string name="label_from">From</string>
+    <string name="label_trailer">Trailer</string>
 
-    <string name="label_country">Страна:</string>
-    <string name="label_director">Режисер:</string>
-    <string name="label_scenario">Сценарий:</string>
-    <string name="label_actors">Актеры:</string>
-    <string name="label_agelimit">Возрастное ограничение:</string>
-    <string name="label_duration">Продолжительность:</string>
-    <string name="label_genre">Жанр:</string>
-    <string name="label_budget">Бюджет:</string>
-    <string name="label_buy_ticket">Купить билет</string>
+    <string name="label_country">Country:</string>
+    <string name="label_director">Director:</string>
+    <string name="label_scenario">Scenario:</string>
+    <string name="label_actors">Actors:</string>
+    <string name="label_agelimit">Age limit:</string>
+    <string name="label_duration">Duration:</string>
+    <string name="label_genre">Genre:</string>
+    <string name="label_budget">Budget:</string>
+    <string name="label_buy_ticket">Buy ticket</string>
+    <string name="today">today</string>
+    <string name="tickets">tickets</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

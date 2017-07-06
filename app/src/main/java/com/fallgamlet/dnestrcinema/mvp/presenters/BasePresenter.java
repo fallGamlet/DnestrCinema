@@ -2,33 +2,33 @@ package com.fallgamlet.dnestrcinema.mvp.presenters;
 
 import android.os.Bundle;
 
-import com.fallgamlet.dnestrcinema.mvp.views.IView;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpView;
 
 /**
  * Created by fallgamlet on 09.04.17.
  */
 
-abstract class BasePresenter<T extends IView> implements IPresenter<T> {
-    protected T mView;
+public abstract class BasePresenter<T extends MvpView> implements MvpPresenter<T> {
+    private T view;
 
     @Override
-    public void setView(T view) {
-        mView = view;
+    public void bindView(T view) {
+        this.view = view;
+    }
+
+    @Override
+    public void unbindView() {
+        bindView(null);
     }
 
     @Override
     public T getView() {
-        return mView;
+        return view;
     }
 
     @Override
-    public void onStart() {
-
-    }
-
-    @Override
-    public void onStop() {
-        setView(null);
+    public void onDestroy() {
+        unbindView();
     }
 
     @Override
@@ -39,5 +39,9 @@ abstract class BasePresenter<T extends IView> implements IPresenter<T> {
     @Override
     public void onResume(Bundle bundle) {
 
+    }
+
+    public boolean isViewBinded() {
+        return view != null;
     }
 }
