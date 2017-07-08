@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -18,8 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTodayPresenter;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpTodayView;
 import com.fallgamlet.dnestrcinema.ui.CinemaBuyTicketActivity;
-import com.fallgamlet.dnestrcinema.ui.movie.detail.CinemaDetailActivity;
+import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity;
 import com.fallgamlet.dnestrcinema.ui.movie.DividerItemDecoration;
 import com.fallgamlet.dnestrcinema.ui.movie.MovieRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.R;
@@ -348,9 +349,9 @@ public class CinemaFragment
     protected void navigateToDetail(MovieItem movieItem) {
         if (movieItem != null) {
             Bundle bundle = new Bundle();
-            bundle.putParcelable(CinemaDetailActivity.ARG_MOVIE, movieItem);
+            bundle.putParcelable(MovieDetailActivity.ARG_MOVIE, movieItem);
 
-            Intent intent = new Intent(getContext(), CinemaDetailActivity.class);
+            Intent intent = new Intent(getContext(), MovieDetailActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
         }

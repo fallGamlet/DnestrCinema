@@ -1,24 +1,31 @@
 package com.fallgamlet.dnestrcinema.ui.start;
 
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.ui.movie.today.CinemaFragment;
-import com.fallgamlet.dnestrcinema.ui.movie.soon.CinemaFragmentSoon;
-import com.fallgamlet.dnestrcinema.ui.about.AboutFragment;
-import com.fallgamlet.dnestrcinema.ui.news.NewsFragment;
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter;
-import com.fallgamlet.dnestrcinema.network.KinoTir;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpAboutView;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpSoonView;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpTodayView;
+import com.fallgamlet.dnestrcinema.ui.navigation.MvpBottomNavigationView;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
+import com.fallgamlet.dnestrcinema.ui.navigation.MvpNavigationPresenterImpl;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpNewsView;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpTicketsView;
 import com.fallgamlet.dnestrcinema.utils.ViewUtils;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class StartActivity
         extends AppCompatActivity
@@ -30,32 +37,112 @@ public class StartActivity
     }
 
     //region Fields
-    private Toolbar mToolbar;
-    private TabLayout mTablayout;
-    private ViewPager mViewPager;
+    @BindView(R.id.tablayout)
+    protected TabLayout mTablayout;
+    @BindView(R.id.viewpager)
+    protected ViewPager mViewPager;
+    @BindView(R.id.bottomNavigationView)
+    protected BottomNavigationView mBottomNavigationView;
+
+    private ViewPagerAdapter adapter;
+
+    private NodeContainer nodeContainer;
+    private MvpNavigationPresenter bottomNavigationPresenter;
     //endregion
 
-    //region Override methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.start);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mTablayout = (TabLayout) findViewById(R.id.tablayout);
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        ButterKnife.bind(this);
 
-        mViewPager.setOffscreenPageLimit(0);
+        initData();
+    }
 
-        setSupportActionBar(mToolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayShowHomeEnabled(true);
-        }
+    private void initData() {
+        nodeContainer = new NodeContainer();
+
+        initNavigation();
 
         setupViewPager(mViewPager);
-        mTablayout.setupWithViewPager(mViewPager);
+
+        showToday();
     }
+
+    private void initNavigation() {
+        MvpNavigationView bottomNavigationView = new MvpBottomNavigationView(mBottomNavigationView);
+        bottomNavigationPresenter = new MvpNavigationPresenterImpl(bottomNavigationView, this);
+        bottomNavigationView.setPresenter(bottomNavigationPresenter);
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        viewPager.addOnPageChangeListener(getOnPageChangeListener());
+
+        mTablayout.setupWithViewPager(viewPager);
+
+        viewPager.setAdapter(getPageAdapter());
+    }
+
+    private synchronized ViewPagerAdapter getPageAdapter() {
+        if (adapter == null) {
+            adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+            adapter.addFragment(nodeContainer.getTodayFactory().getFragment(), getString(R.string.today));
+            adapter.addFragment(nodeContainer.getSoonFactory().getFragment(), getString(R.string.soon));
+            adapter.addFragment(nodeContainer.getTicketsFactory().getFragment(), getString(R.string.tickets));
+            adapter.addFragment(nodeContainer.getNewsFactory().getFragment(), getString(R.string.news));
+            adapter.addFragment(nodeContainer.getAboutFactory().getFragment(), getString(R.string.about));
+
+            adapter.notifyDataSetChanged();
+        }
+
+        return adapter;
+    }
+
+    private ViewPager.OnPageChangeListener getOnPageChangeListener() {
+        return new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                StartActivity.this.onPageSelected(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        };
+    }
+
+    private void onPageSelected(int position) {
+        Fragment fragment = adapter.getItem(position);
+
+        if (fragment == null) {
+            return;
+        }
+
+        if (fragment instanceof MvpTodayView) {
+            showToday();
+        }
+        else if (fragment instanceof MvpSoonView) {
+            showSoon();
+        }
+        else if (fragment instanceof MvpTicketsView) {
+            showTickets();
+        }
+        else if (fragment instanceof MvpNewsView) {
+            showNews();
+        }
+        else if (fragment instanceof MvpAboutView) {
+            showAbout();
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -100,87 +187,96 @@ public class StartActivity
 
     @Override
     protected void onDestroy() {
-        cinemaNowFragment = null;
-        cinemaSoonFragment = null;
-        aboutFragment = null;
-        mToolbar = null;
-        mTablayout = null;
-        mViewPager = null;
-
         super.onDestroy();
     }
-    //endregion
 
-    //region Methods
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
-
-        adapter.addFragment(getCinemaNowFragment(), getString(R.string.now));
-        adapter.addFragment(getCinemaSoonFragment(), getString(R.string.soon));
-        adapter.addFragment(getCinemaNewsFragment(), getString(R.string.news));
-        adapter.addFragment(getAboutFragment(), getString(R.string.about));
-
-        adapter.notifyDataSetChanged();
-    }
-    //endregion
 
     //region Fragments singletons
-    protected CinemaFragment cinemaNowFragment;
-    protected CinemaFragment getCinemaNowFragment() {
-        if (cinemaNowFragment == null) {
-            cinemaNowFragment = CinemaFragment.newInstance(KinoTir.BASE_URL+KinoTir.PATH_NOW);
-        }
-        return cinemaNowFragment;
-    }
-
-    protected CinemaFragmentSoon cinemaSoonFragment;
-    protected CinemaFragmentSoon getCinemaSoonFragment() {
-        if (cinemaSoonFragment == null) {
-            cinemaSoonFragment = CinemaFragmentSoon.newInstance(KinoTir.BASE_URL+KinoTir.PATH_SOON);
-        }
-        return cinemaSoonFragment;
-    }
-
-    protected NewsFragment cinemaNewsFragment;
-    protected NewsFragment getCinemaNewsFragment() {
-        if (cinemaNewsFragment == null) {
-            cinemaNewsFragment = NewsFragment.newInstance(KinoTir.BASE_URL+KinoTir.PATH_NEWS);
-        }
-        return cinemaNewsFragment;
-    }
-
-    protected AboutFragment aboutFragment;
-    protected AboutFragment getAboutFragment() {
-        if (aboutFragment == null) {
-            aboutFragment = new AboutFragment();
-        }
-        return aboutFragment;
-    }
+//    protected CinemaFragment cinemaNowFragment;
+//    protected CinemaFragment getCinemaNowFragment() {
+//        if (cinemaNowFragment == null) {
+//            cinemaNowFragment = CinemaFragment.newInstance(KinoTir.BASE_URL+KinoTir.PATH_NOW);
+//        }
+//        return cinemaNowFragment;
+//    }
+//
+//    protected CinemaFragmentSoon cinemaSoonFragment;
+//    protected CinemaFragmentSoon getCinemaSoonFragment() {
+//        if (cinemaSoonFragment == null) {
+//            cinemaSoonFragment = CinemaFragmentSoon.newInstance(KinoTir.BASE_URL+KinoTir.PATH_SOON);
+//        }
+//        return cinemaSoonFragment;
+//    }
+//
+//    protected NewsFragment cinemaNewsFragment;
+//    protected NewsFragment getCinemaNewsFragment() {
+//        if (cinemaNewsFragment == null) {
+//            cinemaNewsFragment = NewsFragment.newInstance(KinoTir.BASE_URL+KinoTir.PATH_NEWS);
+//        }
+//        return cinemaNewsFragment;
+//    }
+//
+//    protected AboutFragment aboutFragment;
+//    protected AboutFragment getAboutFragment() {
+//        if (aboutFragment == null) {
+//            aboutFragment = new AboutFragment();
+//        }
+//        return aboutFragment;
+//    }
     //endregion
 
     @Override
     public void showToday() {
+        int position = adapter.getPosition(nodeContainer.getTodayFactory().getFragment());
 
+        showView(position);
+
+        bottomNavigationPresenter.onTodaySelected();
     }
 
     @Override
     public void showSoon() {
+        int position = adapter.getPosition(nodeContainer.getSoonFactory().getFragment());
 
+        showView(position);
+
+        bottomNavigationPresenter.onSoonSelected();
     }
 
     @Override
     public void showTickets() {
+        int position = adapter.getPosition(nodeContainer.getTicketsFactory().getFragment());
 
+        showView(position);
+
+        bottomNavigationPresenter.onTicketsSelected();
     }
 
     @Override
     public void showAbout() {
+        int position = adapter.getPosition(nodeContainer.getAboutFactory().getFragment());
 
+        showView(position);
+
+        bottomNavigationPresenter.onAboutSelected();
     }
 
     @Override
     public void showNews() {
+        int position = adapter.getPosition(nodeContainer.getNewsFactory().getFragment());
 
+        showView(position);
+
+        bottomNavigationPresenter.onNewsSelected();
+    }
+
+    private void showView(int position) {
+        if (position < 0 || position >= mViewPager.getAdapter().getCount()) {
+            return;
+        }
+
+        if (mViewPager.getCurrentItem() != position) {
+            mViewPager.setCurrentItem(position);
+        }
     }
 }

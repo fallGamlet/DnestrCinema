@@ -1,5 +1,6 @@
-package com.fallgamlet.dnestrcinema.ui.movie.soon;
+package com.fallgamlet.dnestrcinema.mvp.views;
 
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpSoonPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpView;
 
 /**

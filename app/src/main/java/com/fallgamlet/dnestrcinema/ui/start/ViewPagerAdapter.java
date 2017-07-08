@@ -55,4 +55,8 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         return obj;
     }
+
+    public int getPosition(Fragment fragment) {
+        return mFragments.indexOf(fragment);
+    }
 }

@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpMovieDetailPresenter;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpBaseActivity;
 import com.fallgamlet.dnestrcinema.ui.movie.MovieRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.R;
@@ -25,9 +27,9 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CinemaDetailActivity
-        extends MvpBaseActivity <CinemaDetailPresenter>
-        implements View.OnClickListener, CinemaDetailView
+public class MovieDetailActivity
+        extends MvpBaseActivity <MvpMovieDetailPresenter>
+        implements View.OnClickListener, MvpMovieDetailView
 {
     //region Static fields
     public static String ARG_MOVIE = "movie_item_now";
@@ -62,7 +64,7 @@ public class CinemaDetailActivity
     @BindView(R.id.trailerBtn) View mTrailerBtn;
     @BindView(R.id.buyTicketButton) View mBuyTicketButton;
 
-    CinemaDetailPresenter<CinemaDetailView> mPresenter;
+    MvpMovieDetailPresenter mPresenter;
     //endregion
 
     //region Override methods
@@ -80,7 +82,7 @@ public class CinemaDetailActivity
             movieItem = bundle.getParcelable(ARG_MOVIE);
         }
 
-        mPresenter = new CinemaDetailPresenterImpl(this);
+        mPresenter = new MvpMovieDetailPresenterImpl(this);
         mPresenter.setData(movieItem);
     }
 
@@ -200,7 +202,7 @@ public class CinemaDetailActivity
     }
     //endregion
 
-    //region CinemaDetailView implementation
+    //region MvpMovieDetailView implementation
     @Override
     public void setImageAdapter(RecyclerView.Adapter adapter) {
         mImageListView.setAdapter(adapter);

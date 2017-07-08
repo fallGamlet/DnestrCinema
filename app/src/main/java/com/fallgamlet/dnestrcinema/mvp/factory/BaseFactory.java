@@ -34,6 +34,21 @@ public abstract class BaseFactory<F extends Fragment, V extends MvpView, P exten
     }
 
     @Override
+    public void setFragment(Fragment fragment) {
+            this.fragment = (F) fragment;
+    }
+
+    @Override
+    public void setView(V view) {
+        this.view = view;
+    }
+
+    @Override
+    public void setPresenter(P presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
     public String getTag() {
         return null;
     }

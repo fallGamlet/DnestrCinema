@@ -1,5 +1,7 @@
-package com.fallgamlet.dnestrcinema.mvp.presenters;
+package com.fallgamlet.dnestrcinema.ui.start;
 
+import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter;
+import com.fallgamlet.dnestrcinema.mvp.presenters.StartPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpStartView;
 
 /**

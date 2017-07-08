@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpLoginPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpBaseFragment;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpLoginView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +22,7 @@ import com.fallgamlet.dnestrcinema.mvp.views.MvpBaseFragment;
  * create an instance of this fragment.
  */
 public class LoginFragment
-        extends MvpBaseFragment<LoginPresenter>
+        extends MvpBaseFragment<MvpLoginPresenter>
     implements MvpLoginView
 {
     // TODO: Rename parameter arguments, choose names that match
@@ -85,8 +87,7 @@ public class LoginFragment
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            mListener = null;
         }
     }
 

@@ -13,10 +13,18 @@ public interface MvpFactory<V extends MvpView, P extends MvpPresenter> {
 
     Fragment getFragment();
 
+    void setFragment(Fragment fragment);
+
     V getView();
+
+    void setView(V view);
 
     P getPresenter();
 
+    void setPresenter(P presenter);
+
     String getTag();
+
+    void initRelations();
 
 }

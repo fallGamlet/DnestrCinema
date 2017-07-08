@@ -2,19 +2,18 @@
     <string name="app_name">Afisha c.Tiraspol</string>
     <string name="title_main" translatable="false">@string/app_name</string>
 
-    <string name="now">now</string>
-    <string name="soon">soon</string>
-    <string name="news">news</string>
-    <string name="about">contacts</string>
+    <string name="soon">Soon</string>
+    <string name="news">News</string>
+    <string name="about">Contacts</string>
 
-    <string name="ok">ок</string>
-    <string name="yes">yes</string>
-    <string name="no">no</string>
-    <string name="accept">applay</string>
-    <string name="cancel">cancel</string>
+    <string name="ok">Ok</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
     <string name="error">Error</string>
-    <string name="update">refresh</string>
-    <string name="share">share</string>
+    <string name="update">Refresh</string>
+    <string name="share">Share</string>
     <string name="yet_empty">No content</string>
     <string name="developer_email" translatable="false">fallgamlet@yandex.ru</string>
     <string name="developer_contact_info">Developer contact info\nNickname: fallGamlet</string>
@@ -27,14 +26,14 @@
     <string name="org_desc_info">The schedule may change. Specify the time of sessions before going to the cinema</string>
     <string name="label_cashbox_with_worktime">Cashbox (с 10:00 до 22:00)</string>
     <string name="label_autoanswer">Autoanswer</string>
-    <string name="room_blue">blue room</string>
-    <string name="room_bordo">bordo room</string>
-    <string name="room_dvd">small room</string>
+    <string name="room_blue">Blue room</string>
+    <string name="room_bordo">Bordo room</string>
+    <string name="room_dvd">Small room</string>
     <string name="msg_not_found_intent_for_view_google_map">No apps found for Google Maps</string>
     <string name="msg_not_found_intent_for_email">No apps found to send email</string>
     <string name="app_id" translatable="false">com.fallgamlet.dnestrcinema</string>
 
-    <string name="label_from">From</string>
+    <string name="label_from">from</string>
     <string name="label_trailer">Trailer</string>
 
     <string name="label_country">Country:</string>
@@ -46,10 +45,10 @@
     <string name="label_genre">Genre:</string>
     <string name="label_budget">Budget:</string>
     <string name="label_buy_ticket">Buy ticket</string>
-    <string name="today">today</string>
-    <string name="tickets">tickets</string>
+    <string name="today">Today</string>
+    <string name="tickets">Tickets</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 
 </resources>

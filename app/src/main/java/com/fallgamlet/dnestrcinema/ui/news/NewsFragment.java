@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNewsPresenter;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpNewsView;
 import com.fallgamlet.dnestrcinema.utils.DateTimeUtils;
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpBaseFragment;

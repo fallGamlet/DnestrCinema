@@ -1,10 +1,10 @@
-package com.fallgamlet.dnestrcinema.ui.movie.detail;
+package com.fallgamlet.dnestrcinema.mvp.views;
 
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
-import com.fallgamlet.dnestrcinema.mvp.views.MvpView;
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpMovieDetailPresenter;
 
 import java.util.Collection;
 import java.util.Date;
@@ -13,7 +13,7 @@ import java.util.Date;
  * Created by fallgamlet on 09.04.17.
  */
 
-public interface CinemaDetailView extends MvpView <CinemaDetailPresenter> {
+public interface MvpMovieDetailView extends MvpView <MvpMovieDetailPresenter> {
     void setImageAdapter(RecyclerView.Adapter adapter);
     ImageView getPosterImageView();
     void setPosterImage(Drawable drawable);

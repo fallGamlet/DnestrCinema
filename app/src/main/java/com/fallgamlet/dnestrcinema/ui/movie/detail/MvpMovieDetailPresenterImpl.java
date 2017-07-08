@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpMovieDetailPresenter;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
 import com.fallgamlet.dnestrcinema.ui.ImageActivity;
 import com.fallgamlet.dnestrcinema.ui.movie.ImageRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter;
@@ -34,9 +36,9 @@ import okhttp3.Response;
  * Created by fallgamlet on 09.04.17.
  */
 
-public class CinemaDetailPresenterImpl
-        extends BasePresenter<CinemaDetailView>
-        implements CinemaDetailPresenter<CinemaDetailView>
+public class MvpMovieDetailPresenterImpl
+        extends BasePresenter<MvpMovieDetailView>
+        implements MvpMovieDetailPresenter
 {
 
     //region Fields
@@ -49,7 +51,7 @@ public class CinemaDetailPresenterImpl
     private AlertDialog mDialog;
     //endregion
 
-    public CinemaDetailPresenterImpl(CinemaDetailView view) {
+    public MvpMovieDetailPresenterImpl(MvpMovieDetailView view) {
         bindView(view);
         if (view != null) {
             view.setImageAdapter(getImagesAdapter());

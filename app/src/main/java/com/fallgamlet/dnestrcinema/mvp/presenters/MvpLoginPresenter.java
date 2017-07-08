@@ -1,12 +1,13 @@
-package com.fallgamlet.dnestrcinema.ui.login;
+package com.fallgamlet.dnestrcinema.mvp.presenters;
 
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpPresenter;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpLoginView;
 
 /**
  * Created by fallgamlet on 03.07.17.
  */
 
-public interface LoginPresenter
+public interface MvpLoginPresenter
         extends MvpPresenter <MvpLoginView>
 {
 }

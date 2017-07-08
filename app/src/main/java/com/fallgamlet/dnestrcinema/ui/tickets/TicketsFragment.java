@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTicketsPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpBaseFragment;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpTicketsView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,8 +87,7 @@ public class TicketsFragment
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            mListener = null;
         }
     }
 

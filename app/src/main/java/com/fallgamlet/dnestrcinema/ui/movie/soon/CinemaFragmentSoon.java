@@ -18,7 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.fallgamlet.dnestrcinema.ui.movie.detail.CinemaDetailActivity;
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpSoonPresenter;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpSoonView;
+import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity;
 import com.fallgamlet.dnestrcinema.ui.movie.DividerItemDecoration;
 import com.fallgamlet.dnestrcinema.ui.movie.MovieRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.R;
@@ -352,9 +354,9 @@ public class CinemaFragmentSoon
     protected void navigateToDetail(MovieItem movieItem) {
         if (movieItem != null) {
             Bundle bundle = new Bundle();
-            bundle.putParcelable(CinemaDetailActivity.ARG_MOVIE, movieItem);
+            bundle.putParcelable(MovieDetailActivity.ARG_MOVIE, movieItem);
 
-            Intent intent = new Intent(getContext(), CinemaDetailActivity.class);
+            Intent intent = new Intent(getContext(), MovieDetailActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
         }

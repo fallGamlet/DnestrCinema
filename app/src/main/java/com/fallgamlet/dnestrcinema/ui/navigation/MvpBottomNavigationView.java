@@ -1,4 +1,4 @@
-package com.fallgamlet.dnestrcinema.mvp.views;
+package com.fallgamlet.dnestrcinema.ui.navigation;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -6,13 +6,14 @@ import android.support.design.widget.BottomNavigationView;
 import android.view.MenuItem;
 
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.mvp.presenters.NavigationPresenter;
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
 
 /**
  * Created by fallgamlet on 02.07.17.
  */
 
-public class MvpNavigationViewImpl
+public class MvpBottomNavigationView
         implements
         MvpNavigationView,
         BottomNavigationView.OnNavigationItemSelectedListener,
@@ -21,12 +22,11 @@ public class MvpNavigationViewImpl
 
     private BottomNavigationView navigationView;
     private Context context;
-    private NavigationPresenter presenter;
+    private MvpNavigationPresenter presenter;
 
 
-    public MvpNavigationViewImpl(BottomNavigationView view, NavigationPresenter presenter) {
+    public MvpBottomNavigationView(BottomNavigationView view) {
         this.navigationView = view;
-        this.presenter = presenter;
         this.context = view.getContext();
 
         initListeners();
@@ -39,7 +39,6 @@ public class MvpNavigationViewImpl
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         boolean checked;
 
         switch (item.getItemId()) {
@@ -79,27 +78,37 @@ public class MvpNavigationViewImpl
 
     @Override
     public void selectToday() {
-        this.navigationView.setSelectedItemId(R.id.actionToday);
+        if (this.navigationView.getSelectedItemId() != R.id.actionToday) {
+            this.navigationView.setSelectedItemId(R.id.actionToday);
+        }
     }
 
     @Override
     public void selectSoon() {
-        this.navigationView.setSelectedItemId(R.id.actionSoon);
+        if (this.navigationView.getSelectedItemId() != R.id.actionSoon) {
+            this.navigationView.setSelectedItemId(R.id.actionSoon);
+        }
     }
 
     @Override
     public void selectTickets() {
-        this.navigationView.setSelectedItemId(R.id.actionTickets);
+        if (this.navigationView.getSelectedItemId() != R.id.actionTickets) {
+            this.navigationView.setSelectedItemId(R.id.actionTickets);
+        }
     }
 
     @Override
     public void selectAbout() {
-        this.navigationView.setSelectedItemId(R.id.actionAbout);
+        if (this.navigationView.getSelectedItemId() != R.id.actionAbout) {
+            this.navigationView.setSelectedItemId(R.id.actionAbout);
+        }
     }
 
     @Override
     public void selectNews() {
-        this.navigationView.setSelectedItemId(R.id.actionNews);
+        if (this.navigationView.getSelectedItemId() != R.id.actionNews) {
+            this.navigationView.setSelectedItemId(R.id.actionNews);
+        }
     }
 
     @Override
@@ -108,12 +117,12 @@ public class MvpNavigationViewImpl
     }
 
     @Override
-    public NavigationPresenter getPresenter() {
+    public MvpNavigationPresenter getPresenter() {
         return this.presenter;
     }
 
     @Override
-    public void setPresenter(NavigationPresenter presenter) {
+    public void setPresenter(MvpNavigationPresenter presenter) {
         this.presenter = presenter;
     }
 }

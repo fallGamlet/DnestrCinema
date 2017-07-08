@@ -1,5 +1,7 @@
-package com.fallgamlet.dnestrcinema.mvp.presenters;
+package com.fallgamlet.dnestrcinema.ui.navigation;
 
+import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter;
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
 
@@ -7,16 +9,16 @@ import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
  * Created by fallgamlet on 02.07.17.
  */
 
-public class NavigationPresenterImpl
+public class MvpNavigationPresenterImpl
         extends BasePresenter<MvpNavigationView>
-        implements NavigationPresenter
+        implements MvpNavigationPresenter
 {
 
     private NavigationRouter router;
     private State state;
 
 
-    public NavigationPresenterImpl(MvpNavigationView view, NavigationRouter router) {
+    public MvpNavigationPresenterImpl(MvpNavigationView view, NavigationRouter router) {
         this.state = new State();
 
         bindView(view);
@@ -39,12 +41,12 @@ public class NavigationPresenterImpl
 
     @Override
     public void onTodaySelected() {
-        if (isViewBinded()) {
-            getView().selectToday();
-        }
-
         if (!this.state.isStateToday()) {
             this.state.setStateToday();
+
+            if (isViewBinded()) {
+                getView().selectToday();
+            }
 
             if (isRouterBinded()) {
                 getRouter().showToday();
@@ -54,12 +56,12 @@ public class NavigationPresenterImpl
 
     @Override
     public void onSoonSelected() {
-        if (isViewBinded()) {
-            getView().selectSoon();
-        }
-
         if (!this.state.isStateSoon()) {
             this.state.setStateSoon();
+
+            if (isViewBinded()) {
+                getView().selectSoon();
+            }
 
             if (isRouterBinded()) {
                 getRouter().showSoon();
@@ -69,12 +71,12 @@ public class NavigationPresenterImpl
 
     @Override
     public void onTicketsSelected() {
-        if (isViewBinded()) {
-            getView().selectTickets();
-        }
-
         if (!this.state.isStateTickets()) {
             this.state.setStateTickets();
+
+            if (isViewBinded()) {
+                getView().selectTickets();
+            }
 
             if (isRouterBinded()) {
                 getRouter().showTickets();
@@ -84,12 +86,12 @@ public class NavigationPresenterImpl
 
     @Override
     public void onAboutSelected() {
-        if (isViewBinded()) {
-            getView().selectAbout();
-        }
-
         if (!this.state.isStateAbout()) {
             this.state.setStateAbout();
+
+            if (isViewBinded()) {
+                getView().selectAbout();
+            }
 
             if (isRouterBinded()) {
                 getRouter().showAbout();
@@ -99,12 +101,12 @@ public class NavigationPresenterImpl
 
     @Override
     public void onNewsSelected() {
-        if (isViewBinded()) {
-            getView().selectNews();
-        }
-
         if (!this.state.isStateNews()) {
             this.state.setStateNews();
+
+            if (isViewBinded()) {
+                getView().selectNews();
+            }
 
             if (isRouterBinded()) {
                 getRouter().showNews();
