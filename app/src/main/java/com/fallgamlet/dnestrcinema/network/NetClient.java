@@ -94,13 +94,13 @@ public class NetClient {
                 });
     }
 
-    public Observable<List<MovieItem>> getDetailMovies(String path) {
+    public Observable<MovieItem> getDetailMovies(String path) {
         Request request = requestFactory.detailMovieRequest(path);
 
         return createObservable(request)
-                .map(new Function<String, List<MovieItem>>() {
+                .map(new Function<String, MovieItem>() {
                     @Override
-                    public List<MovieItem> apply(@NonNull String html) throws Exception {
+                    public MovieItem apply(@NonNull String html) throws Exception {
                         return mapperFactory.detailMoviesMapper().map(html);
                     }
                 });

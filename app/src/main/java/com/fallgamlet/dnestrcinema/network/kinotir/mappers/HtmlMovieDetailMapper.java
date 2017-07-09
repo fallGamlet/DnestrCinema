@@ -18,56 +18,43 @@ import java.util.List;
  * Created by fallgamlet on 09.07.17.
  */
 
-public class HtmlMovieDetailMapper implements Mapper<String, List<MovieItem>> {
+public class HtmlMovieDetailMapper implements Mapper<String, MovieItem> {
 
     private MovieDateMapper dateMapper = new MovieDateMapper();
 
     @Override
-    public List<MovieItem> map(String html) {
-        if (StringUtils.isEmpty(html)) {
+    public MovieItem map(String html) {
+        if (html == null) {
             return null;
         }
+
         Document doc = Jsoup.parse(html);
         if (doc == null) {
             return null;
         }
 
-        Elements elements = doc.select(".movies-tile>.item>.item-wrapper");
-        if (elements == null || elements.isEmpty()) {
+        String buyTicketUrl = doc.select("a.buy-ticket-btn").attr("href");
+
+        Element info = doc.select(".film .info").first();
+        if (info == null) {
             return null;
         }
 
-        List<MovieItem> movies = new ArrayList<>(elements.size());
-        for (Element element: elements) {
-            MovieItem movie = parseElement(element);
-            if (movie != null) {
-                movies.add(movie);
-            }
-        }
-
-        return movies;
-    }
-
-    private MovieItem parseElement(Element element) {
-        if (element == null) {
-            return null;
-        }
-
-        String posterUrl = element.select(">.poster>img").attr("src");
-        String title = element.select(">h2").text();
-        String linkUrl = element.select(">.overlay>a").attr("href");
-        String buyTicketUrl = element.select(">.overlay>.by-ticket>a").attr("href");
+        String posterUrl = info.select(">.additional-poster>.image>img").attr("src");
 
         MovieItem movieItem = new MovieItem();
-        parseFeatures(element.select(">.overlay .features"), movieItem);
-
-        movieItem.setTitle(title);
         movieItem.setPosterUrl(posterUrl);
-        movieItem.setLink(linkUrl);
         movieItem.setBuyTicketLink(buyTicketUrl);
 
-        parseSchedule(element.select(">.overlay .halls>li"), movieItem.getSchedules());
-        parseTrailers(element.select(">.overlay>.links>a.trailer"), movieItem);
+        Element mainInfo  = info.select(".main-info").first();
+        if (mainInfo != null) {
+            parseFeatures(info.select(".features"), movieItem);
+            String description = info.select(".description").text(); // span
+            movieItem.setDescription(description);
+        }
+
+        parseImages(info.select(".slider"), movieItem);
+        parseTrailers(info.select(".trailer"), movieItem);
 
         return movieItem;
     }
@@ -78,21 +65,38 @@ public class HtmlMovieDetailMapper implements Mapper<String, List<MovieItem>> {
         }
 
         src = src.select(">li");
+
         String strStart = null;
+        String strCountry = null;
+        String strDirector = null;
+        String strScenario = null;
+        String strActors = null;
         String strGenre = null;
-        String strDuration = null;
+        String strBudget = null;
         String strAgeLimit = null;
+        String strDuration = null;
 
         for (Element el: src) {
-            String val = el.childNodeSize() >= 2? el.childNode(1).toString().trim(): null;
+            String key = el.select("label").text().trim();
+            String val = el.select("div").text().trim();
             if (val != null) {
-                if (!el.select(">i:containsOwn(Старт)").isEmpty()) {
+                if ("Старт:".equals(key)) {
                     strStart = val;
-                } else if (!el.select("i:containsOwn(Жанр)").isEmpty()) {
+                } else if ("Страна:".equals(key)) {
+                    strCountry = val;
+                } else if ("Режисер:".equals(key)) {
+                    strDirector= val;
+                } else if ("Сценарий:".equals(key)) {
+                    strScenario= val;
+                } else if ("В ролях:".equals(key)) {
+                    strActors = val;
+                } else if ("Жанр:".equals(key)) {
                     strGenre = val;
-                } else if (!el.select("i:containsOwn(Возраст)").isEmpty()) {
+                } else if ("Бюджет:".equals(key)) {
+                    strBudget = val;
+                } else if ("Возраст:".equals(key)) {
                     strAgeLimit = val;
-                } else if (!el.select("i:containsOwn(Продолжительность)").isEmpty()) {
+                } else if ("Продолжительность:".equals(key)) {
                     strDuration = val;
                 }
             }
@@ -100,37 +104,31 @@ public class HtmlMovieDetailMapper implements Mapper<String, List<MovieItem>> {
 
         Date start = dateMapper.map(strStart);
 
-        movieItem.setDuration(strDuration);
-        movieItem.setGenre(strGenre);
         movieItem.setPubDate(start);
+        movieItem.setCountry(strCountry);
+        movieItem.setDirector(strDirector);
+        movieItem.setScenario(strScenario);
+        movieItem.setActors(strActors);
+        movieItem.setGenre(strGenre);
+        movieItem.setBudget(strBudget);
         movieItem.setAgeLimit(strAgeLimit);
+        movieItem.setDuration(strDuration);
     }
 
-    private void parseSchedule(Elements src, List<MovieItem.Schedule> scheduleList) {
-        if (src == null || scheduleList == null) {
+    private void parseImages(Elements src, MovieItem movieItem) {
+        if (src == null || movieItem == null) {
             return;
         }
-        for (Element item: src) {
-            MovieItem.Schedule schedule = parseScheduleItem(item);
-            scheduleList.add(schedule);
+
+        src = src.select(">a");
+        for (Element el: src) {
+            String bigImg = el.attr("href");
+            String smallImg = el.select("img").attr("src");
+
+            if (smallImg != null && !smallImg.isEmpty()) {
+                movieItem.getImgUrlSet().add(smallImg);
+            }
         }
-    }
-
-    private MovieItem.Schedule parseScheduleItem(Element item) {
-        String roomName = item.select(">h5").text();
-        Elements els = item.select(">i");
-        Element last = els.last();
-
-        int i= item.childNodes().indexOf(last);
-        Node elTime = i>=0 && i+1<item.childNodeSize()? item.childNodes().get(i+1): null;
-
-        String timesStr = elTime==null? null: elTime.toString();
-
-        MovieItem.Schedule schedule = new MovieItem.Schedule();
-        schedule.room = roomName;
-        schedule.value = timesStr;
-
-        return schedule;
     }
 
     private void parseTrailers(Elements src, MovieItem movieItem) {
@@ -138,14 +136,14 @@ public class HtmlMovieDetailMapper implements Mapper<String, List<MovieItem>> {
             return;
         }
 
+        src = src.select(">iframe");
         for (Element el: src) {
-            String url = el.attr("href");
+            String url = el.attr("src");
+
             if (url != null && !url.isEmpty()) {
                 movieItem.getTrailerUrlSet().add(url);
             }
         }
-
     }
-
 
 }

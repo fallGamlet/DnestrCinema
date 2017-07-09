@@ -35,7 +35,7 @@ public class KinotirMapperFactory implements MapperFactory {
     }
 
     @Override
-    public Mapper<String, List<MovieItem>> detailMoviesMapper() {
+    public Mapper<String, MovieItem> detailMoviesMapper() {
         return new HtmlMovieDetailMapper();
     }
 

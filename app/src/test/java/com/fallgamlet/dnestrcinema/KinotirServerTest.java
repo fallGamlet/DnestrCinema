@@ -31,8 +31,8 @@ public class KinotirServerTest {
     private MapperFactory mapperFactory = new KinotirMapperFactory();
     private NetClient netClient = new NetClient(requestFactory, mapperFactory);
 
-    private String login = "test@mail.ru";
-    private String password = "*****";
+    private String login = "fallgamlet@yandex.ru";
+    private String password = "3nGggW3y";
 
 
     @Test
@@ -105,19 +105,18 @@ public class KinotirServerTest {
     @Test
     public void testGetDetailMovies() throws Exception {
 
-        final MoviesResult result = new MoviesResult();
+        final MovieDetailResult result = new MovieDetailResult();
 
         String path = "/filmy/chelovek-pauk-vozvraschenie-domoj/";
 
         netClient.getDetailMovies(path)
 //                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        createConsumerMovies(result),
+                        createConsumerMovieDetail(result),
                         createConsumerThrowable(result)
                 );
 
-        Assert.assertNotNull(result.items);
-        Assert.assertFalse(result.items.isEmpty());
+        Assert.assertNotNull(result.value);
         Assert.assertNull(result.throwable);
     }
 
@@ -181,6 +180,15 @@ public class KinotirServerTest {
         };
     }
 
+    private Consumer<MovieItem> createConsumerMovieDetail(final MovieDetailResult result) {
+        return new Consumer<MovieItem>() {
+            @Override
+            public void accept(@NonNull MovieItem item) throws Exception {
+                result.value = item;
+            }
+        };
+    }
+
     private Consumer<List<NewsItem>> createConsumerNewses(final NewsesResult result) {
         return new Consumer<List<NewsItem>>() {
             @Override
@@ -210,6 +218,10 @@ public class KinotirServerTest {
 
     private class MoviesResult extends BaseResult {
         public List<MovieItem> items;
+    }
+
+    private class MovieDetailResult extends BaseResult {
+        public MovieItem value;
     }
 
     private class NewsesResult extends BaseResult {

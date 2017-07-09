@@ -18,7 +18,7 @@ public interface MapperFactory {
 
     Mapper<String, List<MovieItem>> soonMoviesMapper();
 
-    Mapper<String, List<MovieItem>> detailMoviesMapper();
+    Mapper<String, MovieItem> detailMoviesMapper();
 
     Mapper<String, List<TicketItem>> ticketsMapper();
 
