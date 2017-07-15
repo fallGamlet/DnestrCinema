@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTicketsPresenter;
+import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpBaseFragment;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpTicketsView;
 
@@ -22,8 +23,10 @@ import com.fallgamlet.dnestrcinema.mvp.views.MvpTicketsView;
  * create an instance of this fragment.
  */
 public class TicketsFragment
-    extends MvpBaseFragment <MvpTicketsPresenter>
-    implements MvpTicketsView
+    extends
+        Fragments.MvpTicketsViewFragment
+    implements
+        MvpTicketsView
 {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

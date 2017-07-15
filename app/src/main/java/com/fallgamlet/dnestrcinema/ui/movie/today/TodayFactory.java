@@ -9,11 +9,11 @@ import com.fallgamlet.dnestrcinema.mvp.views.MvpTodayView;
  */
 
 public class TodayFactory
-        extends BaseFactory<CinemaFragment, MvpTodayView, MvpTodayPresenter>
+        extends BaseFactory<TodayMoviesFragment, MvpTodayView, MvpTodayPresenter>
 {
 
     public TodayFactory() {
-        CinemaFragment fragment = new CinemaFragment();
+        TodayMoviesFragment fragment = new TodayMoviesFragment();
         TodayPresenterImpl presenter = new TodayPresenterImpl();
 
         this.fragment = fragment;

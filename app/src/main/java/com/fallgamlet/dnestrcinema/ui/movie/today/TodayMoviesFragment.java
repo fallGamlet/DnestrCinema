@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTodayPresenter;
+import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpTodayView;
 import com.fallgamlet.dnestrcinema.ui.CinemaBuyTicketActivity;
 import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity;
@@ -39,9 +40,11 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class CinemaFragment
-    extends MvpBaseFragment <MvpTodayPresenter>
-    implements MvpTodayView
+public class TodayMoviesFragment
+    extends
+        Fragments.MvpTodayViewFragment
+    implements
+        MvpTodayView
 {
     //region Constants
     public static final String ARG_URL = "arg_url";
@@ -64,7 +67,7 @@ public class CinemaFragment
     AlertDialog dialog;
     //endregion
 
-    public CinemaFragment() {
+    public TodayMoviesFragment() {
         // Required empty public constructor
     }
 
@@ -72,22 +75,22 @@ public class CinemaFragment
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment CinemaFragment.
+     * @return A new instance of fragment TodayMoviesFragment.
      */
-    public static CinemaFragment newInstance() {
+    public static TodayMoviesFragment newInstance() {
         return newInstance(null, null);
     }
 
-    public static CinemaFragment newInstance(String url) {
+    public static TodayMoviesFragment newInstance(String url) {
         return newInstance(url, null);
     }
 
-    public static CinemaFragment newInstance(ArrayList<MovieItem> data) {
+    public static TodayMoviesFragment newInstance(ArrayList<MovieItem> data) {
         return newInstance(null, data);
     }
 
-    public static CinemaFragment newInstance(String url, ArrayList<MovieItem> data) {
-        CinemaFragment fragment = new CinemaFragment();
+    public static TodayMoviesFragment newInstance(String url, ArrayList<MovieItem> data) {
+        TodayMoviesFragment fragment = new TodayMoviesFragment();
         Bundle args = new Bundle();
         if (url != null) { args.putString(ARG_URL, url); }
         if (data != null) { args.putParcelableArrayList(ARG_DATA, data); }

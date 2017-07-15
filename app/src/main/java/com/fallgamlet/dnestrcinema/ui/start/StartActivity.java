@@ -12,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.factory.KinotirConfigFactory;
+import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpAboutView;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpSoonView;
@@ -61,7 +63,14 @@ public class StartActivity
     }
 
     private void initData() {
+        Config.getInstance().init(new KinotirConfigFactory());
+
         nodeContainer = new NodeContainer();
+
+//        mBottomNavigationView.getMenu().clear();
+//        mBottomNavigationView.inflateMenu(R.menu.menu_main);
+//        mBottomNavigationView.getMenu().add()
+
 
         initNavigation();
 
@@ -90,7 +99,8 @@ public class StartActivity
 
             adapter.addFragment(nodeContainer.getTodayFactory().getFragment(), getString(R.string.today));
             adapter.addFragment(nodeContainer.getSoonFactory().getFragment(), getString(R.string.soon));
-            adapter.addFragment(nodeContainer.getTicketsFactory().getFragment(), getString(R.string.tickets));
+            adapter.addFragment(nodeContainer.getLoginFactory().getFragment(), getString(R.string.tickets));
+//            adapter.addFragment(nodeContainer.getTicketsFactory().getFragment(), getString(R.string.tickets));
             adapter.addFragment(nodeContainer.getNewsFactory().getFragment(), getString(R.string.news));
             adapter.addFragment(nodeContainer.getAboutFactory().getFragment(), getString(R.string.about));
 
@@ -192,18 +202,18 @@ public class StartActivity
 
 
     //region Fragments singletons
-//    protected CinemaFragment cinemaNowFragment;
-//    protected CinemaFragment getCinemaNowFragment() {
+//    protected TodayMoviesFragment cinemaNowFragment;
+//    protected TodayMoviesFragment getCinemaNowFragment() {
 //        if (cinemaNowFragment == null) {
-//            cinemaNowFragment = CinemaFragment.newInstance(KinoTir.BASE_URL+KinoTir.PATH_NOW);
+//            cinemaNowFragment = TodayMoviesFragment.newInstance(KinoTir.BASE_URL+KinoTir.PATH_NOW);
 //        }
 //        return cinemaNowFragment;
 //    }
 //
-//    protected CinemaFragmentSoon cinemaSoonFragment;
-//    protected CinemaFragmentSoon getCinemaSoonFragment() {
+//    protected SoonMoviesFragment cinemaSoonFragment;
+//    protected SoonMoviesFragment getCinemaSoonFragment() {
 //        if (cinemaSoonFragment == null) {
-//            cinemaSoonFragment = CinemaFragmentSoon.newInstance(KinoTir.BASE_URL+KinoTir.PATH_SOON);
+//            cinemaSoonFragment = SoonMoviesFragment.newInstance(KinoTir.BASE_URL+KinoTir.PATH_SOON);
 //        }
 //        return cinemaSoonFragment;
 //    }

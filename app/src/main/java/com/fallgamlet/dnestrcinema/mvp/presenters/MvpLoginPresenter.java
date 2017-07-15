@@ -10,4 +10,11 @@ import com.fallgamlet.dnestrcinema.mvp.views.MvpLoginView;
 public interface MvpLoginPresenter
         extends MvpPresenter <MvpLoginView>
 {
+
+    void onLoginChanged(String value);
+
+    void onPasswordChanged(String value);
+
+    void onLogin();
+
 }

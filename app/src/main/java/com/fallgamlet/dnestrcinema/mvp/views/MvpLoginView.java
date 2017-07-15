@@ -9,4 +9,21 @@ import com.fallgamlet.dnestrcinema.mvp.presenters.MvpLoginPresenter;
 public interface MvpLoginView
         extends MvpView <MvpLoginPresenter>
 {
+
+    void setLogin(CharSequence value);
+
+    void setPassword(CharSequence value);
+
+    void setLoginEnabled(boolean enabled);
+
+    void setPasswordEnabled(boolean enabled);
+
+    void setLoginButtonEnabled(boolean enabled);
+
+    void setLoginVisible(boolean v);
+
+    void setPasswordVisible(boolean v);
+
+    void setLoginButtonVisible(boolean v);
+
 }

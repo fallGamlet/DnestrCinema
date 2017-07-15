@@ -5,7 +5,7 @@
         android:color="@color/colorBgMiddle"
         android:state_checked="false"/>
     <item
-        android:color="@color/colorBgLight"
+        android:color="@color/colorAccent"
         android:state_checked="true"/>
 
 </selector>

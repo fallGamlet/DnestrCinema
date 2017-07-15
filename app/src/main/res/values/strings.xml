@@ -11,7 +11,7 @@
     <string name="no">No</string>
     <string name="accept">Accept</string>
     <string name="cancel">Cancel</string>
-    <string name="error">Error</string>
+    <string name="error">Error</string>il
     <string name="update">Refresh</string>
     <string name="share">Share</string>
     <string name="yet_empty">No content</string>
@@ -50,5 +50,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="label_login">Login</string>
+    <string name="instraction_to_get_login_and_passwords">If you already bought tickets through the cinema \"Tiraspol\" site (kinotir.md), then the \"password\" should have come automatically by email</string>
 
 </resources>

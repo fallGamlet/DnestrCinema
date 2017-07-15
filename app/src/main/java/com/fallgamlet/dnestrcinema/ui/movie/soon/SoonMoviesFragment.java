@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpSoonPresenter;
+import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpSoonView;
 import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity;
 import com.fallgamlet.dnestrcinema.ui.movie.DividerItemDecoration;
@@ -41,14 +42,16 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CinemaFragmentSoon.OnFragmentInteractionListener} interface
+ * {@link SoonMoviesFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link CinemaFragmentSoon#newInstance} factory method to
+ * Use the {@link SoonMoviesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CinemaFragmentSoon
-    extends MvpBaseFragment <MvpSoonPresenter>
-    implements MvpSoonView
+public class SoonMoviesFragment
+    extends
+        Fragments.MvpSoonViewFragment
+    implements
+        MvpSoonView
 {
     //region Constants
     public static final String ARG_URL = "arg_url";
@@ -71,7 +74,7 @@ public class CinemaFragmentSoon
     AlertDialog dialog;
     //endregion
 
-    public CinemaFragmentSoon() {
+    public SoonMoviesFragment() {
         // Required empty public constructor
     }
 
@@ -79,22 +82,22 @@ public class CinemaFragmentSoon
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment CinemaFragment.
+     * @return A new instance of fragment TodayMoviesFragment.
      */
-    public static CinemaFragmentSoon newInstance() {
+    public static SoonMoviesFragment newInstance() {
         return newInstance(null, null);
     }
 
-    public static CinemaFragmentSoon newInstance(String url) {
+    public static SoonMoviesFragment newInstance(String url) {
         return newInstance(url, null);
     }
 
-    public static CinemaFragmentSoon newInstance(ArrayList<MovieItem> data) {
+    public static SoonMoviesFragment newInstance(ArrayList<MovieItem> data) {
         return newInstance(null, data);
     }
 
-    public static CinemaFragmentSoon newInstance(String url, ArrayList<MovieItem> data) {
-        CinemaFragmentSoon fragment = new CinemaFragmentSoon();
+    public static SoonMoviesFragment newInstance(String url, ArrayList<MovieItem> data) {
+        SoonMoviesFragment fragment = new SoonMoviesFragment();
         Bundle args = new Bundle();
         if (url != null) { args.putString(ARG_URL, url); }
         if (data != null) { args.putParcelableArrayList(ARG_DATA, data); }

@@ -51,6 +51,10 @@ public class MvpMovieDetailPresenterImpl
     private AlertDialog mDialog;
     //endregion
 
+    public MvpMovieDetailPresenterImpl() {
+
+    }
+
     public MvpMovieDetailPresenterImpl(MvpMovieDetailView view) {
         bindView(view);
         if (view != null) {

@@ -1,6 +1,7 @@
 package com.fallgamlet.dnestrcinema.ui.start;
 
 import com.fallgamlet.dnestrcinema.ui.about.AboutFactory;
+import com.fallgamlet.dnestrcinema.ui.login.LoginFactory;
 import com.fallgamlet.dnestrcinema.ui.movie.soon.SoonFactory;
 import com.fallgamlet.dnestrcinema.ui.movie.today.TodayFactory;
 import com.fallgamlet.dnestrcinema.ui.news.NewsFactory;
@@ -15,6 +16,7 @@ public class NodeContainer {
     private TodayFactory todayFactory;
     private SoonFactory soonFactory;
     private TicketsFactory ticketsFactory;
+    private LoginFactory loginFactory;
     private NewsFactory newsFactory;
     private AboutFactory aboutFactory;
 
@@ -22,6 +24,7 @@ public class NodeContainer {
         todayFactory = new TodayFactory();
         soonFactory = new SoonFactory();
         ticketsFactory = new TicketsFactory();
+        loginFactory = new LoginFactory();
         newsFactory = new NewsFactory();
         aboutFactory = new AboutFactory();
     }
@@ -36,6 +39,10 @@ public class NodeContainer {
 
     public TicketsFactory getTicketsFactory() {
         return ticketsFactory;
+    }
+
+    public LoginFactory getLoginFactory() {
+        return loginFactory;
     }
 
     public NewsFactory getNewsFactory() {

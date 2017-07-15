@@ -9,11 +9,11 @@ import com.fallgamlet.dnestrcinema.mvp.views.MvpSoonView;
  */
 
 public class SoonFactory
-        extends BaseFactory<CinemaFragmentSoon, MvpSoonView, MvpSoonPresenter>
+        extends BaseFactory<SoonMoviesFragment, MvpSoonView, MvpSoonPresenter>
 {
 
     public SoonFactory() {
-        CinemaFragmentSoon fragment = new CinemaFragmentSoon();
+        SoonMoviesFragment fragment = new SoonMoviesFragment();
         SoonPresenterImpl presenter = new SoonPresenterImpl();
 
         this.fragment = fragment;

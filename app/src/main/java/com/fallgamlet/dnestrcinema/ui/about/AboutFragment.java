@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpAboutPresenter;
+import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpAboutView;
 import com.fallgamlet.dnestrcinema.ui.ImageActivity;
 import com.fallgamlet.dnestrcinema.R;
@@ -33,10 +34,9 @@ import com.fallgamlet.dnestrcinema.utils.LogUtils;
  */
 public class AboutFragment
     extends
-        MvpBaseFragment <MvpAboutPresenter>
+        Fragments.MvpAboutViewFragment
     implements
-        View.OnClickListener,
-        MvpAboutView
+        View.OnClickListener
 {
     //region Fields
     private View mRootView;

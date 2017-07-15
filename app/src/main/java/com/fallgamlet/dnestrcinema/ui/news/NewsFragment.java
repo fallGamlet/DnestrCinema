@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNewsPresenter;
+import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNewsView;
 import com.fallgamlet.dnestrcinema.utils.DateTimeUtils;
 import com.fallgamlet.dnestrcinema.R;
@@ -42,17 +43,10 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link NewsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link NewsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class NewsFragment
-    extends MvpBaseFragment <MvpNewsPresenter>
-    implements MvpNewsView
+    extends
+        Fragments.MvpNewsViewFragment
 {
     //region Constants
     public static final String ARG_URL = "arg_url";
@@ -84,7 +78,7 @@ public class NewsFragment
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment CinemaFragment.
+     * @return A new instance of fragment TodayMoviesFragment.
      */
     public static NewsFragment newInstance() {
         return newInstance(null, null);

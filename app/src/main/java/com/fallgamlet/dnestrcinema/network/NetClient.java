@@ -6,6 +6,8 @@ import com.fallgamlet.dnestrcinema.mvp.models.TicketItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -31,14 +33,20 @@ public class NetClient {
     private String password;
     private RequestFactory requestFactory;
     private MapperFactory mapperFactory;
+    private volatile Date endSession;
+    private volatile int sessionTimeoutSeconds;
 
 
     public NetClient (RequestFactory requestFactory, MapperFactory mapperFactory) {
+        this.requestFactory = requestFactory;
+        this.mapperFactory = mapperFactory;
+
+        sessionTimeoutSeconds = 15*60;
+
+        endSession = new Date(0);
 
         createHttpClient();
 
-        this.requestFactory = requestFactory;
-        this.mapperFactory = mapperFactory;
     }
 
     private void createHttpClient() {
@@ -67,6 +75,14 @@ public class NetClient {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public long getSessionTimeout() {
+        return sessionTimeoutSeconds;
+    }
+
+    public void setSessionTimeout(int seconds) {
+        this.sessionTimeoutSeconds = seconds;
     }
 
 
@@ -141,7 +157,9 @@ public class NetClient {
                 .map(new Function<String, Boolean>() {
                     @Override
                     public Boolean apply(@NonNull String text) throws Exception {
-                        return mapperFactory.loginMapper().map(text);
+                        boolean check = mapperFactory.loginMapper().map(text);
+                        prolongSession();
+                        return check;
                     }
                 });
     }
@@ -169,11 +187,35 @@ public class NetClient {
             throw new IOException("Not success");
         }
 
+        tryProlongSession();
+
         if (response.body() == null) {
             throw new IOException("response body not exists");
         }
 
         return response.body().string();
+    }
+
+
+    private boolean tryProlongSession() {
+        boolean check = isLogin();
+
+        if (check) {
+            prolongSession();
+        }
+
+        return check;
+    }
+
+    private void prolongSession() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.SECOND, this.sessionTimeoutSeconds);
+
+        this.endSession = calendar.getTime();
+    }
+
+    public boolean isLogin() {
+        return endSession.after(new Date());
     }
 
 

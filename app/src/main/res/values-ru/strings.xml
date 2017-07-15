@@ -38,4 +38,8 @@
     <string name="today">Сегодня</string>
     <string name="tickets">Билеты</string>
     <string name="developer_contact_info">Контактная информация разработчика \nПсевдоним: fallGamlet</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Пароль</string>
+    <string name="label_login">Войти</string>
+    <string name="instraction_to_get_login_and_passwords">Если вы уже покупали билеты через сайт кинотеатра \"Тирасполь\" (kinotir.md), то \"пароль\" должен был прийти автоматически по email</string>
 </resources>

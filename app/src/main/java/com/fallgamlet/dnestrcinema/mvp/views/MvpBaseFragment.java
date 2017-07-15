@@ -22,4 +22,8 @@ public abstract class MvpBaseFragment<P extends MvpPresenter>
     public void setPresenter(P presenter) {
         this.presenter = presenter;
     }
+
+    public boolean isPresenterExist() {
+        return this.presenter != null;
+    }
 }
