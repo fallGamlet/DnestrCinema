@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 import com.fallgamlet.dnestrcinema.network.KinoTir;
 import com.squareup.picasso.Callback;
@@ -67,7 +68,8 @@ public class ImageActivity extends AppCompatActivity {
     }
 
     private void showImage(String imgUrl) {
-        imgUrl = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgUrl);
+        String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
+        imgUrl = HttpUtils.getAbsoluteUrl(baseUrl, imgUrl);
 
         if (imgUrl == null) {
             showImageEmpty();

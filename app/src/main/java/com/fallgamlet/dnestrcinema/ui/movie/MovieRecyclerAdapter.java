@@ -10,10 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.mvp.models.ScheduleItem;
 import com.fallgamlet.dnestrcinema.utils.DateTimeUtils;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
-import com.fallgamlet.dnestrcinema.network.KinoTir;
 import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
 import com.squareup.picasso.Picasso;
 
@@ -177,7 +177,8 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
         String imgUrl = item.getPosterUrl();
 
         if (imgUrl != null) {
-            imgUrl = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgUrl);
+            String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
+            imgUrl = HttpUtils.getAbsoluteUrl(baseUrl, imgUrl);
         }
 
         if (imgUrl != null) {

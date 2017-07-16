@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.mvp.models.NewsItem;
 import com.fallgamlet.dnestrcinema.network.KinoTir;
 import com.fallgamlet.dnestrcinema.utils.DateTimeUtils;
@@ -170,7 +171,8 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         String imgUrl = iterator.hasNext()? iterator.next(): null;
 
         if (imgUrl != null) {
-            imgUrl = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgUrl);
+            String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
+            imgUrl = HttpUtils.getAbsoluteUrl(baseUrl, imgUrl);
         }
 
         if (imgUrl != null) {

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpAboutPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpAboutView;
@@ -263,7 +264,8 @@ public class AboutFragment
         }
 
         if (imgURL != null) {
-            imgURL = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL,imgURL);
+            String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
+            imgURL = HttpUtils.getAbsoluteUrl(baseUrl,imgURL);
             Bundle bundle = new Bundle();
             bundle.putString(ImageActivity.ARG_IMG_URL, imgURL);
 

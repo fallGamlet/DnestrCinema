@@ -7,17 +7,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 
+import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.mvp.models.Config;
+import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
 import com.fallgamlet.dnestrcinema.mvp.models.ScheduleItem;
+import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpMovieDetailPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
+import com.fallgamlet.dnestrcinema.network.KinoTir;
 import com.fallgamlet.dnestrcinema.ui.ImageActivity;
 import com.fallgamlet.dnestrcinema.ui.movie.ImageRecyclerAdapter;
-import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter;
-import com.fallgamlet.dnestrcinema.utils.LogUtils;
-import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
-import com.fallgamlet.dnestrcinema.network.KinoTir;
-import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
+import com.fallgamlet.dnestrcinema.utils.LogUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -27,11 +28,7 @@ import icepick.Icepick;
 import icepick.State;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by fallgamlet on 09.04.17.
@@ -45,9 +42,6 @@ public class MvpMovieDetailPresenterImpl
     //region Fields
     @State
     MovieItem mMovie;
-    OkHttpClient httpClient = new OkHttpClient();
-//    @State
-//    MovieItem mMovieDetail;
     private ImageRecyclerAdapter mImagesAdapter;
     private AlertDialog mDialog;
     //endregion
@@ -80,7 +74,8 @@ public class MvpMovieDetailPresenterImpl
         if (mMovie == null)
             return;
 
-        String url = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, mMovie.getBuyTicketLink());
+        String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
+        String url = HttpUtils.getAbsoluteUrl(baseUrl, mMovie.getBuyTicketLink());
         navigateToUrl(url);
     }
 
@@ -160,7 +155,8 @@ public class MvpMovieDetailPresenterImpl
         getView().showBuyTicketButton(movieItem.getBuyTicketLink() != null && !movieItem.getBuyTicketLink().isEmpty());
         getView().showTrailerButton(!movieItem.getTrailerUrlSet().isEmpty());
 
-        String imgUrl = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, movieItem.getPosterUrl());
+        String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
+        String imgUrl = HttpUtils.getAbsoluteUrl(baseUrl, movieItem.getPosterUrl());
         if (imgUrl != null && getView().getPosterImageView().getDrawable() == null) {
             Picasso.with(getView().getContext()).load(imgUrl).into(getView().getPosterImageView());
         }
@@ -175,57 +171,36 @@ public class MvpMovieDetailPresenterImpl
             return;
         }
 
-        String urlStr = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, movieItem.getLink());
+        String urlStr = movieItem.getLink();
 
         if (urlStr == null) {
             return;
         }
 
-        Request request = new Request.Builder().url(urlStr).build();
-
-        io.reactivex.Observable
-                .just(request)
-                .observeOn(Schedulers.io())
-                .map(new Function<Request, Response>() {
-                    @Override
-                    public Response apply(@io.reactivex.annotations.NonNull Request request) throws Exception {
-                        return new OkHttpClient().newCall(request).execute();
-                    }
-                })
-                .observeOn(Schedulers.computation())
-                .map(new Function<Response, MovieItem>() {
-                    @Override
-                    public MovieItem apply(@io.reactivex.annotations.NonNull Response response) throws Exception {
-                        MovieItem movieItem;
-
-                        if (response.isSuccessful()) {
-                            String htmlStr = response.body().string();
-                            movieItem = new KinoTir.MovieDetailParser().parse(htmlStr);
-                        } else {
-                            movieItem = new MovieItem();
-                        }
-
-                        return movieItem;
-                    }
-                })
+        Config.getInstance()
+                .getNetClient()
+                .getDetailMovies(urlStr)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MovieItem>() {
-                    @Override
-                    public void accept(@io.reactivex.annotations.NonNull MovieItem movieItem) throws Exception {
-                        if (mMovie == null) {
-                            mMovie = movieItem;
-                        } else {
-                            mMovie.mergeLeft(movieItem);
-                        }
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                    new Consumer<MovieItem>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull MovieItem movieItem) throws Exception {
+                            if (mMovie == null) {
+                                mMovie = movieItem;
+                            } else {
+                                mMovie.mergeLeft(movieItem);
+                            }
 
-                        showData(mMovie);
+                            showData(mMovie);
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                            LogUtils.log("DetailMovie", "loaf error", throwable);
+                        }
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
-                        System.out.println("Error: " + throwable.toString());
-                    }
-                });
+                );
     }
 
     protected synchronized void loadImages(Collection<String> urlList) {
@@ -241,7 +216,8 @@ public class MvpMovieDetailPresenterImpl
 
     private void addImage(String imgUrl) {
         if (imgUrl != null) {
-            imgUrl = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgUrl);
+            String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
+            imgUrl = HttpUtils.getAbsoluteUrl(baseUrl, imgUrl);
         }
 
         if (imgUrl != null) {
@@ -310,7 +286,8 @@ public class MvpMovieDetailPresenterImpl
         }
 
         if (imgURL != null) {
-            imgURL = HttpUtils.getAbsoluteUrl(KinoTir.BASE_URL, imgURL);
+            String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
+            imgURL = HttpUtils.getAbsoluteUrl(baseUrl, imgURL);
             ImageActivity.showActivity(getView().getContext(), imgURL);
         }
     }
