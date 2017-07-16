@@ -41,7 +41,14 @@ public abstract class BasePresenter<T extends MvpView> implements MvpPresenter<T
 
     }
 
-    public boolean isViewBinded() {
-        return view != null;
+    @Override
+    public void loadData() {
+
     }
+
+    public boolean isViewBinded() {
+        return this.view != null;
+    }
+
+
 }

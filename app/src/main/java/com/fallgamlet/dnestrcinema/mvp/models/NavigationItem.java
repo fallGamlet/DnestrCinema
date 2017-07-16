@@ -18,6 +18,10 @@ public class NavigationItem implements Comparable {
     }
 
 
+    public int getId() {
+        return this.id;
+    }
+
     public int getTitleId() {
         return titleId;
     }

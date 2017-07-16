@@ -1,5 +1,6 @@
 package com.fallgamlet.dnestrcinema.mvp.presenters;
 
+import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpTodayView;
 
@@ -8,4 +9,11 @@ import com.fallgamlet.dnestrcinema.mvp.views.MvpTodayView;
  */
 
 public interface MvpTodayPresenter extends MvpPresenter<MvpTodayView> {
+
+    void onRefresh();
+
+    void onMovieSelected(MovieItem movieItem);
+
+    void onTicketBuySelected(MovieItem movieItem);
+
 }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.mvp.models.ScheduleItem;
 import com.fallgamlet.dnestrcinema.utils.DateTimeUtils;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 import com.fallgamlet.dnestrcinema.network.KinoTir;
@@ -88,7 +89,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
 
             ArrayList<String> arr = new ArrayList<>();
             StringBuilder strBuilder = new StringBuilder();
-            for (MovieItem.Schedule schedule: mItem.getSchedules()) {
+            for (ScheduleItem schedule: mItem.getSchedules()) {
                 strBuilder.append(schedule.room);
                 if (schedule.value != null) {
                     strBuilder.append(": ").append(schedule.value.trim());

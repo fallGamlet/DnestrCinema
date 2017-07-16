@@ -1,6 +1,7 @@
 package com.fallgamlet.dnestrcinema.network.kinotir.mappers;
 
 import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
+import com.fallgamlet.dnestrcinema.mvp.models.ScheduleItem;
 import com.fallgamlet.dnestrcinema.network.Mapper;
 import com.fallgamlet.dnestrcinema.utils.StringUtils;
 
@@ -106,18 +107,18 @@ public class HtmlMoviesMapper implements Mapper<String, List<MovieItem>> {
         movieItem.setAgeLimit(strAgeLimit);
     }
 
-    private void parseSchedule(Elements src, List<MovieItem.Schedule> scheduleList) {
+    private void parseSchedule(Elements src, List<ScheduleItem> scheduleList) {
         if (src == null || scheduleList == null) {
             return;
         }
 
         for (Element item: src) {
-            MovieItem.Schedule schedule = parseScheduleItem(item);
+            ScheduleItem schedule = parseScheduleItem(item);
             scheduleList.add(schedule);
         }
     }
 
-    private MovieItem.Schedule parseScheduleItem(Element item) {
+    private ScheduleItem parseScheduleItem(Element item) {
         String roomName = item.select(">h5").text();
         Elements els = item.select(">i");
         Element last = els.last();
@@ -127,7 +128,7 @@ public class HtmlMoviesMapper implements Mapper<String, List<MovieItem>> {
 
         String timesStr = elTime==null? null: elTime.toString();
 
-        MovieItem.Schedule schedule = new MovieItem.Schedule();
+        ScheduleItem schedule = new ScheduleItem();
         schedule.room = roomName;
         schedule.value = timesStr;
 

@@ -1,5 +1,7 @@
 package com.fallgamlet.dnestrcinema.ui.start;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
@@ -14,24 +16,30 @@ import android.view.MenuItem;
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.factory.KinotirConfigFactory;
 import com.fallgamlet.dnestrcinema.mvp.models.Config;
+import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
+import com.fallgamlet.dnestrcinema.mvp.models.NavigationItem;
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpAboutView;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpSoonView;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpTodayView;
+import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity;
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpBottomNavigationView;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpNavigationPresenterImpl;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNewsView;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpTicketsView;
+import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 import com.fallgamlet.dnestrcinema.utils.ViewUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class StartActivity
-        extends AppCompatActivity
-        implements NavigationRouter
+        extends
+            AppCompatActivity
+        implements
+            NavigationRouter
 {
 
     static {
@@ -47,8 +55,6 @@ public class StartActivity
     protected BottomNavigationView mBottomNavigationView;
 
     private ViewPagerAdapter adapter;
-
-    private NodeContainer nodeContainer;
     private MvpNavigationPresenter bottomNavigationPresenter;
     //endregion
 
@@ -64,13 +70,6 @@ public class StartActivity
 
     private void initData() {
         Config.getInstance().init(new KinotirConfigFactory());
-
-        nodeContainer = new NodeContainer();
-
-//        mBottomNavigationView.getMenu().clear();
-//        mBottomNavigationView.inflateMenu(R.menu.menu_main);
-//        mBottomNavigationView.getMenu().add()
-
 
         initNavigation();
 
@@ -95,20 +94,60 @@ public class StartActivity
 
     private synchronized ViewPagerAdapter getPageAdapter() {
         if (adapter == null) {
-            adapter = new ViewPagerAdapter(getSupportFragmentManager());
+            adapter = new ViewPagerAdapter(getSupportFragmentManager());;
 
-            adapter.addFragment(nodeContainer.getTodayFactory().getFragment(), getString(R.string.today));
-            adapter.addFragment(nodeContainer.getSoonFactory().getFragment(), getString(R.string.soon));
-            adapter.addFragment(nodeContainer.getLoginFactory().getFragment(), getString(R.string.tickets));
-//            adapter.addFragment(nodeContainer.getTicketsFactory().getFragment(), getString(R.string.tickets));
-            adapter.addFragment(nodeContainer.getNewsFactory().getFragment(), getString(R.string.news));
-            adapter.addFragment(nodeContainer.getAboutFactory().getFragment(), getString(R.string.about));
+            for (Integer navId: Config.getInstance().getNavigations()) {
+                addFragment(navId);
+            }
 
             adapter.notifyDataSetChanged();
         }
 
         return adapter;
     }
+
+    private void addFragment(Integer navigationId) {
+        Config config = Config.getInstance();
+        NavigationItem navigationItem = config.getNavigationCreator()
+                                            .getNavigationItem(navigationId);
+
+        Fragment fragment = createFragment(navigationId);
+
+        if (navigationItem == null || fragment == null) {
+            return;
+        }
+
+        String title = getString(navigationItem.getTitleId());
+        adapter.addFragment(fragment, title);
+    }
+
+    private Fragment createFragment(int navigationId) {
+        Fragment fragment;
+
+        switch (navigationId) {
+            case NavigationItem.NavigationId.TODAY:
+                fragment = Config.getInstance().getFragmentFactory().createTodayView();
+                break;
+            case NavigationItem.NavigationId.SOON:
+                fragment = Config.getInstance().getFragmentFactory().createSoonView();
+                break;
+            case NavigationItem.NavigationId.TICKETS:
+                fragment = Config.getInstance().getFragmentFactory().createTicketsView();
+                break;
+            case NavigationItem.NavigationId.NEWS:
+                fragment = Config.getInstance().getFragmentFactory().createNewsView();
+                break;
+            case NavigationItem.NavigationId.ABOUT:
+                fragment = Config.getInstance().getFragmentFactory().createAboutView();
+                break;
+            default:
+                fragment = null;
+                break;
+        }
+
+        return fragment;
+    }
+
 
     private ViewPager.OnPageChangeListener getOnPageChangeListener() {
         return new ViewPager.OnPageChangeListener() {
@@ -191,96 +230,53 @@ public class StartActivity
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onPause() {
+        Config.getInstance().setNavigationRouter(null);
+        super.onPause();
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onResume() {
+        super.onResume();
+        Config.getInstance().setNavigationRouter(this);
     }
-
-
-    //region Fragments singletons
-//    protected TodayMoviesFragment cinemaNowFragment;
-//    protected TodayMoviesFragment getCinemaNowFragment() {
-//        if (cinemaNowFragment == null) {
-//            cinemaNowFragment = TodayMoviesFragment.newInstance(KinoTir.BASE_URL+KinoTir.PATH_NOW);
-//        }
-//        return cinemaNowFragment;
-//    }
-//
-//    protected SoonMoviesFragment cinemaSoonFragment;
-//    protected SoonMoviesFragment getCinemaSoonFragment() {
-//        if (cinemaSoonFragment == null) {
-//            cinemaSoonFragment = SoonMoviesFragment.newInstance(KinoTir.BASE_URL+KinoTir.PATH_SOON);
-//        }
-//        return cinemaSoonFragment;
-//    }
-//
-//    protected NewsFragment cinemaNewsFragment;
-//    protected NewsFragment getCinemaNewsFragment() {
-//        if (cinemaNewsFragment == null) {
-//            cinemaNewsFragment = NewsFragment.newInstance(KinoTir.BASE_URL+KinoTir.PATH_NEWS);
-//        }
-//        return cinemaNewsFragment;
-//    }
-//
-//    protected AboutFragment aboutFragment;
-//    protected AboutFragment getAboutFragment() {
-//        if (aboutFragment == null) {
-//            aboutFragment = new AboutFragment();
-//        }
-//        return aboutFragment;
-//    }
-    //endregion
 
     @Override
     public void showToday() {
-        int position = adapter.getPosition(nodeContainer.getTodayFactory().getFragment());
-
-        showView(position);
-
+        showViewWithNavigationId(NavigationItem.NavigationId.TODAY);
         bottomNavigationPresenter.onTodaySelected();
     }
 
     @Override
     public void showSoon() {
-        int position = adapter.getPosition(nodeContainer.getSoonFactory().getFragment());
-
-        showView(position);
-
+        showViewWithNavigationId(NavigationItem.NavigationId.SOON);
         bottomNavigationPresenter.onSoonSelected();
     }
 
     @Override
     public void showTickets() {
-        int position = adapter.getPosition(nodeContainer.getTicketsFactory().getFragment());
-
-        showView(position);
-
+        showViewWithNavigationId(NavigationItem.NavigationId.TICKETS);
         bottomNavigationPresenter.onTicketsSelected();
     }
 
     @Override
     public void showAbout() {
-        int position = adapter.getPosition(nodeContainer.getAboutFactory().getFragment());
-
-        showView(position);
-
+        showViewWithNavigationId(NavigationItem.NavigationId.ABOUT);
         bottomNavigationPresenter.onAboutSelected();
     }
 
     @Override
     public void showNews() {
-        int position = adapter.getPosition(nodeContainer.getNewsFactory().getFragment());
-
-        showView(position);
-
+        showViewWithNavigationId(NavigationItem.NavigationId.NEWS);
         bottomNavigationPresenter.onNewsSelected();
     }
 
-    private void showView(int position) {
+    private void showViewWithNavigationId(int navigationId) {
+        int pos = Config.getInstance().getNavigations().indexOf(navigationId);
+        showViewWithPosition(pos);
+    }
+
+    private void showViewWithPosition(int position) {
         if (position < 0 || position >= mViewPager.getAdapter().getCount()) {
             return;
         }
@@ -288,5 +284,37 @@ public class StartActivity
         if (mViewPager.getCurrentItem() != position) {
             mViewPager.setCurrentItem(position);
         }
+    }
+
+    @Override
+    public void showMovieDetail(MovieItem movieItem) {
+        if (movieItem != null) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(MovieDetailActivity.ARG_MOVIE, movieItem);
+
+            Intent intent = new Intent(this, MovieDetailActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void showBuyTicket(MovieItem movieItem) {
+        if (movieItem == null) {
+            return;
+        }
+
+        String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
+        String path = movieItem.getBuyTicketLink();
+        String url = HttpUtils.getAbsoluteUrl(baseUrl, path);
+
+        if (url == null) {
+//            ViewUtils.showToast(this, "");
+            return;
+        }
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 }

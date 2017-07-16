@@ -54,5 +54,6 @@
     <string name="label_password">Password</string>
     <string name="label_login">Login</string>
     <string name="instraction_to_get_login_and_passwords">If you already bought tickets through the cinema \"Tiraspol\" site (kinotir.md), then the \"password\" should have come automatically by email</string>
+    <string name="title_login">Login</string>
 
 </resources>

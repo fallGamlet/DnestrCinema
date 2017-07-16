@@ -3,12 +3,7 @@ package com.fallgamlet.dnestrcinema.mvp.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.util.ArraySet;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -44,7 +39,7 @@ public class MovieItem implements Parcelable {
     private String mPosterUrl;
     private Set<String> mImgUrlList;
     private Set<String> mTrailerUrlList;
-    private ArrayList<Schedule> mSchedules = new ArrayList<>();
+    private ArrayList<ScheduleItem> mSchedules = new ArrayList<>();
     private Date mPubDate;
     //endregion
 
@@ -177,7 +172,7 @@ public class MovieItem implements Parcelable {
     }
 
     @NonNull
-    public ArrayList<Schedule> getSchedules() {
+    public ArrayList<ScheduleItem> getSchedules() {
         if (mSchedules == null) {
             mSchedules = new ArrayList<>();
         }
@@ -234,7 +229,7 @@ public class MovieItem implements Parcelable {
         mDescription = in.readString();
         long d = in.readLong();
         mPosterUrl = in.readString();
-        mSchedules = in.createTypedArrayList(Schedule.CREATOR);
+        mSchedules = in.createTypedArrayList(ScheduleItem.CREATOR);
         in.readStringList(imgUrlList);
         in.readStringList(moveUrlList);
 
@@ -402,92 +397,6 @@ public class MovieItem implements Parcelable {
                 if (title2 == null) { return 1; }
 
                 return title1.compareTo(title2);
-            }
-        };
-    }
-    //endregion
-
-    //region Sub classes and interfaces
-    public static class Schedule implements Parcelable {
-        public String room;
-        public String value;
-
-        public Schedule() {
-
-        }
-
-        protected Schedule(Parcel in) {
-            setData(in);
-        }
-
-        void setData(Parcel in) {
-            room = in.readString();
-            value = in.readString();
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(room);
-            dest.writeString(value);
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @NonNull
-        public JSONObject toJSON() throws JSONException {
-            JSONObject json = new JSONObject();
-            json.putOpt("room", room);
-            json.putOpt("value", value);
-            return json;
-        }
-
-        public boolean setJSON(@Nullable JSONObject json) {
-            if (json == null) { return false; }
-            room = json.optString("room");
-            value = json.optString("value");
-            return true;
-        }
-
-        @NonNull
-        public static JSONArray toJSONArray(@Nullable List<Schedule> items) throws JSONException {
-            JSONArray jsonArray = new JSONArray();
-            if (items != null && !items.isEmpty()) {
-                for (Schedule item: items) {
-                    jsonArray.put(item.toJSON());
-                }
-            }
-            return jsonArray;
-        }
-
-        @NonNull
-        public static ArrayList<Schedule> setJSONArray(@Nullable JSONArray jarr) {
-            ArrayList<Schedule> list = new ArrayList<>();
-            if (jarr != null && jarr.length() > 0) {
-                Schedule item=null;
-                for (int i=0; i<jarr.length(); i++) {
-                    JSONObject json = jarr.optJSONObject(i);
-                    if (item == null) { item = new Schedule(); }
-                    if (item.setJSON(json)) {
-                        list.add(item);
-                        item = null;
-                    }
-                }
-            }
-            return list;
-        }
-
-        public static final Creator<Schedule> CREATOR = new Creator<Schedule>() {
-            @Override
-            public Schedule createFromParcel(Parcel in) {
-                return new Schedule(in);
-            }
-
-            @Override
-            public Schedule[] newArray(int size) {
-                return new Schedule[size];
             }
         };
     }

@@ -8,4 +8,7 @@ import com.fallgamlet.dnestrcinema.mvp.views.MvpNewsView;
  */
 
 public interface MvpNewsPresenter extends MvpPresenter<MvpNewsView> {
+
+    void onRefresh();
+
 }

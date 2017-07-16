@@ -22,4 +22,6 @@ public interface MvpPresenter<T extends MvpView> {
 
     void onResume(Bundle bundle);
 
+    void loadData();
+
 }

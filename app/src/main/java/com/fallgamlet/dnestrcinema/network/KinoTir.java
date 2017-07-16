@@ -3,6 +3,7 @@ package com.fallgamlet.dnestrcinema.network;
 
 import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
 import com.fallgamlet.dnestrcinema.mvp.models.NewsItem;
+import com.fallgamlet.dnestrcinema.mvp.models.ScheduleItem;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -144,7 +145,7 @@ public class KinoTir {
             movieItem.setAgeLimit(strAgeLimit);
         }
 
-        private void parseSchedule(Elements src, List<MovieItem.Schedule> scheduleList) {
+        private void parseSchedule(Elements src, List<ScheduleItem> scheduleList) {
             if (src == null || scheduleList == null) {
                 return;
             }
@@ -155,7 +156,7 @@ public class KinoTir {
                 int i= item.childNodes().indexOf(last);
                 Node elTime = i>=0 && i+1<item.childNodeSize()? item.childNodes().get(i+1): null;
                 String timesStr = elTime==null? null: elTime.toString();
-                MovieItem.Schedule schedule = new MovieItem.Schedule();
+                ScheduleItem schedule = new ScheduleItem();
                 schedule.room = roomName;
                 schedule.value = timesStr;
                 scheduleList.add(schedule);

@@ -1,9 +1,9 @@
 package com.fallgamlet.dnestrcinema.factory;
 
+import com.fallgamlet.dnestrcinema.mvp.factory.ConfigFactory;
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpNavigationCreator;
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpPresenterFactory;
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpViewFragmentFactory;
-import com.fallgamlet.dnestrcinema.mvp.factory.ConfigFactory;
 import com.fallgamlet.dnestrcinema.mvp.models.CinemaItem;
 import com.fallgamlet.dnestrcinema.mvp.models.NavigationItem;
 import com.fallgamlet.dnestrcinema.network.MapperFactory;
@@ -11,8 +11,8 @@ import com.fallgamlet.dnestrcinema.network.RequestFactory;
 import com.fallgamlet.dnestrcinema.network.kinotir.KinotirMapperFactory;
 import com.fallgamlet.dnestrcinema.network.kinotir.KinotirRequestFactory;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by fallgamlet on 16.07.17.
@@ -29,8 +29,8 @@ public class KinotirConfigFactory implements ConfigFactory {
     }
 
     @Override
-    public Set<Integer> getNavigations() {
-        Set<Integer> set = new TreeSet<>();
+    public List<Integer> getNavigations() {
+        List<Integer> set = new ArrayList<>();
         set.add(NavigationItem.NavigationId.TODAY);
         set.add(NavigationItem.NavigationId.SOON);
         set.add(NavigationItem.NavigationId.TICKETS);

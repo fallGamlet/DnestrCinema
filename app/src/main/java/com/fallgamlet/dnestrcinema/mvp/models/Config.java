@@ -4,12 +4,13 @@ import com.fallgamlet.dnestrcinema.mvp.factory.MvpNavigationCreator;
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpPresenterFactory;
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpViewFragmentFactory;
 import com.fallgamlet.dnestrcinema.mvp.factory.ConfigFactory;
+import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter;
 import com.fallgamlet.dnestrcinema.network.MapperFactory;
+import com.fallgamlet.dnestrcinema.network.NetClient;
 import com.fallgamlet.dnestrcinema.network.RequestFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by fallgamlet on 15.07.17.
@@ -19,9 +20,11 @@ public class Config {
 
     private static Config settings;
 
+    private NavigationRouter navigationRouter;
+    private NetClient netClient;
     private AccountItem accountItem;
     private CinemaItem cinemaItem;
-    private Set<Integer> navigations;
+    private List<Integer> navigations;
     private MvpPresenterFactory presenterFactory;
     private MvpViewFragmentFactory fragmentFactory;
     private MvpNavigationCreator navigationCreator;
@@ -49,18 +52,47 @@ public class Config {
         this.navigationCreator = configFactory.getNavigationCreator();
         this.requestFactory = configFactory.getRequestFactory();
         this.mapperFactory = configFactory.getMapperFactory();
+        this.netClient = new NetClient(this.requestFactory, this.mapperFactory);
     }
 
+
+    public NetClient getNetClient() {
+        return this.netClient;
+    }
+
+    public CinemaItem getCinemaItem() {
+        return cinemaItem;
+    }
+
+    public AccountItem getAccountItem() {
+        return accountItem;
+    }
+
+    public void setAccountItem(AccountItem accountItem) {
+        this.accountItem = accountItem;
+    }
 
     public MvpPresenterFactory getPresenterFactory() {
         return presenterFactory;
     }
 
-    public MvpViewFragmentFactory getFragmentsFactory() {
+    public MvpViewFragmentFactory getFragmentFactory() {
         return fragmentFactory;
     }
 
-    public Set<Integer> getNavigations() {
+    public MvpNavigationCreator getNavigationCreator() {
+        return this.navigationCreator;
+    }
+
+    public RequestFactory getRequestFactory() {
+        return requestFactory;
+    }
+
+    public MapperFactory getMapperFactory() {
+        return mapperFactory;
+    }
+
+    public List<Integer> getNavigations() {
         return navigations;
     }
 
@@ -86,23 +118,11 @@ public class Config {
         return this.navigations != null && this.navigationCreator != null;
     }
 
-    public RequestFactory getRequestFactory() {
-        return requestFactory;
+    public NavigationRouter getNavigationRouter() {
+        return navigationRouter;
     }
 
-    public MapperFactory getMapperFactory() {
-        return mapperFactory;
-    }
-
-    public CinemaItem getCinemaItem() {
-        return cinemaItem;
-    }
-
-    public AccountItem getAccountItem() {
-        return accountItem;
-    }
-
-    public void setAccountItem(AccountItem accountItem) {
-        this.accountItem = accountItem;
+    public void setNavigationRouter(NavigationRouter navigationRouter) {
+        this.navigationRouter = navigationRouter;
     }
 }

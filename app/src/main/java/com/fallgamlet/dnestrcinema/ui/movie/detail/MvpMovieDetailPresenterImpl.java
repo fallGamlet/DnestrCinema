@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 
+import com.fallgamlet.dnestrcinema.mvp.models.ScheduleItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpMovieDetailPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
 import com.fallgamlet.dnestrcinema.ui.ImageActivity;
@@ -122,7 +123,7 @@ public class MvpMovieDetailPresenterImpl
 
         StringBuilder strBuilder = new StringBuilder();
 
-        for (MovieItem.Schedule schedule: movieItem.getSchedules()) {
+        for (ScheduleItem schedule: movieItem.getSchedules()) {
             strBuilder.append(schedule.room);
             if (schedule.value != null) {
                 strBuilder.append(": ").append(schedule.value.trim());
@@ -256,7 +257,7 @@ public class MvpMovieDetailPresenterImpl
             int count = movieItem.getSchedules().size();
             rooms = new String[count];
             for (int i=0; i<count; i++) {
-                MovieItem.Schedule item = movieItem.getSchedules().get(i);
+                ScheduleItem item = movieItem.getSchedules().get(i);
                 if (item.room != null) {
                     rooms[i] = item.room;
                 }
