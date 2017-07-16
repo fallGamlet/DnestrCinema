@@ -31,8 +31,8 @@ public class KinotirServerTest {
     private MapperFactory mapperFactory = new KinotirMapperFactory();
     private NetClient netClient = new NetClient(requestFactory, mapperFactory);
 
-    private String login = "fallgamlet@yandex.ru";
-    private String password = "3nGggW3y";
+    private String login = "test@mail.ru";
+    private String password = "test";
 
 
     @Test
