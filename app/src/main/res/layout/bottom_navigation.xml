@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
-    app:itemBackground="@color/colorBgLight"
+    android:background="@color/colorBgLight"
     app:itemIconTint="@drawable/selector_bg_color"
     app:itemTextColor="@drawable/selector_text_color"
     app:menu="@menu/menu_navigation" />

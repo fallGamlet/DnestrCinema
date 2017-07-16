@@ -15,7 +15,4 @@
     <include
         layout="@layout/bottom_navigation" />
 
-    <include
-        layout="@layout/tab_navigation" />
-
 </android.support.v7.widget.LinearLayoutCompat>

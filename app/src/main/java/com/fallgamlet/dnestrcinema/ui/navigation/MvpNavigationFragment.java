@@ -1,6 +1,5 @@
 package com.fallgamlet.dnestrcinema.ui.navigation;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 
 import butterknife.BindView;

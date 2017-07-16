@@ -3,16 +3,15 @@ package com.fallgamlet.dnestrcinema.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
-import com.fallgamlet.dnestrcinema.network.KinoTir;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -18,19 +17,16 @@ import com.fallgamlet.dnestrcinema.factory.KinotirConfigFactory;
 import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
 import com.fallgamlet.dnestrcinema.mvp.models.NavigationItem;
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter;
-import com.fallgamlet.dnestrcinema.mvp.views.MvpAboutView;
-import com.fallgamlet.dnestrcinema.mvp.views.MvpSoonView;
-import com.fallgamlet.dnestrcinema.mvp.views.MvpTodayView;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
 import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity;
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpBottomNavigationView;
-import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
-import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpNavigationPresenterImpl;
-import com.fallgamlet.dnestrcinema.mvp.views.MvpNewsView;
-import com.fallgamlet.dnestrcinema.mvp.views.MvpTicketsView;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 import com.fallgamlet.dnestrcinema.utils.ViewUtils;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,8 +43,6 @@ public class StartActivity
     }
 
     //region Fields
-    @BindView(R.id.tablayout)
-    protected TabLayout mTablayout;
     @BindView(R.id.viewpager)
     protected ViewPager mViewPager;
     @BindView(R.id.bottomNavigationView)
@@ -86,9 +80,6 @@ public class StartActivity
 
     private void setupViewPager(ViewPager viewPager) {
         viewPager.addOnPageChangeListener(getOnPageChangeListener());
-
-        mTablayout.setupWithViewPager(viewPager);
-
         viewPager.setAdapter(getPageAdapter());
     }
 
@@ -169,26 +160,28 @@ public class StartActivity
     }
 
     private void onPageSelected(int position) {
-        Fragment fragment = adapter.getItem(position);
-
-        if (fragment == null) {
+        List<Integer> navigations = Config.getInstance().getNavigations();
+        if (position < 0 || position >= navigations.size()) {
             return;
         }
 
-        if (fragment instanceof MvpTodayView) {
-            showToday();
-        }
-        else if (fragment instanceof MvpSoonView) {
-            showSoon();
-        }
-        else if (fragment instanceof MvpTicketsView) {
-            showTickets();
-        }
-        else if (fragment instanceof MvpNewsView) {
-            showNews();
-        }
-        else if (fragment instanceof MvpAboutView) {
-            showAbout();
+        int navId = navigations.get(position);
+        switch (navId) {
+            case NavigationItem.NavigationId.TODAY:
+                showToday();
+                break;
+            case NavigationItem.NavigationId.SOON:
+                showSoon();
+                break;
+            case NavigationItem.NavigationId.TICKETS:
+                showTickets();
+                break;
+            case NavigationItem.NavigationId.NEWS:
+                showNews();
+                break;
+            case NavigationItem.NavigationId.ABOUT:
+                showAbout();
+                break;
         }
     }
 

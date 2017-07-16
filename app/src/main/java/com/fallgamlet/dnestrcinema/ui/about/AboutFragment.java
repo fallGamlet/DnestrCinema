@@ -12,16 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
-import com.fallgamlet.dnestrcinema.mvp.presenters.MvpAboutPresenter;
-import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
-import com.fallgamlet.dnestrcinema.mvp.views.MvpAboutView;
-import com.fallgamlet.dnestrcinema.ui.ImageActivity;
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.mvp.views.MvpBaseFragment;
-import com.fallgamlet.dnestrcinema.utils.HttpUtils;
-import com.fallgamlet.dnestrcinema.network.KinoTir;
+import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
+import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
+import com.fallgamlet.dnestrcinema.network.KinoTir;
+import com.fallgamlet.dnestrcinema.ui.ImageActivity;
+import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 import com.fallgamlet.dnestrcinema.utils.LogUtils;
 
 

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.mvp.models.NewsItem;
-import com.fallgamlet.dnestrcinema.network.KinoTir;
 import com.fallgamlet.dnestrcinema.utils.DateTimeUtils;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 import com.squareup.picasso.Picasso;
