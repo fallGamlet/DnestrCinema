@@ -48,35 +48,35 @@ public class NavigationCreatorImpl implements MvpNavigationCreator {
     }
 
     private NavigationItem createSoonNavigation() {
-        NavigationItem item = new NavigationItem(NavigationItem.NavigationId.TODAY);
+        NavigationItem item = new NavigationItem(NavigationItem.NavigationId.SOON);
         item.setTitleId(R.string.soon);
         item.setIconResId(R.drawable.ic_watch_later_black_24dp);
         return item;
     }
 
     private NavigationItem createLoginNavigation() {
-        NavigationItem item = new NavigationItem(NavigationItem.NavigationId.TODAY);
+        NavigationItem item = new NavigationItem(NavigationItem.NavigationId.LOGIN);
         item.setTitleId(R.string.title_login);
         item.setIconResId(R.drawable.ic_person_black_24dp);
         return item;
     }
 
     private NavigationItem createTicketsNavigation() {
-        NavigationItem item = new NavigationItem(NavigationItem.NavigationId.TODAY);
+        NavigationItem item = new NavigationItem(NavigationItem.NavigationId.TICKETS);
         item.setTitleId(R.string.tickets);
         item.setIconResId(R.drawable.ic_local_offer_black_24dp);
         return item;
     }
 
     private NavigationItem createNewsNavigation() {
-        NavigationItem item = new NavigationItem(NavigationItem.NavigationId.TODAY);
+        NavigationItem item = new NavigationItem(NavigationItem.NavigationId.NEWS);
         item.setTitleId(R.string.news);
         item.setIconResId(R.drawable.ic_library_books_black_24dp);
         return item;
     }
 
     private NavigationItem createAboutNavigation() {
-        NavigationItem item = new NavigationItem(NavigationItem.NavigationId.TODAY);
+        NavigationItem item = new NavigationItem(NavigationItem.NavigationId.ABOUT);
         item.setTitleId(R.string.about);
         item.setIconResId(R.drawable.ic_info_black_24dp);
         return item;

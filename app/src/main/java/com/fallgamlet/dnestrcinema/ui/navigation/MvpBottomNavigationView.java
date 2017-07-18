@@ -3,11 +3,16 @@ package com.fallgamlet.dnestrcinema.ui.navigation;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.mvp.models.Config;
+import com.fallgamlet.dnestrcinema.mvp.models.NavigationItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
+
+import java.util.List;
 
 /**
  * Created by fallgamlet on 02.07.17.
@@ -17,8 +22,7 @@ public class MvpBottomNavigationView
         implements
         MvpNavigationView,
         BottomNavigationView.OnNavigationItemSelectedListener,
-        BottomNavigationView.OnNavigationItemReselectedListener
-{
+        BottomNavigationView.OnNavigationItemReselectedListener, MenuItem.OnMenuItemClickListener {
 
     private BottomNavigationView navigationView;
     private Context context;
@@ -29,7 +33,26 @@ public class MvpBottomNavigationView
         this.navigationView = view;
         this.context = view.getContext();
 
+        initNavigationItems();
         initListeners();
+    }
+
+    private void initNavigationItems() {
+        Menu menu = this.navigationView.getMenu();
+        menu.clear();
+
+        for (NavigationItem item: Config.getInstance().createNavigations()) {
+            int groupId = Menu.NONE;
+            int id = item.getId();
+            int order = Menu.NONE;
+            int title = item.getTitleId();
+            MenuItem menuItem = menu.add(groupId, id, order, title);
+            menuItem.setIcon(item.getIconResId());
+            menuItem.setVisible(true);
+            menuItem.setCheckable(true);
+            menuItem.setEnabled(true);
+            menuItem.setOnMenuItemClickListener(this);
+        }
     }
 
     private void initListeners() {
@@ -38,27 +61,32 @@ public class MvpBottomNavigationView
     }
 
     @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        return onNavigationItemSelected(menuItem);
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         boolean checked;
 
         switch (item.getItemId()) {
-            case R.id.actionToday:
+            case NavigationItem.NavigationId.TODAY:
                 presenter.onTodaySelected();
                 checked = true;
                 break;
-            case R.id.actionSoon:
+            case NavigationItem.NavigationId.SOON:
                 presenter.onSoonSelected();
                 checked = true;
                 break;
-            case R.id.actionTickets:
+            case NavigationItem.NavigationId.TICKETS:
                 presenter.onTicketsSelected();
                 checked = true;
                 break;
-            case R.id.actionNews:
+            case NavigationItem.NavigationId.NEWS:
                 presenter.onNewsSelected();
                 checked = true;
                 break;
-            case R.id.actionAbout:
+            case NavigationItem.NavigationId.ABOUT:
                 presenter.onAboutSelected();
                 checked = true;
                 break;
@@ -66,6 +94,8 @@ public class MvpBottomNavigationView
                 checked = false;
                 break;
         }
+
+        item.setChecked(checked);
 
         return checked;
     }
@@ -78,36 +108,33 @@ public class MvpBottomNavigationView
 
     @Override
     public void selectToday() {
-        if (this.navigationView.getSelectedItemId() != R.id.actionToday) {
-            this.navigationView.setSelectedItemId(R.id.actionToday);
-        }
+        selectItemById(NavigationItem.NavigationId.TODAY);
     }
 
     @Override
     public void selectSoon() {
-        if (this.navigationView.getSelectedItemId() != R.id.actionSoon) {
-            this.navigationView.setSelectedItemId(R.id.actionSoon);
-        }
+        selectItemById(NavigationItem.NavigationId.SOON);
     }
 
     @Override
     public void selectTickets() {
-        if (this.navigationView.getSelectedItemId() != R.id.actionTickets) {
-            this.navigationView.setSelectedItemId(R.id.actionTickets);
-        }
+        selectItemById(NavigationItem.NavigationId.TICKETS);
     }
 
     @Override
     public void selectAbout() {
-        if (this.navigationView.getSelectedItemId() != R.id.actionAbout) {
-            this.navigationView.setSelectedItemId(R.id.actionAbout);
-        }
+        selectItemById(NavigationItem.NavigationId.ABOUT);
     }
 
     @Override
     public void selectNews() {
-        if (this.navigationView.getSelectedItemId() != R.id.actionNews) {
-            this.navigationView.setSelectedItemId(R.id.actionNews);
+        selectItemById(NavigationItem.NavigationId.NEWS);
+    }
+
+    private void selectItemById(int id) {
+        int curId = this.navigationView.getSelectedItemId();
+        if (curId != id) {
+            this.navigationView.setSelectedItemId(id);
         }
     }
 
