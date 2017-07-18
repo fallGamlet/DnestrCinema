@@ -99,7 +99,7 @@ public class Config {
     public List<NavigationItem> createNavigations() {
         List<NavigationItem> items = new ArrayList<>();
 
-        if (isCanCreateNavigations()) {
+        if (!isCanCreateNavigations()) {
             return items;
         }
 
