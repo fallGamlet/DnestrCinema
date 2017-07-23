@@ -10,4 +10,8 @@ public class StringUtils {
         return val == null || val.isEmpty();
     }
 
+    public static boolean isEmpty(CharSequence val) {
+        return val == null || val.length() == 0;
+    }
+
 }

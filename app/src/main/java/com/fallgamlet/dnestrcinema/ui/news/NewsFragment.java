@@ -18,6 +18,7 @@ import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.mvp.models.NewsItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNewsPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
+import com.fallgamlet.dnestrcinema.ui.adapters.BaseRecyclerAdapter;
 
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class NewsFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_cinema, container, false);
+        return inflater.inflate(R.layout.fragment_movies, container, false);
     }
 
     @Override
@@ -181,14 +182,9 @@ public class NewsFragment
     private NewsRecyclerAdapter getAdapter() {
         if (mAdapter == null) {
             mAdapter = new NewsRecyclerAdapter();
-            mAdapter.setListener(new NewsRecyclerAdapter.OnAdapterListener() {
+            mAdapter.setListener(new BaseRecyclerAdapter.OnAdapterListener() {
                 @Override
-                public void onItemPressed(NewsItem item, int pos) {
-
-                }
-
-                @Override
-                public void onItemSchedulePressed(NewsItem item, int pos) {
+                public void onItemPressed(Object item, int pos) {
 
                 }
             });
@@ -214,7 +210,6 @@ public class NewsFragment
     @Override
     public void showData(List<NewsItem> items) {
         getAdapter().setData(items);
-        getAdapter().notifyDataSetChanged();
     }
 
     @Override
@@ -230,8 +225,5 @@ public class NewsFragment
             placeholderView.setVisibility(v? View.VISIBLE: View.GONE);
         }
     }
-
-
-
 
 }

@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpMovieDetailPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpBaseActivity;
+import com.fallgamlet.dnestrcinema.ui.holders.FieldHolder;
+import com.fallgamlet.dnestrcinema.ui.holders.MovieViewHolder;
 import com.fallgamlet.dnestrcinema.ui.movie.MovieRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
@@ -38,7 +40,7 @@ public class MovieDetailActivity
     //endregion
 
     //region Fields
-    private MovieRecyclerAdapter.ViewHolder mMovieHolder;
+    private MovieViewHolder mMovieHolder;
     private FieldHolder directorHolder;
     private FieldHolder scenarioHolder;
     private FieldHolder actorsHolder;
@@ -90,19 +92,12 @@ public class MovieDetailActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mPresenter.onPause(outState);
-//        outState.putParcelable(ARG_MOVIE, mMovie);
-//        outState.putParcelable(ARG_MOVIE_DETAIL, mMovieDetail);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         mPresenter.onResume(savedInstanceState);
-//        if (savedInstanceState != null) {
-//            mMovie = savedInstanceState.getParcelable(ARG_MOVIE);
-//            mMovieDetail = savedInstanceState.getParcelable(ARG_MOVIE_DETAIL);
-//        }
-//        showData();
     }
 
     @Override
@@ -113,7 +108,7 @@ public class MovieDetailActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        boolean res = false;
+        boolean res;
         switch (id) {
             case android.R.id.home:
                 onBackPressed();
@@ -164,7 +159,7 @@ public class MovieDetailActivity
             actionBar.setTitle(null);
         }
 
-        mMovieHolder = new MovieRecyclerAdapter.ViewHolder(mShortInfoContainer);
+        mMovieHolder = new MovieViewHolder(mShortInfoContainer);
         mMovieHolder.getScheduleView().setOnClickListener(this);
 
         if (mBuyTicketButton != null) {
@@ -292,7 +287,7 @@ public class MovieDetailActivity
         }
     }
 
-    //region Set visible
+
     @Override
     public void showImages(boolean v) {
         mImageListView.setVisibility(v? View.VISIBLE: View.GONE);
@@ -356,7 +351,5 @@ public class MovieDetailActivity
     public void showDescription(boolean v) {
         mDescriptionView.setVisibility(v? View.VISIBLE: View.GONE);
     }
-    //endregion
-
     //endregion
 }

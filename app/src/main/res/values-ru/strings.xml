@@ -43,4 +43,10 @@
     <string name="label_login">Войти</string>
     <string name="instraction_to_get_login_and_passwords">Если вы уже покупали билеты через сайт кинотеатра \"Тирасполь\" (kinotir.md), то \"пароль\" должен был прийти автоматически по email</string>
     <string name="title_login">Авторизация</string>
+    <string name="label_change_user">Сменить пользователя</string>
+    <string name="label_order">Заказ</string>
+    <string name="label_room">Зал</string>
+    <string name="label_session_time">Время сеанса</string>
+    <string name="label_session_date">Дата сеанса</string>
+    <string name="label_status">Статус</string>
 </resources>

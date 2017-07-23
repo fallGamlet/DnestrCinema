@@ -1,14 +1,10 @@
 package com.fallgamlet.dnestrcinema.mvp.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import android.support.v4.util.ArraySet;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Created by fallgamlet on 24.03.17.
@@ -25,6 +21,7 @@ public class TicketItem {
     private String time;
     private String url;
     private Set<TicketPlace> ticketPlaceSet;
+
 
     public TicketItem() {
         this.id = null;
@@ -95,7 +92,11 @@ public class TicketItem {
         this.time = time;
     }
 
-    public Set<TicketPlace> getTicketPlaceSet() {
+    public synchronized Set<TicketPlace> getTicketPlaceSet() {
+        if (ticketPlaceSet == null) {
+            ticketPlaceSet = new ArraySet<>();
+        }
+
         return ticketPlaceSet;
     }
 

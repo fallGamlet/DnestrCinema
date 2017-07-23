@@ -9,7 +9,18 @@ import com.fallgamlet.dnestrcinema.mvp.views.MvpTicketsView;
  */
 
 public class TicketsPresenterImpl
-    extends BasePresenter <MvpTicketsView>
-    implements MvpTicketsPresenter
+    extends
+        BasePresenter <MvpTicketsView>
+    implements
+        MvpTicketsPresenter
 {
+    @Override
+    public void onRefresh() {
+
+    }
+
+    @Override
+    public void onLogout() {
+
+    }
 }

@@ -2,128 +2,30 @@ package com.fallgamlet.dnestrcinema.ui.movie;
 
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.mvp.models.Config;
-import com.fallgamlet.dnestrcinema.mvp.models.ScheduleItem;
-import com.fallgamlet.dnestrcinema.utils.DateTimeUtils;
-import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
+import com.fallgamlet.dnestrcinema.ui.holders.MovieViewHolder;
+import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by fallgamlet on 08.07.16.
  */
-public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdapter.ViewHolder> {
+public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 
     //region Sub classes and Interfaces
     public interface OnAdapterListener {
         void onItemPressed(MovieItem item, int pos);
         void onItemSchedulePressed(MovieItem item, int pos);
         void onItemBuyTicketPressed(MovieItem item, int pos);
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        //region Fields
-        View mRootView;
-        ImageView mImageView;
-        TextView mTitleView;
-        TextView mPubdateView;
-        TextView mScheduleView;
-        View mBuyTicketButton;
-
-        MovieItem mItem;
-        //endregion
-
-        //region Constructors
-        public ViewHolder(View itemView) {
-            super(itemView);
-            initView(itemView);
-        }
-        //endregion
-
-        //region Getters
-        public MovieItem getItem() { return mItem; }
-
-        public View getRootView() { return mRootView; }
-
-        public ImageView getImageView() { return mImageView; }
-
-        public TextView getTitleView() { return mTitleView; }
-
-        public TextView getPubdateView() { return mPubdateView; }
-
-        public TextView getScheduleView() { return mScheduleView; }
-
-        public View getBuyTicketButton() {
-            return mBuyTicketButton;
-        }
-        //endregion
-
-        //region Methods
-        public void initView(View itemView) {
-            mRootView = itemView;
-            if (mRootView != null) {
-                mImageView = (ImageView) mRootView.findViewById(R.id.imageView);
-                mTitleView = (TextView) mRootView.findViewById(R.id.titleView);
-                mPubdateView = (TextView) mRootView.findViewById(R.id.pubdateView);
-                mScheduleView = (TextView) mRootView.findViewById(R.id.roomView);
-                mBuyTicketButton = mRootView.findViewById(R.id.buyTicketButton);
-            }
-        }
-
-        public void initData(MovieItem item) {
-            mItem = item;
-
-            if (item == null) { return; }
-
-            ArrayList<String> arr = new ArrayList<>();
-            StringBuilder strBuilder = new StringBuilder();
-            for (ScheduleItem schedule: mItem.getSchedules()) {
-                strBuilder.append(schedule.room);
-                if (schedule.value != null) {
-                    strBuilder.append(": ").append(schedule.value.trim());
-                }
-                arr.add(strBuilder.toString());
-                strBuilder.setLength(0);
-            }
-
-            String roomsStr = TextUtils.join("\n", arr);
-            String titleStr = item.getTitle() == null? null: item.getTitle().replaceAll("[ ]/[ ]", "\n").trim();
-
-            setTitle(titleStr);
-            setPubDate(item.getPubDate());
-            setSchedule(roomsStr);
-        }
-
-        public void setTitle(CharSequence title) {
-            if (mTitleView != null) {
-                mTitleView.setText(title);
-            }
-        }
-
-        public void setPubDate(Date date) {
-            if (mPubdateView != null) {
-                mPubdateView.setText(DateTimeUtils.getDateNamed(date));
-            }
-        }
-
-        public void setSchedule(CharSequence schedule) {
-            if (mScheduleView != null) {
-                mScheduleView.setText(schedule);
-            }
-        }
-        //endregion
     }
     //endregion
 
@@ -139,9 +41,9 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(itemLayoutId, parent, false);
-        final ViewHolder holder = new ViewHolder(view);
+        final MovieViewHolder holder = new MovieViewHolder(view);
 
         holder.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,7 +71,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(MovieViewHolder holder, int position) {
         final MovieItem item = getItem(position);
         holder.initData(item);
 
@@ -190,7 +92,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
+    public void onBindViewHolder(MovieViewHolder holder, int position, List<Object> payloads) {
         if (payloads == null || payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads);
             return;
@@ -200,7 +102,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
         // Если изменения не пустые и это пришла загруженная картинка
         if (obj != null && obj instanceof Bitmap) {
             // устанавливаем картинку
-            holder.mImageView.setImageBitmap((Bitmap)obj);
+            holder.getImageView().setImageBitmap((Bitmap)obj);
         }
     }
 
