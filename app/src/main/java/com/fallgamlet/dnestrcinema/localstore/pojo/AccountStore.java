@@ -1,12 +1,12 @@
-package com.fallgamlet.dnestrcinema.mvp.models;
+package com.fallgamlet.dnestrcinema.localstore.pojo;
 
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by fallgamlet on 15.07.17.
+ * Created by fallgamlet on 23.07.17.
  */
 
-public class AccountItem {
+public class AccountStore {
 
     @SerializedName("login")
     private String login;
@@ -16,7 +16,7 @@ public class AccountItem {
     private int cinemaId;
 
 
-    public AccountItem() {
+    public AccountStore() {
         login = null;
         password = null;
         cinemaId = 0;
@@ -46,4 +46,5 @@ public class AccountItem {
     public void setCinemaId(int cinemaId) {
         this.cinemaId = cinemaId;
     }
+
 }

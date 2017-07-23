@@ -1,5 +1,6 @@
 package com.fallgamlet.dnestrcinema.network.kinotir.mappers;
 
+import com.fallgamlet.dnestrcinema.mvp.models.MovieDetailItem;
 import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
 import com.fallgamlet.dnestrcinema.network.Mapper;
 import com.fallgamlet.dnestrcinema.utils.StringUtils;
@@ -50,7 +51,9 @@ public class HtmlMovieDetailMapper implements Mapper<String, MovieItem> {
         if (mainInfo != null) {
             parseFeatures(info.select(".features"), movieItem);
             String description = info.select(".description").text(); // span
-            movieItem.setDescription(description);
+
+            MovieDetailItem detailItem = getDetail(movieItem);
+            detailItem.setDescription(description);
         }
 
         parseImages(info.select(".slider"), movieItem);
@@ -77,26 +80,26 @@ public class HtmlMovieDetailMapper implements Mapper<String, MovieItem> {
         String strDuration = null;
 
         for (Element el: src) {
-            String key = el.select("label").text().trim();
+            String key = el.select("label").text().trim().toLowerCase();
             String val = el.select("div").text().trim();
-            if (val != null) {
-                if ("Старт:".equals(key)) {
+            if (key != null && val != null) {
+                if (key.contains("старт")) {
                     strStart = val;
-                } else if ("Страна:".equals(key)) {
+                } else if (key.contains("страна")) {
                     strCountry = val;
-                } else if ("Режисер:".equals(key)) {
+                } else if (key.contains("режисер")) {
                     strDirector= val;
-                } else if ("Сценарий:".equals(key)) {
+                } else if (key.contains("сценарий")) {
                     strScenario= val;
-                } else if ("В ролях:".equals(key)) {
+                } else if (key.contains("в ролях")) {
                     strActors = val;
-                } else if ("Жанр:".equals(key)) {
+                } else if (key.contains("жанр")) {
                     strGenre = val;
-                } else if ("Бюджет:".equals(key)) {
+                } else if (key.contains("бюджет")) {
                     strBudget = val;
-                } else if ("Возраст:".equals(key)) {
+                } else if (key.contains("возраст")) {
                     strAgeLimit = val;
-                } else if ("Продолжительность:".equals(key)) {
+                } else if (key.contains("продолжительность")) {
                     strDuration = val;
                 }
             }
@@ -104,15 +107,19 @@ public class HtmlMovieDetailMapper implements Mapper<String, MovieItem> {
 
         Date start = dateMapper.map(strStart);
 
+        MovieDetailItem detail = getDetail(movieItem);
+
         movieItem.setPubDate(start);
-        movieItem.setCountry(strCountry);
-        movieItem.setDirector(strDirector);
-        movieItem.setScenario(strScenario);
-        movieItem.setActors(strActors);
-        movieItem.setGenre(strGenre);
-        movieItem.setBudget(strBudget);
-        movieItem.setAgeLimit(strAgeLimit);
         movieItem.setDuration(strDuration);
+
+        detail.setCountry(strCountry);
+        detail.setDirector(strDirector);
+        detail.setScenario(strScenario);
+        detail.setActors(strActors);
+        detail.setGenre(strGenre);
+        detail.setBudget(strBudget);
+        detail.setAgeLimit(strAgeLimit);
+
     }
 
     private void parseImages(Elements src, MovieItem movieItem) {
@@ -120,13 +127,15 @@ public class HtmlMovieDetailMapper implements Mapper<String, MovieItem> {
             return;
         }
 
+        MovieDetailItem detail = getDetail(movieItem);
+
         src = src.select(">a");
         for (Element el: src) {
             String bigImg = el.attr("href");
             String smallImg = el.select("img").attr("src");
 
             if (smallImg != null && !smallImg.isEmpty()) {
-                movieItem.getImgUrlSet().add(smallImg);
+                detail.getImgUrls().add(smallImg);
             }
         }
     }
@@ -146,4 +155,13 @@ public class HtmlMovieDetailMapper implements Mapper<String, MovieItem> {
         }
     }
 
+    private MovieDetailItem getDetail(MovieItem movieItem) {
+        MovieDetailItem detail = movieItem.getDetail();
+        if (detail == null) {
+            detail = new MovieDetailItem();
+            movieItem.setDetail(detail);
+        }
+
+        return detail;
+    }
 }

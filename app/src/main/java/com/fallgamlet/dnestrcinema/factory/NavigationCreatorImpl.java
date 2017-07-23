@@ -64,7 +64,7 @@ public class NavigationCreatorImpl implements MvpNavigationCreator {
     private NavigationItem createTicketsNavigation() {
         NavigationItem item = new NavigationItem(NavigationItem.NavigationId.TICKETS);
         item.setTitleId(R.string.tickets);
-        item.setIconResId(R.drawable.ic_local_offer_black_24dp);
+        item.setIconResId(R.drawable.ic_tickets_24dp);
         return item;
     }
 

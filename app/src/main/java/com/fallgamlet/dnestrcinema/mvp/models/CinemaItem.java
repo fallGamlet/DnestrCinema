@@ -1,12 +1,16 @@
 package com.fallgamlet.dnestrcinema.mvp.models;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by fallgamlet on 06.07.17.
  */
 
 public class CinemaItem {
 
+    @SerializedName("id")
     private long id;
+    @SerializedName("name")
     private String name;
 
 

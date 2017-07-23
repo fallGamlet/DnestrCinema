@@ -8,7 +8,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 
 import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.mergers.MovieMerger;
 import com.fallgamlet.dnestrcinema.mvp.models.Config;
+import com.fallgamlet.dnestrcinema.mvp.models.MovieDetailItem;
 import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
 import com.fallgamlet.dnestrcinema.mvp.models.ScheduleItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter;
@@ -139,18 +141,21 @@ public class MvpMovieDetailPresenterImpl
             movieItem = new MovieItem();
         }
 
+        MovieDetailItem detail = movieItem.getDetail();
+
         getView().setTitle(movieItem.getTitle());
         getView().setPubDate(movieItem.getPubDate());
         getView().setRooms(getRooms(movieItem));
-        getView().setDirector(movieItem.getDirector());
-        getView().setActors(movieItem.getActors());
-        getView().setScenario(movieItem.getScenario());
-        getView().setAgeLimit(movieItem.getAgeLimit());
-        getView().setBudget(movieItem.getBudget());
-        getView().setCountry(movieItem.getCountry());
-        getView().setGenre(movieItem.getGenre());
         getView().setDuration(movieItem.getDuration());
-        getView().setDescription(HttpUtils.fromHtml(movieItem.getDescription()));
+
+        getView().setDirector(detail.getDirector());
+        getView().setActors(detail.getActors());
+        getView().setScenario(detail.getScenario());
+        getView().setAgeLimit(detail.getAgeLimit());
+        getView().setBudget(detail.getBudget());
+        getView().setCountry(detail.getCountry());
+        getView().setGenre(detail.getGenre());
+        getView().setDescription(HttpUtils.fromHtml(detail.getDescription()));
 
         getView().showBuyTicketButton(movieItem.getBuyTicketLink() != null && !movieItem.getBuyTicketLink().isEmpty());
         getView().showTrailerButton(!movieItem.getTrailerUrlSet().isEmpty());
@@ -162,7 +167,7 @@ public class MvpMovieDetailPresenterImpl
         }
 
         if (getImagesAdapter().getItemCount() == 0) {
-            loadImages(movieItem.getImgUrlSet());
+            loadImages(detail.getImgUrls());
         }
     }
 
@@ -189,7 +194,7 @@ public class MvpMovieDetailPresenterImpl
                             if (mMovie == null) {
                                 mMovie = movieItem;
                             } else {
-                                mMovie.mergeLeft(movieItem);
+                                new MovieMerger().merge(mMovie, movieItem);
                             }
 
                             showData(mMovie);
