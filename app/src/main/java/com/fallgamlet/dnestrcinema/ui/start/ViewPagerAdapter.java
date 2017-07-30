@@ -43,6 +43,14 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         mTitles.add(title);
     }
 
+    public void replaceFragment(Fragment fragment, String title, int position) {
+        mFragments.remove(position);
+        mFragments.add(position, fragment);
+
+        mTitles.remove(position);
+        mTitles.add(position, title);
+    }
+
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Object obj = super.instantiateItem(container, position);

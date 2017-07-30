@@ -145,13 +145,13 @@ public class NewsFragment
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getPresenter().onPause(outState);
+        getPresenter().onSave(outState);
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        getPresenter().onResume(savedInstanceState);
+        getPresenter().onRestore(savedInstanceState);
     }
 
     @Override

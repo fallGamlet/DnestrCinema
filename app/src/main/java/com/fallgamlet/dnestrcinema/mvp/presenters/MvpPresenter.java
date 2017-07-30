@@ -18,9 +18,9 @@ public interface MvpPresenter<T extends MvpView> {
 
     void onDestroy();
 
-    void onPause(Bundle bundle);
+    void onSave(Bundle bundle);
 
-    void onResume(Bundle bundle);
+    void onRestore(Bundle bundle);
 
     void loadData();
 

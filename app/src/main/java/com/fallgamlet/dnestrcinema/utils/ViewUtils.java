@@ -31,7 +31,7 @@ public class ViewUtils {
             return;
         }
 
-        hideKeyboard(activity, v);
+        hideKeyboard((Context) activity, v);
     }
 
     public static void hideKeyboard(Context context, View view) {

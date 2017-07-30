@@ -46,7 +46,6 @@ public class NewsPresenterImpl
 
     @Override
     public void loadData() {
-
         if(isViewBinded()) {
             getView().showLoading();
         }
@@ -102,7 +101,7 @@ public class NewsPresenterImpl
     }
 
     @Override
-    public void onPause(Bundle bundle) {
+    public void onSave(Bundle bundle) {
         if (bundle == null) {
             return;
         }
@@ -116,7 +115,7 @@ public class NewsPresenterImpl
     }
 
     @Override
-    public void onResume(Bundle bundle) {
+    public void onRestore(Bundle bundle) {
         if (bundle == null) {
             showData();
         }else {

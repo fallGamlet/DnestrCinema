@@ -1,6 +1,7 @@
 package com.fallgamlet.dnestrcinema.mvp.presenters;
 
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpPresenter;
+import com.fallgamlet.dnestrcinema.mvp.routers.LoginRouter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpLoginView;
 
 /**
@@ -16,5 +17,7 @@ public interface MvpLoginPresenter
     void onPasswordChanged(String value);
 
     void onLogin();
+
+    void setRouter(LoginRouter router);
 
 }

@@ -8,8 +8,12 @@ import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
  */
 
 public interface MvpMovieDetailPresenter extends MvpPresenter<MvpMovieDetailView> {
+
     void onTrailerButtonPressed();
+
     void onBuyTicketButtonPressed();
+
     void onRoomsPressed();
+
     void setData(MovieItem item);
 }

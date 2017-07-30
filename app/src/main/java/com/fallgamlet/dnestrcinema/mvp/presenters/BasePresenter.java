@@ -32,12 +32,12 @@ public abstract class BasePresenter<T extends MvpView> implements MvpPresenter<T
     }
 
     @Override
-    public void onPause(Bundle bundle) {
+    public void onSave(Bundle bundle) {
 
     }
 
     @Override
-    public void onResume(Bundle bundle) {
+    public void onRestore(Bundle bundle) {
 
     }
 

@@ -141,7 +141,7 @@ public class SoonMoviesFragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        getPresenter().onPause(outState);
+        getPresenter().onSave(outState);
 
 //        if(outState != null) {
 //            outState.putParcelableArrayList(ARG_DATA, getDataItems());
@@ -153,7 +153,7 @@ public class SoonMoviesFragment
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
 
-        getPresenter().onResume(savedInstanceState);
+        getPresenter().onRestore(savedInstanceState);
 
 //        if (savedInstanceState != null) {
 //            String url = savedInstanceState.getString(ARG_URL);

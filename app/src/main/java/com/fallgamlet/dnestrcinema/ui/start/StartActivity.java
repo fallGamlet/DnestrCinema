@@ -14,12 +14,16 @@ import android.view.MenuItem;
 
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.factory.KinotirConfigFactory;
+import com.fallgamlet.dnestrcinema.localstore.AccountLocalRepository;
+import com.fallgamlet.dnestrcinema.mvp.models.AccountItem;
 import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
 import com.fallgamlet.dnestrcinema.mvp.models.NavigationItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpLoginView;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
+import com.fallgamlet.dnestrcinema.network.NetClient;
 import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity;
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpBottomNavigationView;
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpNavigationPresenterImpl;
@@ -30,6 +34,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.schedulers.TestScheduler;
 
 public class StartActivity
         extends
@@ -64,12 +73,56 @@ public class StartActivity
 
     private void initData() {
         Config.getInstance().init(new KinotirConfigFactory());
+        initAccount();
 
         initNavigation();
 
         setupViewPager(mViewPager);
 
         showToday();
+    }
+
+    private void initAccount() {
+        AccountLocalRepository repository;
+        repository = new AccountLocalRepository(this);
+
+        repository.getItems()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                        new Consumer<List<AccountItem>>() {
+                            @Override
+                            public void accept(@NonNull List<AccountItem> accountItems) throws Exception {
+                                initAccount(accountItems);
+                            }
+                        },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+
+                            }
+                        }
+                );
+    }
+
+    private void initAccount(List<AccountItem> items) {
+        long cinemaId = Config.getInstance().getCinemaItem().getId();
+
+        AccountItem accountItem = null;
+        for (AccountItem item: items) {
+            if (item.getCinemaId() == cinemaId) {
+                accountItem = item;
+                break;
+            }
+        }
+
+        if (accountItem != null) {
+            Config.getInstance().setAccountItem(accountItem);
+
+            NetClient netClient = Config.getInstance().getNetClient();
+            netClient.setLogin(accountItem.getLogin());
+            netClient.setPassword(accountItem.getPassword());
+        }
     }
 
     private void initNavigation() {
@@ -310,4 +363,5 @@ public class StartActivity
         intent.setData(Uri.parse(url));
         startActivity(intent);
     }
+
 }

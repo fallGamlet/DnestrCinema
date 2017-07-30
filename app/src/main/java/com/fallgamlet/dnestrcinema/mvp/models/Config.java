@@ -18,7 +18,7 @@ import java.util.List;
 
 public class Config {
 
-    private static Config settings;
+    private static Config insatance;
 
     private NavigationRouter navigationRouter;
     private NetClient netClient;
@@ -33,10 +33,10 @@ public class Config {
 
 
     public static synchronized Config getInstance() {
-        if (settings == null) {
-            settings = new Config();
+        if (insatance == null) {
+            insatance = new Config();
         }
-        return settings;
+        return insatance;
     }
 
 

@@ -10,6 +10,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.security.auth.login.LoginException;
+
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
@@ -41,7 +43,7 @@ public class NetClient {
         this.requestFactory = requestFactory;
         this.mapperFactory = mapperFactory;
 
-        sessionTimeoutSeconds = 15*60;
+        setSessionTimeout(15*60);
 
         endSession = new Date(0);
 
@@ -151,6 +153,10 @@ public class NetClient {
     }
 
     public Observable<Boolean> login(String login, String password) {
+        if (!isExistAuthData(login, password)) {
+            return Observable.error(new LoginException("login or password not exist"));
+        }
+
         Request request = requestFactory.loginRequest(login, password);
 
         return createObservable(request)
@@ -158,10 +164,17 @@ public class NetClient {
                     @Override
                     public Boolean apply(@NonNull String text) throws Exception {
                         boolean check = mapperFactory.loginMapper().map(text);
-                        prolongSession();
+                        if (check) {
+                            prolongSession();
+                        }
                         return check;
                     }
                 });
+    }
+
+    private boolean isExistAuthData(String login, String password) {
+        return login != null && !login.isEmpty() &&
+                password != null && !password.isEmpty();
     }
 
 

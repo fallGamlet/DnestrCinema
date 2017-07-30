@@ -15,34 +15,39 @@
         android:layout_height="wrap_content"
         app:flexWrap="wrap"
         app:alignItems="stretch"
-        app:alignContent="space_between"
-        app:flexDirection="row"
-        app:justifyContent="space_between">
+        app:alignContent="stretch"
+        app:justifyContent="space_between"
+        app:showDivider="middle|beginning|end"
+        app:dividerDrawable="@color/colorAccent"
+        app:flexDirection="row">
 
         <TextView android:id="@+id/titleView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_margin="@dimen/SpaceSmall"
+            app:layout_flexBasisPercent="100%"
             tools:text="Title"/>
 
         <include android:id="@+id/order"
-            layout="@layout/property_item_vertical"
-            />
+            app:layout_flexBasisPercent="50%"
+            layout="@layout/property_item_vertical" />
 
         <include android:id="@+id/status"
-            layout="@layout/property_item_vertical"
-            />
+            app:layout_flexGrow="1"
+            layout="@layout/property_item_vertical" />
 
         <include android:id="@+id/room"
-            layout="@layout/property_item_vertical"
-            />
+            app:layout_flexGrow="1"
+            layout="@layout/property_item" />
 
         <include android:id="@+id/date"
-            layout="@layout/property_item_vertical"
-            />
+            app:layout_flexGrow="1"
+            layout="@layout/property_item_vertical" />
 
         <include android:id="@+id/time"
-            layout="@layout/property_item_vertical"
-            />
+            app:layout_flexGrow="1"
+            layout="@layout/property_item_vertical" />
 
     </com.google.android.flexbox.FlexboxLayout>
 

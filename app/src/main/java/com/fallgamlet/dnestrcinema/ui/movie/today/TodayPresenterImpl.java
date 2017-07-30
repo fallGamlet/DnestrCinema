@@ -126,7 +126,7 @@ public class TodayPresenterImpl
 
 
     @Override
-    public void onPause(Bundle bundle) {
+    public void onSave(Bundle bundle) {
         if (bundle == null) {
             return;
         }
@@ -140,7 +140,7 @@ public class TodayPresenterImpl
     }
 
     @Override
-    public void onResume(Bundle bundle) {
+    public void onRestore(Bundle bundle) {
         if (bundle == null) {
             showData();
         }else {

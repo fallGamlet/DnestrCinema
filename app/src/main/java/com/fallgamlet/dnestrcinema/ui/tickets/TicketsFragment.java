@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,20 +17,25 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.mvp.models.NewsItem;
 import com.fallgamlet.dnestrcinema.mvp.models.TicketItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTicketsPresenter;
+import com.fallgamlet.dnestrcinema.mvp.routers.LoginRouter;
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpBaseFragment;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpTicketsView;
 import com.fallgamlet.dnestrcinema.ui.adapters.BaseRecyclerAdapter;
+import com.fallgamlet.dnestrcinema.ui.movie.DividerItemDecoration;
 import com.fallgamlet.dnestrcinema.ui.news.NewsRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.ui.news.SpacerItemDecoration;
+import com.fallgamlet.dnestrcinema.utils.ViewUtils;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class TicketsFragment
@@ -52,13 +58,15 @@ public class TicketsFragment
     private SwipeRefreshLayout.OnRefreshListener refreshListener;
     //endregion
 
-    public TicketsFragment() {
-    }
-
 
     public static TicketsFragment newInstance() {
         TicketsFragment fragment = new TicketsFragment();
         return fragment;
+    }
+
+    public TicketsFragment() {
+        MvpTicketsPresenter presenter = Config.getInstance().getPresenterFactory().createTicketPresenter();
+        setPresenter(presenter);
     }
 
     @Override
@@ -109,10 +117,8 @@ public class TicketsFragment
             }
         };
 
-        int space = (int) getResources().getDimension(R.dimen.SpaceSmall);
-
-        SpacerItemDecoration decoration = new SpacerItemDecoration();
-        decoration.setSpace(space);
+        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
+        decoration.setPaddingStart(0);
 
         listView.setLayoutManager(layoutManager);
         listView.setItemAnimator(itemAnimator);
@@ -147,7 +153,6 @@ public class TicketsFragment
 
 
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -161,15 +166,26 @@ public class TicketsFragment
     @Override
     public void onPause() {
         super.onPause();
+        getPresenter().setRouter(null);
         getPresenter().unbindView();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        FragmentManager fm1 = getFragmentManager();
+        LoginRouter loginRouter = new LoginRouterImpl(fm1, R.id.rootView);
+
+        getPresenter().setRouter(loginRouter);
         getPresenter().bindView(this);
     }
 
+
+    @OnClick(R.id.logoutButton)
+    void onLogoutPressed(View view) {
+        getPresenter().onLogout();
+    }
 
 
 

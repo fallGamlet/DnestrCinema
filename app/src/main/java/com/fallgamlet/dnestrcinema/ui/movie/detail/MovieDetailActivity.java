@@ -19,7 +19,6 @@ import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpBaseActivity;
 import com.fallgamlet.dnestrcinema.ui.holders.FieldHolder;
 import com.fallgamlet.dnestrcinema.ui.holders.MovieViewHolder;
-import com.fallgamlet.dnestrcinema.ui.movie.MovieRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
 
@@ -91,13 +90,13 @@ public class MovieDetailActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mPresenter.onPause(outState);
+        mPresenter.onSave(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mPresenter.onResume(savedInstanceState);
+        mPresenter.onRestore(savedInstanceState);
     }
 
     @Override

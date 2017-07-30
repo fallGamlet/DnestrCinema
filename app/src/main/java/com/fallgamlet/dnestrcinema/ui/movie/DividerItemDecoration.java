@@ -25,7 +25,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private int mOrientation;
     private int paddingStart = 0,
-            paddingEnd = 0;
+                paddingEnd = 0;
 
     public DividerItemDecoration(Context context, int orientation) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);

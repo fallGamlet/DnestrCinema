@@ -10,7 +10,8 @@
     android:layout_marginRight="@dimen/SpaceSmall"
     android:layout_marginTop="@dimen/SpaceTini"
     android:layout_marginBottom="@dimen/SpaceTini"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    app:layout_flexGrow="1">
 
     <TextView android:id="@+id/keyView"
         android:layout_width="wrap_content"

@@ -2,13 +2,20 @@ package com.fallgamlet.dnestrcinema.ui.login;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.mvp.models.Config;
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpLoginPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
+import com.fallgamlet.dnestrcinema.utils.ViewUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,9 +33,18 @@ public class LoginFragment
     EditText passwordEditText;
     @BindView(R.id.loginButton)
     View loginButton;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.error)
+    TextView errorView;
     View rootView;
 
+    TextView.OnEditorActionListener actionListener;
+
+
     public LoginFragment() {
+        MvpLoginPresenter presenter = Config.getInstance().getPresenterFactory().createLoginPresenter();
+        setPresenter(presenter);
     }
 
     @Override
@@ -42,9 +58,13 @@ public class LoginFragment
         rootView = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, rootView);
 
-        initListeners();
-
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initListeners();
     }
 
     private void initListeners() {
@@ -52,20 +72,41 @@ public class LoginFragment
 
         loginButton.setOnClickListener(this);
 
+        loginEditText.setOnEditorActionListener(getOnEditorActionListener());
+
         loginEditText.addTextChangedListener(new BaseTextWatcher(){
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                loginChanged(charSequence);
+                loginChanged(charSequence.toString().trim());
             }
         });
+
+        passwordEditText.setOnEditorActionListener(getOnEditorActionListener());
 
         passwordEditText.addTextChangedListener(new BaseTextWatcher(){
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                passwordChanged(charSequence);
+                passwordChanged(charSequence.toString().trim());
             }
         });
 
+    }
+
+    private TextView.OnEditorActionListener getOnEditorActionListener() {
+        if (actionListener == null) {
+            actionListener = new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                    if (actionId == EditorInfo.IME_ACTION_SEND) {
+                        getPresenter().onLogin();
+                        return true;
+                    }
+                    return false;
+                }
+            };
+        }
+
+        return actionListener;
     }
 
     @Override
@@ -97,7 +138,7 @@ public class LoginFragment
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (isPresenterExist()) {
-            getPresenter().onPause(outState);
+            getPresenter().onSave(outState);
         }
     }
 
@@ -105,10 +146,25 @@ public class LoginFragment
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if (isPresenterExist()) {
-            getPresenter().onResume(savedInstanceState);
+            getPresenter().onRestore(savedInstanceState);
         }
     }
 
+    @Override
+    public void onPause() {
+        getPresenter().unbindView();
+
+        ViewUtils.hideKeyboard(getContext(), loginEditText);
+        ViewUtils.hideKeyboard(getContext(), passwordEditText);
+
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getPresenter().bindView(this);
+    }
 
     @Override
     public void setLogin(CharSequence value) {
@@ -164,5 +220,16 @@ public class LoginFragment
         if (this.loginButton != null) {
             this.loginButton.setVisibility(v ? View.VISIBLE : View.GONE);
         }
+    }
+
+    @Override
+    public void setLoading(boolean v) {
+        progressBar.setVisibility(v? View.VISIBLE: View.GONE);
+        setLoginButtonVisible(!v);
+    }
+
+    @Override
+    public void setErrorVisible(boolean v) {
+        errorView.setVisibility(v? View.VISIBLE: View.GONE);
     }
 }

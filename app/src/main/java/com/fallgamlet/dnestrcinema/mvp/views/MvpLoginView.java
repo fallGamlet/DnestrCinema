@@ -26,4 +26,8 @@ public interface MvpLoginView
 
     void setLoginButtonVisible(boolean v);
 
+    void setLoading(boolean v);
+
+    void setErrorVisible(boolean v);
+
 }

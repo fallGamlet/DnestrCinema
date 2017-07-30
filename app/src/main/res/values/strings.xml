@@ -61,5 +61,6 @@
     <string name="label_session_time">Session time</string>
     <string name="label_session_date">Session date</string>
     <string name="label_status">Status</string>
+    <string name="msg_login_fail">Incorrect email or password</string>
 
 </resources>

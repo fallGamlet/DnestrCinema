@@ -13,7 +13,7 @@ public class AccountStore {
     @SerializedName("password")
     private String password;
     @SerializedName("cinemaId")
-    private int cinemaId;
+    private long cinemaId;
 
 
     public AccountStore() {
@@ -39,11 +39,11 @@ public class AccountStore {
         this.password = password;
     }
 
-    public int getCinemaId() {
+    public long getCinemaId() {
         return cinemaId;
     }
 
-    public void setCinemaId(int cinemaId) {
+    public void setCinemaId(long cinemaId) {
         this.cinemaId = cinemaId;
     }
 

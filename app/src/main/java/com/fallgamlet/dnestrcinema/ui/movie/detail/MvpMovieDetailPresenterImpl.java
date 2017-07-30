@@ -96,14 +96,14 @@ public class MvpMovieDetailPresenterImpl
     }
 
     @Override
-    public void onPause(Bundle bundle) {
+    public void onSave(Bundle bundle) {
         if (bundle != null) {
             Icepick.saveInstanceState(this, bundle);
         }
     }
 
     @Override
-    public void onResume(Bundle bundle) {
+    public void onRestore(Bundle bundle) {
         if (bundle != null) {
             Icepick.restoreInstanceState(this, bundle);
         }
