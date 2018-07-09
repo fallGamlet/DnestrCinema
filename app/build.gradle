@@ -33,9 +33,10 @@ android {
         targetSdkVersion 27
         versionCode 27
         versionName "1.0.${versionCode}"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        project.ext.set("archivesBaseName", "DnestrCinema" + versionName);
         vectorDrawables.useSupportLibrary = true
         signingConfig signingConfigs.config
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -51,10 +52,16 @@ android {
     }
     productFlavors {
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 ext {
     androidLibVersion = "27.1.1"
+    butterknife = "8.8.1"
+    icepick = "3.2.0"
 }
 
 dependencies {
@@ -70,9 +77,9 @@ dependencies {
 
     implementation 'com.android.support:multidex:1.0.3'
 
-    implementation 'com.google.android:flexbox:0.3.0'
+    implementation 'com.google.android:flexbox:1.0.0'
 
-    implementation 'com.google.guava:guava:22.0'
+//    implementation 'com.google.guava:guava:22.0'
 
     implementation 'com.google.code.gson:gson:2.8.2'
 
@@ -84,14 +91,15 @@ dependencies {
 
     implementation 'org.jsoup:jsoup:1.10.2'
 
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation "com.jakewharton:butterknife:${butterknife}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterknife}"
 
-    implementation 'frankiesardo:icepick:3.2.0'
-    compileOnly 'frankiesardo:icepick-processor:3.2.0'
+    api "frankiesardo:icepick:${icepick}"
+    compileOnly "frankiesardo:icepick-processor:${icepick}"
+    annotationProcessor "frankiesardo:icepick-processor:${icepick}"
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'
     })
