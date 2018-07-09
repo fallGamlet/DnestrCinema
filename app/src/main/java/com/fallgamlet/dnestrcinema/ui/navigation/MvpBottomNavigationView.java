@@ -6,13 +6,10 @@ import android.support.design.widget.BottomNavigationView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.mvp.models.NavigationItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
-
-import java.util.List;
 
 /**
  * Created by fallgamlet on 02.07.17.

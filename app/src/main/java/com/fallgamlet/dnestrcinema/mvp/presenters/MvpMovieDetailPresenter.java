@@ -1,7 +1,7 @@
 package com.fallgamlet.dnestrcinema.mvp.presenters;
 
-import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
 import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
 
 /**
  * Created by fallgamlet on 09.04.17.

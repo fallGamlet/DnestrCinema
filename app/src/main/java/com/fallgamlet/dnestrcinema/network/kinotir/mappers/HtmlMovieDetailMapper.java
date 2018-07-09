@@ -3,17 +3,13 @@ package com.fallgamlet.dnestrcinema.network.kinotir.mappers;
 import com.fallgamlet.dnestrcinema.mvp.models.MovieDetailItem;
 import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
 import com.fallgamlet.dnestrcinema.network.Mapper;
-import com.fallgamlet.dnestrcinema.utils.StringUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by fallgamlet on 09.07.17.

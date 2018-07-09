@@ -1,8 +1,8 @@
 package com.fallgamlet.dnestrcinema.mvp.factory;
 
-import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpAboutView;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpLoginView;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNewsView;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpSoonView;

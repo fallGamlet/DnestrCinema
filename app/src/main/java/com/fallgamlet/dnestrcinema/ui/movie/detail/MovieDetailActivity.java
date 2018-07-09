@@ -2,8 +2,8 @@ package com.fallgamlet.dnestrcinema.ui.movie.detail;
 
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,13 +14,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.fallgamlet.dnestrcinema.mvp.presenters.MvpMovieDetailPresenter;
-import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
-import com.fallgamlet.dnestrcinema.mvp.views.MvpBaseActivity;
-import com.fallgamlet.dnestrcinema.ui.holders.FieldHolder;
-import com.fallgamlet.dnestrcinema.ui.holders.MovieViewHolder;
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpMovieDetailPresenter;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpBaseActivity;
+import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
+import com.fallgamlet.dnestrcinema.ui.holders.FieldHolder;
+import com.fallgamlet.dnestrcinema.ui.holders.MovieViewHolder;
 
 import java.util.Collection;
 import java.util.Date;

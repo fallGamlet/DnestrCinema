@@ -1,6 +1,7 @@
 package com.fallgamlet.dnestrcinema.localstore;
 
 import java.util.List;
+
 import io.reactivex.Observable;
 
 /**

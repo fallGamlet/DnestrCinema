@@ -1,6 +1,7 @@
 package com.fallgamlet.dnestrcinema.mvp.views;
 
 import android.content.Context;
+
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpPresenter;
 
 /**

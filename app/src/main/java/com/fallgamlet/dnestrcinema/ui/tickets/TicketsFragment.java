@@ -1,11 +1,9 @@
 package com.fallgamlet.dnestrcinema.ui.tickets;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -18,18 +16,13 @@ import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.mvp.models.Config;
-import com.fallgamlet.dnestrcinema.mvp.models.NewsItem;
 import com.fallgamlet.dnestrcinema.mvp.models.TicketItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTicketsPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.LoginRouter;
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
-import com.fallgamlet.dnestrcinema.mvp.views.MvpBaseFragment;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpTicketsView;
 import com.fallgamlet.dnestrcinema.ui.adapters.BaseRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.ui.movie.DividerItemDecoration;
-import com.fallgamlet.dnestrcinema.ui.news.NewsRecyclerAdapter;
-import com.fallgamlet.dnestrcinema.ui.news.SpacerItemDecoration;
-import com.fallgamlet.dnestrcinema.utils.ViewUtils;
 
 import java.util.List;
 

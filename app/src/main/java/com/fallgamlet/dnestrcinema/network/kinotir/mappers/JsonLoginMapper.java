@@ -4,8 +4,6 @@ import com.fallgamlet.dnestrcinema.network.Mapper;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
-import org.json.JSONObject;
-
 /**
  * Created by fallgamlet on 09.07.17.
  */

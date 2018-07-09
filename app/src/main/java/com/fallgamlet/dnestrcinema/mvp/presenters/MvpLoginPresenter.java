@@ -1,6 +1,5 @@
 package com.fallgamlet.dnestrcinema.mvp.presenters;
 
-import com.fallgamlet.dnestrcinema.mvp.presenters.MvpPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.LoginRouter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpLoginView;
 

@@ -21,7 +21,6 @@ import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
 import com.fallgamlet.dnestrcinema.mvp.models.NavigationItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter;
-import com.fallgamlet.dnestrcinema.mvp.views.MvpLoginView;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
 import com.fallgamlet.dnestrcinema.network.NetClient;
 import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity;
@@ -38,7 +37,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.schedulers.TestScheduler;
 
 public class StartActivity
         extends

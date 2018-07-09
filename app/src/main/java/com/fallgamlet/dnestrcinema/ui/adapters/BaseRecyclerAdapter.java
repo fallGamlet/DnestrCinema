@@ -1,25 +1,15 @@
 package com.fallgamlet.dnestrcinema.ui.adapters;
 
-import android.graphics.Bitmap;
-import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
-import com.fallgamlet.dnestrcinema.mvp.models.NewsItem;
-import com.fallgamlet.dnestrcinema.mvp.models.TicketItem;
 import com.fallgamlet.dnestrcinema.ui.holders.BaseViewHolder;
-import com.fallgamlet.dnestrcinema.ui.holders.NewsViewHolder;
-import com.fallgamlet.dnestrcinema.ui.holders.TicketViewHolder;
-import com.fallgamlet.dnestrcinema.utils.HttpUtils;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -43,8 +33,9 @@ public abstract class BaseRecyclerAdapter <T, VH extends BaseViewHolder<T>>
     }
 
 
+    @NonNull
     @Override
-    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
+    public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(getLayoutId(), parent, false);
         final VH holder = createViewHolder(view);
 
@@ -67,14 +58,14 @@ public abstract class BaseRecyclerAdapter <T, VH extends BaseViewHolder<T>>
     protected abstract VH createViewHolder(View view);
 
     @Override
-    public void onBindViewHolder(VH holder, int position) {
+    public void onBindViewHolder(@NonNull VH holder, int position) {
         final T item = getItem(position);
         holder.setItem(item);
     }
 
     @Override
-    public void onBindViewHolder(VH holder, int position, List<Object> payloads) {
-        if (payloads == null || payloads.isEmpty()) {
+    public void onBindViewHolder(@NonNull VH holder, int position, @NonNull List<Object> payloads) {
+        if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads);
         }
     }
@@ -126,11 +117,11 @@ public abstract class BaseRecyclerAdapter <T, VH extends BaseViewHolder<T>>
         return mListData;
     }
 
-    public void setListener(OnAdapterListener listener) {
+    public void setListener(OnAdapterListener<T> listener) {
         this.mListener = listener;
     }
 
-    public OnAdapterListener getListener() {
+    public OnAdapterListener<T> getListener() {
         return this.mListener;
     }
 }

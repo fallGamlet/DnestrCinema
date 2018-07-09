@@ -1,6 +1,5 @@
 package com.fallgamlet.dnestrcinema.utils;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**

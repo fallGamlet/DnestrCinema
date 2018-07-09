@@ -5,15 +5,12 @@ import com.fallgamlet.dnestrcinema.mvp.models.TicketItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTicketsPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.LoginRouter;
-import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpTicketsView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -69,25 +66,19 @@ public class TicketsPresenterImpl
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                        new Consumer<Boolean>() {
-                            @Override
-                            public void accept(@NonNull Boolean value) throws Exception {
-                                setLoading(false);
-                                if (value) {
-                                    loadTickets();
-                                }
-                                else {
-                                    navigateToLogin();
-                                }
-
+                        value -> {
+                            setLoading(false);
+                            if (value) {
+                                loadTickets();
                             }
-                        },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                setLoading(false);
+                            else {
                                 navigateToLogin();
                             }
+
+                        },
+                        throwable -> {
+                            setLoading(false);
+                            navigateToLogin();
                         }
                 );
     }
@@ -101,19 +92,13 @@ public class TicketsPresenterImpl
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                        new Consumer<List<TicketItem>>() {
-                            @Override
-                            public void accept(@NonNull List<TicketItem> ticketItems) throws Exception {
-                                setLoading(false);
-                                updateData(ticketItems);
-                            }
+                        ticketItems -> {
+                            setLoading(false);
+                            updateData(ticketItems);
                         },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                setLoading(false);
-                                updateData(getEmptyList());
-                            }
+                        throwable -> {
+                            setLoading(false);
+                            updateData(getEmptyList());
                         }
                 );
     }

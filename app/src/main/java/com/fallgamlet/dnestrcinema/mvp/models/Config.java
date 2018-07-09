@@ -1,9 +1,9 @@
 package com.fallgamlet.dnestrcinema.mvp.models;
 
+import com.fallgamlet.dnestrcinema.mvp.factory.ConfigFactory;
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpNavigationCreator;
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpPresenterFactory;
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpViewFragmentFactory;
-import com.fallgamlet.dnestrcinema.mvp.factory.ConfigFactory;
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter;
 import com.fallgamlet.dnestrcinema.network.MapperFactory;
 import com.fallgamlet.dnestrcinema.network.NetClient;
