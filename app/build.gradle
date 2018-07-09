@@ -6,6 +6,7 @@ keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 repositories {
     maven { url "https://clojars.org/repo/" }
+    google()
 }
 
 android {
@@ -23,15 +24,15 @@ android {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
     }
 
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.fallgamlet.dnestrcinema"
-        minSdkVersion 10
-        targetSdkVersion 25
-        versionCode 26
-        versionName "0.1.${versionCode}"
+        minSdkVersion 14
+        targetSdkVersion 27
+        versionCode 27
+        versionName "1.0.${versionCode}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         signingConfig signingConfigs.config
@@ -53,45 +54,45 @@ android {
 }
 
 ext {
-    androidLibVersion = "25.3.1"
+    androidLibVersion = "27.1.1"
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile "com.android.support:appcompat-v7:${androidLibVersion}"
-    compile "com.android.support:support-v4:${androidLibVersion}"
-    compile "com.android.support:design:${androidLibVersion}"
-    compile "com.android.support:palette-v7:${androidLibVersion}"
-    compile "com.android.support:recyclerview-v7:${androidLibVersion}"
-    compile "com.android.support:cardview-v7:${androidLibVersion}"
+    implementation "com.android.support:appcompat-v7:${androidLibVersion}"
+    implementation "com.android.support:support-v4:${androidLibVersion}"
+    implementation "com.android.support:design:${androidLibVersion}"
+    implementation "com.android.support:palette-v7:${androidLibVersion}"
+    implementation "com.android.support:recyclerview-v7:${androidLibVersion}"
+    implementation "com.android.support:cardview-v7:${androidLibVersion}"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
+    implementation 'com.android.support:multidex:1.0.3'
 
+    implementation 'com.google.android:flexbox:0.3.0'
 
+    implementation 'com.google.guava:guava:22.0'
 
+    implementation 'com.google.code.gson:gson:2.8.2'
 
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
 
+    implementation 'org.jsoup:jsoup:1.10.2'
 
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation 'frankiesardo:icepick:3.2.0'
+    compileOnly 'frankiesardo:icepick-processor:3.2.0'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'
     })
-
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.google.android:flexbox:0.3.0'
-    compile 'com.google.guava:guava:22.0-android'
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.squareup.okhttp3:okhttp:3.8.1'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'io.reactivex.rxjava2:rxjava:2.0.8'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'org.jsoup:jsoup:1.10.2'
-    compile 'frankiesardo:icepick:3.2.0'
-    compile 'com.jakewharton:butterknife:8.5.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    provided 'frankiesardo:icepick-processor:3.2.0'
 }
