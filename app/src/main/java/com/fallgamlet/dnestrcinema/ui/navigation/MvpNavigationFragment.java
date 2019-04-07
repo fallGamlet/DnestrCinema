@@ -15,9 +15,6 @@ import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by fallgamlet on 11.07.17.
- */
 
 public class MvpNavigationFragment
         extends
@@ -33,7 +30,7 @@ public class MvpNavigationFragment
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.bottom_navigation, container, false);
 
         ButterKnife.bind(this, rootView);

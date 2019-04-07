@@ -155,7 +155,8 @@ public class MvpMovieDetailPresenterImpl
         getView().setGenre(detail.getGenre());
         getView().setDescription(HttpUtils.fromHtml(detail.getDescription()));
 
-        getView().showBuyTicketButton(movieItem.getBuyTicketLink() != null && !movieItem.getBuyTicketLink().isEmpty());
+        getView().showBuyTicketButton(false);
+//        getView().showBuyTicketButton(movieItem.getBuyTicketLink() != null && !movieItem.getBuyTicketLink().isEmpty());
         getView().showTrailerButton(!movieItem.getTrailerUrlSet().isEmpty());
 
         String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();

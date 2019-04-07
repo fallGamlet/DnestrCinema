@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView android:id="@+id/titleView"
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/titleView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/SpaceSmall"
@@ -21,7 +22,8 @@
             android:textStyle="bold"
             tools:text="Title of news"/>
 
-        <TextView android:id="@+id/dateView"
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/dateView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -32,14 +34,16 @@
             android:textSize="@dimen/TextTin"
             tools:text="Text of news" />
 
-        <ImageView android:id="@+id/imageView"
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
             android:contentDescription="@null"
             app:srcCompat="@drawable/ic_photo_empty_240dp"/>
 
-        <TextView android:id="@+id/textView"
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/SpaceSmall"

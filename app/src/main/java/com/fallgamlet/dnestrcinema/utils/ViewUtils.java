@@ -11,9 +11,6 @@ import android.widget.Toast;
 
 import com.fallgamlet.dnestrcinema.R;
 
-/**
- * Created by fallgamlet on 02.07.17.
- */
 
 public class ViewUtils {
 
@@ -101,4 +98,14 @@ public class ViewUtils {
             LogUtils.log("Share", "Fail then sharing", e);
         }
     }
+
+
+    public static void setVisible(@NonNull View view, boolean visible) {
+        setVisible(view, visible, View.GONE);
+    }
+
+    public static void setVisible(@NonNull View view, boolean visible, int invisibleState) {
+        view.setVisibility(visible? View.VISIBLE: invisibleState);
+    }
+
 }

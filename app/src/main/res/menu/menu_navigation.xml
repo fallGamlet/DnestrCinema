@@ -18,6 +18,7 @@
         android:title="@string/tickets"
         android:icon="@drawable/ic_tickets_24dp"
         app:srcCompat="@drawable/ic_tickets_24dp"
+        android:visible="false"
         />
 
     <item android:id="@+id/actionNews"

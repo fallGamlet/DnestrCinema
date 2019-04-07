@@ -11,7 +11,8 @@
     android:background="?attr/selectableItemBackground"
     android:id="@+id/itemRootView">
     
-    <ImageView android:id="@+id/imageView"
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/imageView"
         android:layout_width="@dimen/ImageWidth"
         android:layout_height="@dimen/ImageHeight"
         android:layout_gravity="center_vertical"
@@ -30,7 +31,8 @@
         android:orientation="vertical"
         android:layout_gravity="top">
 
-        <TextView android:id="@+id/titleView"
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/titleView"
             style="@style/AppTheme.TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +44,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_from"/>
@@ -51,24 +53,28 @@
                 android:layout_width="4dp"
                 android:layout_height="0dp" />
 
-            <TextView android:id="@+id/pubdateView"
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/pubdateView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="dd.mm.yyyy"/>
 
         </LinearLayout>
 
-        <TextView android:id="@+id/roomView"
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/roomView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Rooms"/>
 
-        <Button android:id="@+id/buyTicketButton"
+        <android.support.v7.widget.AppCompatButton android:id="@+id/buyTicketButton"
             style="@style/AppTheme.DialogButton"
             android:layout_margin="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_buy_ticket"/>
+            android:text="@string/label_buy_ticket"
+            android:visibility="gone"
+            />
 
     </LinearLayout>
 

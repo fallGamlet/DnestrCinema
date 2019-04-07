@@ -5,9 +5,6 @@ import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
 
-/**
- * Created by fallgamlet on 02.07.17.
- */
 
 public class MvpNavigationPresenterImpl
         extends BasePresenter<MvpNavigationView>

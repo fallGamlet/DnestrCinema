@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity">
+    android:layout_height="match_parent">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -19,7 +18,8 @@
             android:paddingBottom="@dimen/SpaceMiddle"
             android:animateLayoutChanges="true">
 
-            <ImageView android:id="@+id/posterImageView"
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/posterImageView"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:scaleType="centerCrop"
@@ -34,7 +34,8 @@
                 android:padding="@dimen/SpaceSmall"
                 android:orientation="vertical">
 
-                <TextView android:id="@+id/titleView"
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/titleView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
@@ -46,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_from"/>
@@ -55,21 +56,23 @@
                         android:layout_width="4dp"
                         android:layout_height="0dp" />
 
-                    <TextView android:id="@+id/pubdateView"
+                    <android.support.v7.widget.AppCompatTextView android:id="@+id/pubdateView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="dd.mm.yyyy"/>
 
                 </LinearLayout>
 
-                <TextView android:id="@+id/roomView"
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/roomView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="Rooms"/>
 
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView android:id="@+id/imageList"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/imageList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/SpaceZero"
@@ -87,7 +90,8 @@
                 android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
 
-                <Button android:id="@+id/trailerBtn"
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/trailerBtn"
                     style="@style/AppTheme.ColoredLink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -96,7 +100,8 @@
                     android:visibility="gone"
                     tools:visibility="visible"/>
 
-                <Button android:id="@+id/buyTicketButton"
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/buyTicketButton"
                     style="@style/AppTheme.ColoredLink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -132,7 +137,8 @@
             <include android:id="@+id/budgetView"
                 layout="@layout/property_item" />
 
-            <TextView android:id="@+id/descriptionView"
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/descriptionView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/SpaceSmall" />

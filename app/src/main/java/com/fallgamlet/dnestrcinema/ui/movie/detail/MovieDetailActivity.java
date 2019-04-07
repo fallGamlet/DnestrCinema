@@ -21,6 +21,7 @@ import com.fallgamlet.dnestrcinema.mvp.views.MvpBaseActivity;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
 import com.fallgamlet.dnestrcinema.ui.holders.FieldHolder;
 import com.fallgamlet.dnestrcinema.ui.holders.MovieViewHolder;
+import com.fallgamlet.dnestrcinema.utils.ViewUtils;
 
 import java.util.Collection;
 import java.util.Date;
@@ -150,7 +151,7 @@ public class MovieDetailActivity
 
     //region Methods
     private void initViews() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -169,7 +170,7 @@ public class MovieDetailActivity
             mTrailerBtn.setOnClickListener(this);
         }
 
-        mImageListView = (RecyclerView) findViewById(R.id.imageList);
+        mImageListView = findViewById(R.id.imageList);
         if (mImageListView != null) {
             mImageListView.setHasFixedSize(false);
             mImageListView.setItemAnimator(new DefaultItemAnimator());
@@ -289,21 +290,19 @@ public class MovieDetailActivity
 
     @Override
     public void showImages(boolean v) {
-        mImageListView.setVisibility(v? View.VISIBLE: View.GONE);
+        ViewUtils.setVisible(mImageListView, v);
     }
 
     @Override
     public void showBuyTicketButton(boolean v) {
         if (mBuyTicketButton != null) {
-            mBuyTicketButton.setVisibility(v? View.VISIBLE: View.GONE);
+            ViewUtils.setVisible(mBuyTicketButton, v);
         }
     }
 
     @Override
     public void showTrailerButton(boolean v) {
-        if (mTrailerBtn != null) {
-            mTrailerBtn.setVisibility(v? View.VISIBLE: View.GONE);
-        }
+        ViewUtils.setVisible(mTrailerBtn, v);
     }
 
     @Override

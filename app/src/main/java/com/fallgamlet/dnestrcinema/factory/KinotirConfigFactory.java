@@ -33,7 +33,7 @@ public class KinotirConfigFactory implements ConfigFactory {
         List<Integer> set = new ArrayList<>();
         set.add(NavigationItem.NavigationId.TODAY);
         set.add(NavigationItem.NavigationId.SOON);
-        set.add(NavigationItem.NavigationId.TICKETS);
+//        set.add(NavigationItem.NavigationId.TICKETS);
         set.add(NavigationItem.NavigationId.NEWS);
         set.add(NavigationItem.NavigationId.ABOUT);
 

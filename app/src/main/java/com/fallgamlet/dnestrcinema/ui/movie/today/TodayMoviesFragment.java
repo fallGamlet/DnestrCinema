@@ -20,6 +20,7 @@ import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTodayPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 import com.fallgamlet.dnestrcinema.ui.movie.DividerItemDecoration;
 import com.fallgamlet.dnestrcinema.ui.movie.MovieRecyclerAdapter;
+import com.fallgamlet.dnestrcinema.utils.ViewUtils;
 
 import java.util.List;
 
@@ -57,12 +58,12 @@ public class TodayMoviesFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_movies, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rootView = view;
         ButterKnife.bind(this, view);
@@ -70,12 +71,7 @@ public class TodayMoviesFragment
     }
 
     private void initViews() {
-        rootView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        rootView.setOnClickListener(view -> {});
 
         setContentVisible(true);
         setNoContentVisible(false);
@@ -90,7 +86,8 @@ public class TodayMoviesFragment
     }
 
     private void initListView() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        Context context = listView.getContext();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         DefaultItemAnimator itemAnimator = new DefaultItemAnimator() {
@@ -101,7 +98,7 @@ public class TodayMoviesFragment
         };
 
         int left = (int) getResources().getDimension(R.dimen.DividerLeft);
-        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
+        DividerItemDecoration decoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL_LIST);
         decoration.setPaddingStart(left);
 
         listView.setLayoutManager(layoutManager);
@@ -134,41 +131,18 @@ public class TodayMoviesFragment
     @Override
     public void onDetach() {
         super.onDetach();
-//        if (mTask != null && mTask.getStatus() == AsyncTask.Status.RUNNING) {
-//            mTask.cancel(true);
-//        }
-//        mTask = null;
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
         getPresenter().onSave(outState);
-
-//        if(outState != null) {
-//            outState.putParcelableArrayList(ARG_DATA, getDataItems());
-//            outState.putString(ARG_URL, mUrl);
-//        }
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-
         getPresenter().onRestore(savedInstanceState);
-
-//        if (savedInstanceState != null) {
-//            String url = savedInstanceState.getString(ARG_URL);
-//            ArrayList<MovieItem> items = savedInstanceState.getParcelableArrayList(ARG_DATA);
-//
-//            if (url != null) {
-//                mUrl = url;
-//            }
-//            if (items != null) {
-//                setDataItems(items);
-//            }
-//        }
     }
 
     @Override
@@ -187,12 +161,7 @@ public class TodayMoviesFragment
 
     private SwipeRefreshLayout.OnRefreshListener getOnRefreshListener() {
         if (refreshListener == null) {
-            refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    getPresenter().onRefresh();
-                }
-            };
+            refreshListener = () -> getPresenter().onRefresh();
         }
         return refreshListener;
     }
@@ -242,15 +211,11 @@ public class TodayMoviesFragment
 
     @Override
     public void setContentVisible(boolean v) {
-        if (this.swipeLayout != null) {
-            this.swipeLayout.setVisibility(v? View.VISIBLE: View.GONE);
-        }
+        ViewUtils.setVisible(swipeLayout, v);
     }
 
     @Override
     public void setNoContentVisible(boolean v) {
-        if (placeholderView != null) {
-            placeholderView.setVisibility(v? View.VISIBLE: View.GONE);
-        }
+        ViewUtils.setVisible(placeholderView, v);
     }
 }
