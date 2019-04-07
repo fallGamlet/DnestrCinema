@@ -3,6 +3,7 @@ package com.fallgamlet.dnestrcinema.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,30 +11,26 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.app.GlideApp;
 import com.fallgamlet.dnestrcinema.mvp.models.Config;
+import com.fallgamlet.dnestrcinema.utils.GlideRequestListener;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 public class ImageActivity extends AppCompatActivity {
-    //region Static felds
     public static String ARG_IMG_URL = "img_url";
     public static String ARG_IMG = "img";
-    //endregion
 
-    //region Fields
-    ImageView mImageView;
-    ContentLoadingProgressBar mProgressBar;
-    String mImgURL;
-    Bitmap mImg;
-    //endregion
+    private ImageView mImageView;
+    private ContentLoadingProgressBar mProgressBar;
+    private String mImgURL;
+    private Bitmap mImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
-        mImageView = (ImageView) findViewById(R.id.imageView);
-        mProgressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
+        mImageView = findViewById(R.id.imageView);
+        mProgressBar = findViewById(R.id.progressBar);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -74,18 +71,13 @@ public class ImageActivity extends AppCompatActivity {
             showImageEmpty();
         } else {
             showProgressBar(true);
-            Picasso.with(this).load(imgUrl).into(mImageView, new Callback() {
-                @Override
-                public void onSuccess() {
-                    showProgressBar(false);
-                }
-
-                @Override
-                public void onError() {
-                    showProgressBar(false);
-                    showImageEmpty();
-                }
-            });
+            GlideApp.with(mImageView)
+                    .load(imgUrl)
+                    .placeholder(R.drawable.ic_photo_empty_240dp)
+                    .error(R.drawable.ic_photo_empty_240dp)
+                    .fitCenter()
+                    .addListener(new GlideRequestListener<Drawable>().complete(() -> showProgressBar(false)))
+                    .into(mImageView);
         }
     }
 

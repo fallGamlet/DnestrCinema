@@ -1,24 +1,23 @@
 package com.fallgamlet.dnestrcinema.ui.movie;
 
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.app.GlideApp;
 import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
 import com.fallgamlet.dnestrcinema.ui.holders.MovieViewHolder;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by fallgamlet on 08.07.16.
- */
+
 public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 
     //region Sub classes and Interfaces
@@ -84,23 +83,24 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieViewHolder> 
         }
 
         if (imgUrl != null) {
-            holder.getImageView().setImageResource(R.drawable.ic_local_movies_24dp);
-            Picasso.with(holder.getImageView().getContext()).load(imgUrl)
+            GlideApp.with(holder.getImageView())
+                    .load(imgUrl)
+                    .placeholder(R.drawable.ic_local_movies_24dp)
                     .into(holder.getImageView());
         }
         //endregion
     }
 
     @Override
-    public void onBindViewHolder(MovieViewHolder holder, int position, List<Object> payloads) {
-        if (payloads == null || payloads.isEmpty()) {
+    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position, @NonNull List<Object> payloads) {
+        if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads);
             return;
         }
 
         Object obj = payloads.get(0);
         // Если изменения не пустые и это пришла загруженная картинка
-        if (obj != null && obj instanceof Bitmap) {
+        if (obj instanceof Bitmap) {
             // устанавливаем картинку
             holder.getImageView().setImageBitmap((Bitmap)obj);
         }

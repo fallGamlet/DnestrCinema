@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.fallgamlet.dnestrcinema.R;
-import com.squareup.picasso.Picasso;
+import com.fallgamlet.dnestrcinema.app.GlideApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,11 +82,10 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
 
         public void notifyUrlChanged() {
             if (mUrl != null && mImageView != null) {
-                if (mImageView.getDrawable() == null) {
-                    mImageView.setImageResource(R.drawable.ic_photo_empty_240dp);
-                }
-
-                Picasso.with(mImageView.getContext()).load(mUrl).into(mImageView);
+                GlideApp.with(mImageView)
+                        .load(mUrl)
+                        .error(R.drawable.ic_photo_empty_240dp)
+                        .into(mImageView);
             }
         }
         //endregion

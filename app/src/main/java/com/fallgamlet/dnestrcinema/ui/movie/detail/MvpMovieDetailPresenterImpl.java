@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 
 import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.app.GlideApp;
 import com.fallgamlet.dnestrcinema.mergers.MovieMerger;
 import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.mvp.models.MovieDetailItem;
@@ -21,7 +22,7 @@ import com.fallgamlet.dnestrcinema.ui.ImageActivity;
 import com.fallgamlet.dnestrcinema.ui.movie.ImageRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 import com.fallgamlet.dnestrcinema.utils.LogUtils;
-import com.squareup.picasso.Picasso;
+import com.fallgamlet.dnestrcinema.utils.ObserverUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,9 +33,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-/**
- * Created by fallgamlet on 09.04.17.
- */
 
 public class MvpMovieDetailPresenterImpl
         extends BasePresenter<MvpMovieDetailView>
@@ -163,7 +161,9 @@ public class MvpMovieDetailPresenterImpl
         String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
         String imgUrl = HttpUtils.getAbsoluteUrl(baseUrl, movieItem.getPosterUrl());
         if (imgUrl != null && getView().getPosterImageView().getDrawable() == null) {
-            Picasso.with(getView().getContext()).load(imgUrl).into(getView().getPosterImageView());
+            GlideApp.with(getView().getPosterImageView())
+                    .load(imgUrl)
+                    .into(getView().getPosterImageView());
         }
 
         if (getImagesAdapter().getItemCount() == 0) {
@@ -187,28 +187,24 @@ public class MvpMovieDetailPresenterImpl
                 .getDetailMovies(urlStr)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(
-                    new Consumer<MovieItem>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull MovieItem movieItem) throws Exception {
-                            if (mMovie == null) {
-                                mMovie = movieItem;
-                            } else {
-                                new MovieMerger().merge(mMovie, movieItem);
-                            }
-
-                            showData(mMovie);
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
-                            LogUtils.log("DetailMovie", "loaf error", throwable);
-                        }
+                .map(value -> {
+                    if (mMovie == null) {
+                        mMovie = value;
+                    } else {
+                        new MovieMerger().merge(mMovie, value);
                     }
-                );
+
+                    showData(mMovie);
+                    return true;
+                })
+                .onErrorReturn(throwable -> {
+                    LogUtils.log("DetailMovie", "loaf error", throwable);
+                    return false;
+                })
+                .subscribe(ObserverUtils.emptyDisposableObserver());
     }
 
-    protected synchronized void loadImages(Collection<String> urlList) {
+    private synchronized void loadImages(Collection<String> urlList) {
         if (urlList == null || urlList.isEmpty()) {
             getView().showImages(false);
             return;
@@ -232,7 +228,7 @@ public class MvpMovieDetailPresenterImpl
         }
     }
 
-    protected  void navigateToRoomView(MovieItem movieItem) {
+    private void navigateToRoomView(MovieItem movieItem) {
         String[] rooms = null;
         if (movieItem != null && !movieItem.getSchedules().isEmpty()) {
             int count = movieItem.getSchedules().size();
@@ -254,7 +250,7 @@ public class MvpMovieDetailPresenterImpl
         }
     }
 
-    protected void showRoomSelectionDialog(final String[] items) {
+    private void showRoomSelectionDialog(final String[] items) {
         if (mDialog != null && mDialog.isShowing()) {
             mDialog.dismiss();
         }
@@ -276,7 +272,7 @@ public class MvpMovieDetailPresenterImpl
         mDialog.show();
     }
 
-    protected  void navigateToRoomView(String roomName) {
+    private void navigateToRoomView(String roomName) {
         if (roomName == null) {
             return;
         }
@@ -297,7 +293,7 @@ public class MvpMovieDetailPresenterImpl
         }
     }
 
-    protected void navigateToTrailer() {
+    private void navigateToTrailer() {
         if (getView() == null || getView().getContext() == null) {
             return;
         }
@@ -335,7 +331,7 @@ public class MvpMovieDetailPresenterImpl
         mDialog.show();
     }
 
-    protected void navigateToTrailer(String url) {
+    private void navigateToTrailer(String url) {
         if (url == null || url.isEmpty()) {
             return;
         }

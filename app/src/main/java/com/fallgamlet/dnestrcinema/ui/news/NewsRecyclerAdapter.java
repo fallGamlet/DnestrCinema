@@ -1,23 +1,22 @@
 package com.fallgamlet.dnestrcinema.ui.news;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.fallgamlet.dnestrcinema.R;
+import com.fallgamlet.dnestrcinema.app.GlideApp;
 import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.mvp.models.NewsItem;
 import com.fallgamlet.dnestrcinema.ui.adapters.BaseRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.ui.holders.NewsViewHolder;
 import com.fallgamlet.dnestrcinema.utils.CollectionUtils;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
-import com.squareup.picasso.Picasso;
 
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by fallgamlet on 16.07.17.
- */
 
 public class NewsRecyclerAdapter extends BaseRecyclerAdapter<NewsItem, NewsViewHolder> {
 
@@ -37,7 +36,7 @@ public class NewsRecyclerAdapter extends BaseRecyclerAdapter<NewsItem, NewsViewH
     }
 
     @Override
-    public void onBindViewHolder(NewsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
         loadImage(holder);
     }
@@ -58,21 +57,26 @@ public class NewsRecyclerAdapter extends BaseRecyclerAdapter<NewsItem, NewsViewH
         }
 
         if (imgUrl != null) {
-            Picasso.with(holder.getImageView().getContext()).load(imgUrl).into(holder.getImageView());
+            GlideApp.with(holder.getImageView())
+                    .load(imgUrl)
+                    .into(holder.getImageView());
         }
     }
 
 
     @Override
-    public void onBindViewHolder(NewsViewHolder holder, int position, List<Object> payloads) {
+    public void onBindViewHolder(@NonNull NewsViewHolder holder, int position, @NonNull List<Object> payloads) {
         super.onBindViewHolder(holder, position, payloads);
 
         if (!CollectionUtils.isEmpty(payloads)) {
             Object obj = payloads.get(0);
             // Если изменения не пустые и это пришла загруженная картинка
-            if (obj != null && obj instanceof Bitmap) {
+            if (obj instanceof Bitmap) {
                 // устанавливаем картинку
                 holder.getImageView().setImageBitmap((Bitmap) obj);
+                holder.getImageView().setVisibility(View.VISIBLE);
+            } else if (obj instanceof Drawable) {
+                holder.getImageView().setImageDrawable((Drawable) obj);
                 holder.getImageView().setVisibility(View.VISIBLE);
             }
         }
