@@ -24,16 +24,16 @@ android {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
     }
 
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "com.fallgamlet.dnestrcinema"
-        minSdkVersion 14
-        targetSdkVersion 27
-        versionCode 27
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 28
         versionName "1.0.${versionCode}"
-        project.ext.set("archivesBaseName", "DnestrCinema" + versionName);
+        project.ext.set("archivesBaseName", "DnestrCinema" + versionName)
         vectorDrawables.useSupportLibrary = true
         signingConfig signingConfigs.config
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -59,8 +59,7 @@ android {
 }
 
 ext {
-    androidLibVersion = "27.1.1"
-    butterknife = "8.8.1"
+    androidLibVersion = "28.0.0"
     icepick = "3.2.0"
 }
 
@@ -73,26 +72,32 @@ dependencies {
     implementation "com.android.support:palette-v7:${androidLibVersion}"
     implementation "com.android.support:recyclerview-v7:${androidLibVersion}"
     implementation "com.android.support:cardview-v7:${androidLibVersion}"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
     implementation 'com.android.support:multidex:1.0.3'
 
-    implementation 'com.google.android:flexbox:1.0.0'
+    implementation deps.flexbox
 
-//    implementation 'com.google.guava:guava:22.0'
+    implementation deps.gson
 
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation deps.okhttp
+    implementation deps.okhttp_urlconnection
+    implementation deps.okhttp_logging_interceptor
 
-    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation deps.glide.runtime
+    annotationProcessor deps.glide.compiler
 
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.16'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation deps.rxjava2
+    implementation deps.rx_android
 
-    implementation 'org.jsoup:jsoup:1.10.2'
+    implementation deps.jsoup
 
-    implementation "com.jakewharton:butterknife:${butterknife}"
-    annotationProcessor "com.jakewharton:butterknife-compiler:${butterknife}"
+    implementation (deps.butterKnife.runtime) {
+        exclude group: "com.android.support"
+    }
+    annotationProcessor deps.butterKnife.compiler
+
+    implementation deps.timeThreetenabp
 
     api "frankiesardo:icepick:${icepick}"
     compileOnly "frankiesardo:icepick-processor:${icepick}"
