@@ -10,4 +10,4 @@ keystore.properties
 /build
 /captures
 .externalNativeBuild
-app/AndroidKey.jks
+*.jks
