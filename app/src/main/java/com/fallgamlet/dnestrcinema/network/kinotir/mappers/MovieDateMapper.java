@@ -9,9 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by fallgamlet on 09.07.17.
- */
 
 public class MovieDateMapper implements Mapper<String, Date> {
     @Override
@@ -28,6 +25,6 @@ public class MovieDateMapper implements Mapper<String, Date> {
         } catch (ParseException e) {
             LogUtils.log(getClass().getSimpleName(), "mapping error", e);
         }
-        return null;
+        return new Date(0);
     }
 }
