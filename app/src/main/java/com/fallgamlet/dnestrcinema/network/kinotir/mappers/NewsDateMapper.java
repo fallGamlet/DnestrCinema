@@ -28,6 +28,6 @@ public class NewsDateMapper implements Mapper<String, Date> {
         } catch (ParseException e) {
             LogUtils.log(getClass().getSimpleName(), "mapping error", e);
         }
-        return null;
+        return new Date(0);
     }
 }
