@@ -1,6 +1,6 @@
 package com.fallgamlet.dnestrcinema.mvp.models;
 
-import android.support.v4.util.ArraySet;
+import androidx.collection.ArraySet;
 
 import java.util.Collection;
 import java.util.HashSet;

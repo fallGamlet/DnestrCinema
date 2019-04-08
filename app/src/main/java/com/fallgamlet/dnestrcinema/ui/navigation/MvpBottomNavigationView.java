@@ -1,8 +1,8 @@
 package com.fallgamlet.dnestrcinema.ui.navigation;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.view.Menu;
 import android.view.MenuItem;
 

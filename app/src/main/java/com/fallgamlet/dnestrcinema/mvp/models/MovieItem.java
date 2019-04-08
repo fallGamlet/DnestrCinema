@@ -2,8 +2,8 @@ package com.fallgamlet.dnestrcinema.mvp.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.v4.util.ArraySet;
+import androidx.annotation.NonNull;
+import androidx.collection.ArraySet;
 
 import com.google.gson.annotations.SerializedName;
 

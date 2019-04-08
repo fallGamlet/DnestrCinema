@@ -19,7 +19,7 @@
         android:contentDescription="@null"
         app:srcCompat="@drawable/ic_local_movies_24dp"/>
 
-    <android.support.v4.widget.Space
+    <androidx.legacy.widget.Space
         android:layout_width="@dimen/SpaceSmall"
         android:layout_height="0dp" />
 
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/label_from"/>
 
-            <android.support.v4.widget.Space
+            <androidx.legacy.widget.Space
                 android:layout_width="4dp"
                 android:layout_height="0dp" />
 

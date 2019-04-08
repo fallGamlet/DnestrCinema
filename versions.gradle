@@ -40,6 +40,7 @@ versions.rxjava2 = "2.1.3"
 versions.support = "1.0.0"
 versions.timber = "4.5.1"
 versions.work = "1.0.0"
+versions.palette = "1.0.0"
 versions.palette_ktx = "1.0.0"
 versions.multidex = "2.0.1"
 versions.vectordrawable = "1.0.1"
@@ -50,7 +51,8 @@ versions.firebase_auth = "16.2.0"
 versions.facebook = "[4,5)"
 versions.jsoup = "1.11.3"
 versions.flexbox = "1.1.0"
-versions.butterknife = "9.0.0"
+versions.butterKnife = "9.0.0"
+versions.butterKnifeX = "10.1.0"
 
 def deps = [:]
 
@@ -64,6 +66,7 @@ support.v4 = "androidx.legacy:legacy-support-v4:$versions.support"
 support.core_utils = "androidx.legacy:legacy-support-core-utils:$versions.support"
 support.core_ktx = "androidx.core:core-ktx:$versions.core_ktx"
 support.fragment_ktx = "androidx.fragment:fragment-ktx:$versions.core_ktx"
+support.palette = "androidx.palette:palette:${versions.palette}"
 support.palette_ktx = "androidx.palette:palette-ktx:$versions.palette_ktx"
 support.multidex = "androidx.multidex:multidex:$versions.multidex"
 support.vectordrawable = "androidx.vectordrawable:vectordrawable:$versions.vectordrawable"
@@ -160,9 +163,14 @@ deps.jsoup = "org.jsoup:jsoup:${versions.jsoup}"
 deps.flexbox = "com.google.android:flexbox:${versions.flexbox}"
 
 def butterKnife = [:]
-butterKnife.runtime = "com.jakewharton:butterknife:${versions.butterknife}"
-butterKnife.compiler = "com.jakewharton:butterknife-compiler:${versions.butterknife}"
+butterKnife.runtime = "com.jakewharton:butterknife:${versions.butterKnife}"
+butterKnife.compiler = "com.jakewharton:butterknife-compiler:${versions.butterKnife}"
 deps.butterKnife = butterKnife
+
+def butterKnifeX = [:]
+butterKnifeX.runtime = "com.jakewharton:butterknife:${versions.butterKnifeX}"
+butterKnifeX.compiler = "com.jakewharton:butterknife-compiler:${versions.butterKnifeX}"
+deps.butterKnifeX = butterKnifeX
 
 ext.deps = deps
 

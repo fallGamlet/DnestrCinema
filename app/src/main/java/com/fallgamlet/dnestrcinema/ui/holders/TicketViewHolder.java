@@ -1,6 +1,6 @@
 package com.fallgamlet.dnestrcinema.ui.holders;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 import android.view.View;
 import android.widget.TextView;
 

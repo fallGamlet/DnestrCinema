@@ -1,7 +1,7 @@
 package com.fallgamlet.dnestrcinema.ui.tickets;
 
-import android.support.annotation.IdRes;
-import android.support.v4.app.FragmentManager;
+import androidx.annotation.IdRes;
+import androidx.fragment.app.FragmentManager;
 
 import com.fallgamlet.dnestrcinema.mvp.models.Config;
 import com.fallgamlet.dnestrcinema.mvp.routers.LoginRouter;

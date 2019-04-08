@@ -1,22 +1,22 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/AppTheme">
 
-    <android.support.v4.widget.SwipeRefreshLayout android:id="@+id/swipeLayout"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView android:id="@+id/listView"
+        <androidx.recyclerview.widget.RecyclerView android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/SpaceSmall"
             android:paddingRight="@dimen/SpaceSmall"
             tools:listitem="@layout/movie_item_now"/>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView android:id="@+id/placeholderView"
         android:layout_width="wrap_content"
@@ -25,4 +25,4 @@
         android:text="@string/yet_empty"
         android:visibility="gone"/>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

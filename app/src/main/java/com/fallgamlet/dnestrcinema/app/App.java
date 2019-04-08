@@ -1,6 +1,6 @@
 package com.fallgamlet.dnestrcinema.app;
 
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;

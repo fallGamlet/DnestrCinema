@@ -1,6 +1,6 @@
 package com.fallgamlet.dnestrcinema.mvp.models;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by fallgamlet on 15.07.17.

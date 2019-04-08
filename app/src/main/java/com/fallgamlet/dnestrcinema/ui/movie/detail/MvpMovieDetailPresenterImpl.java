@@ -4,8 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.app.GlideApp;
@@ -30,7 +30,6 @@ import java.util.Collection;
 import icepick.Icepick;
 import icepick.State;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 

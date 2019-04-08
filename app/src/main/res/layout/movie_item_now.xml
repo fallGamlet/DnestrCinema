@@ -11,7 +11,7 @@
     android:background="?attr/selectableItemBackground"
     android:id="@+id/itemRootView">
     
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageView"
         android:layout_width="@dimen/ImageWidth"
         android:layout_height="@dimen/ImageHeight"
@@ -20,7 +20,7 @@
         android:contentDescription="@null"
         app:srcCompat="@drawable/ic_local_movies_24dp"/>
 
-    <android.support.v4.widget.Space
+    <androidx.legacy.widget.Space
         android:layout_width="@dimen/SpaceSmall"
         android:layout_height="0dp" />
 
@@ -31,7 +31,7 @@
         android:orientation="vertical"
         android:layout_gravity="top">
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/titleView"
             style="@style/AppTheme.TextView"
             android:layout_width="wrap_content"
@@ -44,16 +44,16 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_from"/>
 
-            <android.support.v4.widget.Space
+            <androidx.legacy.widget.Space
                 android:layout_width="4dp"
                 android:layout_height="0dp" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/pubdateView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,13 +61,13 @@
 
         </LinearLayout>
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/roomView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Rooms"/>
 
-        <android.support.v7.widget.AppCompatButton android:id="@+id/buyTicketButton"
+        <androidx.appcompat.widget.AppCompatButton android:id="@+id/buyTicketButton"
             style="@style/AppTheme.DialogButton"
             android:layout_margin="0dp"
             android:layout_width="wrap_content"

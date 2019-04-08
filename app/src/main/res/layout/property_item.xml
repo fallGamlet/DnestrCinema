@@ -12,7 +12,7 @@
     android:layout_marginBottom="@dimen/SpaceTini"
     android:orientation="horizontal">
 
-    <android.support.v7.widget.AppCompatTextView android:id="@+id/keyView"
+    <androidx.appcompat.widget.AppCompatTextView android:id="@+id/keyView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/SpaceSmall"
@@ -20,7 +20,7 @@
         android:textColor="@color/colorTextMiddle"
         tools:text="Key: "/>
 
-    <android.support.v7.widget.AppCompatTextView android:id="@+id/valueView"
+    <androidx.appcompat.widget.AppCompatTextView android:id="@+id/valueView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorTextPrimary"
