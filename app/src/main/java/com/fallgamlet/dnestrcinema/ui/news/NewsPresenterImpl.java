@@ -50,7 +50,7 @@ public class NewsPresenterImpl
             getView().showLoading();
         }
 
-        AppFacade.getInstance()
+        AppFacade.Companion.getInstance()
                 .getNetClient()
                 .getNews()
                 .observeOn(AndroidSchedulers.mainThread())

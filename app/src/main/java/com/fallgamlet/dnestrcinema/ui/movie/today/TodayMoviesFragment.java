@@ -46,7 +46,7 @@ public class TodayMoviesFragment
     //endregion
 
     public TodayMoviesFragment() {
-        MvpTodayPresenter presenter = AppFacade.getInstance()
+        MvpTodayPresenter presenter = AppFacade.Companion.getInstance()
                                             .getPresenterFactory()
                                             .createTodayPresenter();
         setPresenter(presenter);

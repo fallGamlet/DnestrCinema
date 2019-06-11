@@ -2,6 +2,8 @@ package com.fallgamlet.dnestrcinema.app
 
 import androidx.multidex.MultiDexApplication
 import android.util.Log
+import com.fallgamlet.dnestrcinema.data.KinoTirCinemaRepository
+import com.fallgamlet.dnestrcinema.factory.KinotirConfigFactory
 
 import com.fallgamlet.dnestrcinema.utils.LogUtils
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -16,6 +18,9 @@ class App : MultiDexApplication() {
         AndroidThreeTen.init(this)
         initRx()
         initLeakCanary()
+
+        AppFacade.instance.init(KinotirConfigFactory())
+        AppFacade.instance.init(KinoTirCinemaRepository())
     }
 
     private fun initRx() {

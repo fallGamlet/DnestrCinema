@@ -7,26 +7,31 @@ import io.reactivex.Single
 class DummyCinemaRepository: CinemaRepository {
 
     override fun todayMovies(): Single<List<MovieItem>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Single.error(getDummyException())
     }
 
     override fun soonMovies(): Single<List<MovieItem>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Single.error(getDummyException())
     }
 
-    override fun movieDetails(path: String): Single<MovieDetailItem> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun movieDetails(path: String): Single<MovieItem> {
+        return Single.error(getDummyException())
     }
 
     override fun tickets(): Single<List<TicketItem>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Single.error(getDummyException())
     }
 
     override fun newses(): Single<List<NewsItem>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Single.error(getDummyException())
     }
 
     override fun cinema(): Single<CinemaItem> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Single.error(getDummyException())
+    }
+
+
+    private fun getDummyException(): RuntimeException {
+        return RuntimeException("Dummy source")
     }
 }

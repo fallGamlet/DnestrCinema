@@ -3,29 +3,16 @@ package com.fallgamlet.dnestrcinema.data.network;
 import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
 import com.fallgamlet.dnestrcinema.domain.models.NewsItem;
 import com.fallgamlet.dnestrcinema.domain.models.TicketItem;
+import io.reactivex.Observable;
+import okhttp3.*;
 
+import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.security.auth.login.LoginException;
-
-import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
-import okhttp3.Call;
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
-/**
- * Created by fallgamlet on 09.07.17.
- */
 
 public class NetClient {
 
@@ -92,60 +79,35 @@ public class NetClient {
         Request request = requestFactory.todayMoviesRequest();
 
         return createObservable(request)
-                .map(new Function<String, List<MovieItem>>() {
-                    @Override
-                    public List<MovieItem> apply(@NonNull String html) throws Exception {
-                        return mapperFactory.todayMoviesMapper().map(html);
-                    }
-                });
+                .map(html -> mapperFactory.todayMoviesMapper().map(html));
     }
 
     public Observable<List<MovieItem>> getSoonMovies() {
         Request request = requestFactory.soonMoviesRequest();
 
         return createObservable(request)
-                .map(new Function<String, List<MovieItem>>() {
-                    @Override
-                    public List<MovieItem> apply(@NonNull String html) throws Exception {
-                        return mapperFactory.soonMoviesMapper().map(html);
-                    }
-                });
+                .map(html -> mapperFactory.soonMoviesMapper().map(html));
     }
 
     public Observable<MovieItem> getDetailMovies(String path) {
         Request request = requestFactory.detailMovieRequest(path);
 
         return createObservable(request)
-                .map(new Function<String, MovieItem>() {
-                    @Override
-                    public MovieItem apply(@NonNull String html) throws Exception {
-                        return mapperFactory.detailMoviesMapper().map(html);
-                    }
-                });
+                .map(html -> mapperFactory.detailMoviesMapper().map(html));
     }
 
     public Observable<List<NewsItem>> getNews() {
         Request request = requestFactory.newsRequest();
 
         return createObservable(request)
-                .map(new Function<String, List<NewsItem>>() {
-                    @Override
-                    public List<NewsItem> apply(@NonNull String html) throws Exception {
-                        return mapperFactory.newsMapper().map(html);
-                    }
-                });
+                .map(html -> mapperFactory.newsMapper().map(html));
     }
 
     public Observable<List<TicketItem>> getTickets() {
         Request request = requestFactory.ticketsRequest();
 
         return createObservable(request)
-                .map(new Function<String, List<TicketItem>>() {
-                    @Override
-                    public List<TicketItem> apply(@NonNull String html) throws Exception {
-                        return mapperFactory.ticketsMapper().map(html);
-                    }
-                });
+                .map(html -> mapperFactory.ticketsMapper().map(html));
     }
 
     public Observable<Boolean> login() {
@@ -160,15 +122,12 @@ public class NetClient {
         Request request = requestFactory.loginRequest(login, password);
 
         return createObservable(request)
-                .map(new Function<String, Boolean>() {
-                    @Override
-                    public Boolean apply(@NonNull String text) throws Exception {
-                        boolean check = mapperFactory.loginMapper().map(text);
-                        if (check) {
-                            prolongSession();
-                        }
-                        return check;
+                .map(text -> {
+                    boolean check = mapperFactory.loginMapper().map(text);
+                    if (check) {
+                        prolongSession();
                     }
+                    return check;
                 });
     }
 
@@ -180,12 +139,7 @@ public class NetClient {
 
     private Observable<String> createObservable(Request request) {
         return createObservableCall(request)
-                .map(new Function<Call, String>() {
-                    @Override
-                    public String apply(@NonNull Call call) throws Exception {
-                        return getResponseBody(call);
-                    }
-                });
+                .map(this::getResponseBody);
     }
 
     private Observable<Call> createObservableCall(Request request) {

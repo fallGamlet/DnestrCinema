@@ -73,7 +73,7 @@ public class MvpMovieDetailPresenterImpl
         if (mMovie == null)
             return;
 
-        String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+        String baseUrl = AppFacade.Companion.getInstance().getRequestFactory().getBaseUrl();
         String url = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, mMovie.getBuyTicketLink());
         navigateToUrl(url);
     }
@@ -158,7 +158,7 @@ public class MvpMovieDetailPresenterImpl
 //        getView().showBuyTicketButton(movieItem.getBuyTicketLink() != null && !movieItem.getBuyTicketLink().isEmpty());
         getView().showTrailerButton(!movieItem.getTrailerUrlSet().isEmpty());
 
-        String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+        String baseUrl = AppFacade.Companion.getInstance().getRequestFactory().getBaseUrl();
         String imgUrl = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, movieItem.getPosterUrl());
         if (imgUrl != null && getView().getPosterImageView().getDrawable() == null) {
             GlideApp.with(getView().getPosterImageView())
@@ -182,7 +182,7 @@ public class MvpMovieDetailPresenterImpl
             return;
         }
 
-        AppFacade.getInstance()
+        AppFacade.Companion.getInstance()
                 .getNetClient()
                 .getDetailMovies(urlStr)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -217,7 +217,7 @@ public class MvpMovieDetailPresenterImpl
 
     private void addImage(String imgUrl) {
         if (imgUrl != null) {
-            String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+            String baseUrl = AppFacade.Companion.getInstance().getRequestFactory().getBaseUrl();
             imgUrl = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, imgUrl);
         }
 
@@ -287,7 +287,7 @@ public class MvpMovieDetailPresenterImpl
         }
 
         if (imgURL != null) {
-            String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+            String baseUrl = AppFacade.Companion.getInstance().getRequestFactory().getBaseUrl();
             imgURL = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, imgURL);
             ImageActivity.showActivity(getView().getContext(), imgURL);
         }

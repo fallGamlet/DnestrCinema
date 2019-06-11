@@ -64,7 +64,7 @@ public class ImageActivity extends AppCompatActivity {
     }
 
     private void showImage(String imgUrl) {
-        String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+        String baseUrl = AppFacade.Companion.getInstance().getRequestFactory().getBaseUrl();
         imgUrl = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, imgUrl);
 
         if (imgUrl == null) {

@@ -47,7 +47,7 @@ public class TicketsPresenterImpl
 
     @Override
     public void loadData() {
-        boolean isLogin = AppFacade.getInstance().getNetClient().isLogin();
+        boolean isLogin = AppFacade.Companion.getInstance().getNetClient().isLogin();
 
         if (isLogin) {
             loadTickets();
@@ -60,7 +60,7 @@ public class TicketsPresenterImpl
     private void login() {
         setLoading(true);
 
-        AppFacade.getInstance()
+        AppFacade.Companion.getInstance()
                 .getNetClient()
                 .login()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -86,7 +86,7 @@ public class TicketsPresenterImpl
     private void loadTickets() {
         setLoading(true);
 
-        AppFacade.getInstance()
+        AppFacade.Companion.getInstance()
                 .getNetClient()
                 .getTickets()
                 .observeOn(AndroidSchedulers.mainThread())

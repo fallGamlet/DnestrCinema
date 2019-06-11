@@ -9,7 +9,7 @@ interface CinemaRepository {
 
     fun soonMovies(): Single<List<MovieItem>>
 
-    fun movieDetails(path: String): Single<MovieDetailItem>
+    fun movieDetails(path: String): Single<MovieItem>
 
     fun tickets(): Single<List<TicketItem>>
 

@@ -78,7 +78,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieViewHolder> 
         String imgUrl = item.getPosterUrl();
 
         if (imgUrl != null) {
-            String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+            String baseUrl = AppFacade.Companion.getInstance().getRequestFactory().getBaseUrl();
             imgUrl = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, imgUrl);
         }
 

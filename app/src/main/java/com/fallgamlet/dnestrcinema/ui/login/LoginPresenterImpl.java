@@ -37,7 +37,7 @@ public class LoginPresenterImpl
     }
 
     private void fillData() {
-        AccountItem configAccount = AppFacade.getInstance().getAccountItem();
+        AccountItem configAccount = AppFacade.Companion.getInstance().getAccountItem();
         if (configAccount != null) {
             accountItem.setLogin(configAccount.getLogin());
             accountItem.setPassword(configAccount.getPassword());
@@ -66,7 +66,7 @@ public class LoginPresenterImpl
         if (isLoginEnable()) {
             showLoading(true);
 
-            AppFacade.getInstance()
+            AppFacade.Companion.getInstance()
                     .getNetClient()
                     .login(accountItem.getLogin(), accountItem.getPassword())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -112,10 +112,10 @@ public class LoginPresenterImpl
     }
 
     private void saveAccount() {
-        AccountItem configAccount = AppFacade.getInstance().getAccountItem();
+        AccountItem configAccount = AppFacade.Companion.getInstance().getAccountItem();
         configAccount.setLogin(accountItem.getLogin());
         configAccount.setPassword(accountItem.getPassword());
-        configAccount.setCinemaId(AppFacade.getInstance().getCinemaItem().getId());
+        configAccount.setCinemaId(AppFacade.Companion.getInstance().getCinemaItem().getId());
 
         AccountLocalRepository repository;
         repository = new AccountLocalRepository(getView().getContext());

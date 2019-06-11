@@ -9,7 +9,7 @@ interface CinemaInteractor {
 
     fun soonMovies(): Observable<List<MovieItem>>
 
-    fun movieDetails(path: String): Observable<MovieDetailItem>
+    fun movieDetails(path: String): Observable<MovieItem>
 
     fun tickets(): Observable<List<TicketItem>>
 

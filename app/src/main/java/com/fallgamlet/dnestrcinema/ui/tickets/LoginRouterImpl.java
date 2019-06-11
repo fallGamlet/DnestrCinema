@@ -34,7 +34,7 @@ public class LoginRouterImpl
     @Override
     public void showLogin() {
         if (!isLoginShown) {
-            fragment = AppFacade.getInstance().getFragmentFactory().createLoginView();
+            fragment = AppFacade.Companion.getInstance().getFragmentFactory().createLoginView();
             fragment.getPresenter().setRouter(this);
 
             try {

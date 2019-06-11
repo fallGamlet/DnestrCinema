@@ -52,7 +52,7 @@ public class TodayPresenterImpl
             getView().showLoading();
         }
 
-        AppFacade.getInstance()
+        AppFacade.Companion.getInstance()
                 .getNetClient()
                 .getTodayMovies()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -121,7 +121,7 @@ public class TodayPresenterImpl
     }
 
     private NavigationRouter getRouter() {
-        return AppFacade.getInstance().getNavigationRouter();
+        return AppFacade.Companion.getInstance().getNavigationRouter();
     }
 
 

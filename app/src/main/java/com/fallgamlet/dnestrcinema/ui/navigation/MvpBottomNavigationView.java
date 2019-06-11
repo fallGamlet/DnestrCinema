@@ -38,7 +38,7 @@ public class MvpBottomNavigationView
         Menu menu = this.navigationView.getMenu();
         menu.clear();
 
-        for (NavigationItem item: AppFacade.getInstance().createNavigations()) {
+        for (NavigationItem item: AppFacade.Companion.getInstance().createNavigations()) {
             int groupId = Menu.NONE;
             int id = item.getId();
             int order = Menu.NONE;

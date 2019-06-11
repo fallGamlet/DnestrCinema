@@ -1,5 +1,6 @@
 package com.fallgamlet.dnestrcinema.app
 
+import com.fallgamlet.dnestrcinema.data.DummyCinemaRepository
 import com.fallgamlet.dnestrcinema.domain.models.AccountItem
 import com.fallgamlet.dnestrcinema.domain.models.CinemaItem
 import com.fallgamlet.dnestrcinema.domain.models.NavigationItem
@@ -11,16 +12,50 @@ import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter
 import com.fallgamlet.dnestrcinema.data.network.MapperFactory
 import com.fallgamlet.dnestrcinema.data.network.NetClient
 import com.fallgamlet.dnestrcinema.data.network.RequestFactory
+import com.fallgamlet.dnestrcinema.domain.CinemaInteractor
+import com.fallgamlet.dnestrcinema.domain.CinemaRepository
+import com.fallgamlet.dnestrcinema.domain.KinoTirCinemaInteractor
 
 import java.util.ArrayList
 
 
 class AppFacade private constructor() {
 
+    companion object {
+        val instance: AppFacade = AppFacade()
+    }
+
+
+    private var cinemaInteractor: CinemaInteractor = KinoTirCinemaInteractor(DummyCinemaRepository())
+
+
+    fun init(cinemaRepository: CinemaRepository) {
+        cinemaInteractor = KinoTirCinemaInteractor(cinemaRepository)
+    }
+
+    fun init(configFactory: ConfigFactory) {
+        this.cinemaItem = configFactory.cinema
+        this.navigations = configFactory.navigations
+        this.presenterFactory = configFactory.presenterFactory
+        this.fragmentFactory = configFactory.viewFragmentFactory
+        this.navigationCreator = configFactory.navigationCreator
+        this.requestFactory = configFactory.requestFactory
+        this.mapperFactory = configFactory.mapperFactory
+        this.netClient = NetClient(this.requestFactory, this.mapperFactory)
+    }
+
+
+    fun getCinemaInteractor(): CinemaInteractor {
+        return cinemaInteractor
+    }
+
+
+
+
     var navigationRouter: NavigationRouter? = null
     var netClient: NetClient? = null
         private set
-    var accountItem: AccountItem? = null
+    var accountItem: AccountItem = AccountItem()
     var cinemaItem: CinemaItem? = null
         private set
     var navigations: List<Int>? = null
@@ -38,22 +73,6 @@ class AppFacade private constructor() {
 
     private val isCanCreateNavigations: Boolean
         get() = this.navigations != null && this.navigationCreator != null
-
-
-    init {
-        accountItem = AccountItem()
-    }
-
-    fun init(configFactory: ConfigFactory) {
-        this.cinemaItem = configFactory.cinema
-        this.navigations = configFactory.navigations
-        this.presenterFactory = configFactory.presenterFactory
-        this.fragmentFactory = configFactory.viewFragmentFactory
-        this.navigationCreator = configFactory.navigationCreator
-        this.requestFactory = configFactory.requestFactory
-        this.mapperFactory = configFactory.mapperFactory
-        this.netClient = NetClient(this.requestFactory, this.mapperFactory)
-    }
 
     fun createNavigations(): List<NavigationItem> {
         val items = ArrayList<NavigationItem>()
@@ -73,17 +92,5 @@ class AppFacade private constructor() {
         return items
     }
 
-    companion object {
 
-        private var insatance: AppFacade? = null
-
-
-        val instance: AppFacade
-            @Synchronized get() {
-                if (insatance == null) {
-                    insatance = AppFacade()
-                }
-                return insatance
-            }
-    }
 }

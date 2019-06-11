@@ -52,7 +52,7 @@ public class NewsRecyclerAdapter extends BaseRecyclerAdapter<NewsItem, NewsViewH
         String imgUrl = iterator.hasNext()? iterator.next(): null;
 
         if (imgUrl != null) {
-            String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+            String baseUrl = AppFacade.Companion.getInstance().getRequestFactory().getBaseUrl();
             imgUrl = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, imgUrl);
         }
 

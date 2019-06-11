@@ -43,7 +43,7 @@ public class LoginFragment
 
 
     public LoginFragment() {
-        MvpLoginPresenter presenter = AppFacade.getInstance().getPresenterFactory().createLoginPresenter();
+        MvpLoginPresenter presenter = AppFacade.Companion.getInstance().getPresenterFactory().createLoginPresenter();
         setPresenter(presenter);
     }
 

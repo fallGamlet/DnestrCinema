@@ -58,7 +58,7 @@ public class TicketsFragment
     }
 
     public TicketsFragment() {
-        MvpTicketsPresenter presenter = AppFacade.getInstance().getPresenterFactory().createTicketPresenter();
+        MvpTicketsPresenter presenter = AppFacade.Companion.getInstance().getPresenterFactory().createTicketPresenter();
         setPresenter(presenter);
     }
 

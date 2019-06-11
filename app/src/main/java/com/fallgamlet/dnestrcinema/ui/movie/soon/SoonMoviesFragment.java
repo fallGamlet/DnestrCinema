@@ -45,7 +45,7 @@ public class SoonMoviesFragment
     //endregion
 
     public SoonMoviesFragment() {
-        MvpSoonPresenter presenter = AppFacade.getInstance()
+        MvpSoonPresenter presenter = AppFacade.Companion.getInstance()
                                             .getPresenterFactory()
                                             .createSoonPresenter();
         setPresenter(presenter);

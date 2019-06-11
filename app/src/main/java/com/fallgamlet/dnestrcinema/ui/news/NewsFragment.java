@@ -47,7 +47,7 @@ public class NewsFragment
 
 
     public NewsFragment() {
-        MvpNewsPresenter presenter = AppFacade.getInstance()
+        MvpNewsPresenter presenter = AppFacade.Companion.getInstance()
                                             .getPresenterFactory()
                                             .createNewsPresenter();
         setPresenter(presenter);

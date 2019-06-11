@@ -51,7 +51,7 @@ public class SoonPresenterImpl
             getView().showLoading();
         }
 
-        AppFacade.getInstance()
+        AppFacade.Companion.getInstance()
                 .getNetClient()
                 .getSoonMovies()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -113,7 +113,7 @@ public class SoonPresenterImpl
     }
 
     private NavigationRouter getRouter() {
-        return AppFacade.getInstance().getNavigationRouter();
+        return AppFacade.Companion.getInstance().getNavigationRouter();
     }
 
 

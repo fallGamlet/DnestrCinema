@@ -261,7 +261,7 @@ public class AboutFragment
         }
 
         if (imgURL != null) {
-            String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+            String baseUrl = AppFacade.Companion.getInstance().getRequestFactory().getBaseUrl();
             imgURL = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl,imgURL);
             Bundle bundle = new Bundle();
             bundle.putString(ImageActivity.ARG_IMG_URL, imgURL);
