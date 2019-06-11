@@ -4,10 +4,7 @@ import androidx.fragment.app.Fragment;
 
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpPresenter;
 
-/**
- * Created by fallgamlet on 09.04.17.
- */
-
+@Deprecated
 public abstract class MvpBaseFragment<P extends MvpPresenter>
         extends Fragment
         implements MvpView <P>
