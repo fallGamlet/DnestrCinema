@@ -3,7 +3,7 @@ package com.fallgamlet.dnestrcinema.ui.tickets;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentManager;
 
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
+import com.fallgamlet.dnestrcinema.app.AppFacade;
 import com.fallgamlet.dnestrcinema.mvp.routers.LoginRouter;
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 import com.fallgamlet.dnestrcinema.utils.LogUtils;
@@ -34,7 +34,7 @@ public class LoginRouterImpl
     @Override
     public void showLogin() {
         if (!isLoginShown) {
-            fragment = Config.getInstance().getFragmentFactory().createLoginView();
+            fragment = AppFacade.getInstance().getFragmentFactory().createLoginView();
             fragment.getPresenter().setRouter(this);
 
             try {
@@ -44,7 +44,7 @@ public class LoginRouterImpl
                         .commit();
             }
             catch (Exception e) {
-                LogUtils.log("", "", e);
+                LogUtils.INSTANCE.log("", "", e);
             }
             isLoginShown = true;
 

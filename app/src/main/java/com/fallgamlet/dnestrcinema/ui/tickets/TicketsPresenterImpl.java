@@ -1,7 +1,7 @@
 package com.fallgamlet.dnestrcinema.ui.tickets;
 
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
-import com.fallgamlet.dnestrcinema.mvp.models.TicketItem;
+import com.fallgamlet.dnestrcinema.app.AppFacade;
+import com.fallgamlet.dnestrcinema.domain.models.TicketItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTicketsPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.LoginRouter;
@@ -47,7 +47,7 @@ public class TicketsPresenterImpl
 
     @Override
     public void loadData() {
-        boolean isLogin = Config.getInstance().getNetClient().isLogin();
+        boolean isLogin = AppFacade.getInstance().getNetClient().isLogin();
 
         if (isLogin) {
             loadTickets();
@@ -60,7 +60,7 @@ public class TicketsPresenterImpl
     private void login() {
         setLoading(true);
 
-        Config.getInstance()
+        AppFacade.getInstance()
                 .getNetClient()
                 .login()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -86,7 +86,7 @@ public class TicketsPresenterImpl
     private void loadTickets() {
         setLoading(true);
 
-        Config.getInstance()
+        AppFacade.getInstance()
                 .getNetClient()
                 .getTickets()
                 .observeOn(AndroidSchedulers.mainThread())

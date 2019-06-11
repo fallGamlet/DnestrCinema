@@ -1,8 +1,8 @@
 package com.fallgamlet.dnestrcinema.mvp.factory;
 
-import com.fallgamlet.dnestrcinema.mvp.models.CinemaItem;
-import com.fallgamlet.dnestrcinema.network.MapperFactory;
-import com.fallgamlet.dnestrcinema.network.RequestFactory;
+import com.fallgamlet.dnestrcinema.domain.models.CinemaItem;
+import com.fallgamlet.dnestrcinema.data.network.MapperFactory;
+import com.fallgamlet.dnestrcinema.data.network.RequestFactory;
 
 import java.util.List;
 

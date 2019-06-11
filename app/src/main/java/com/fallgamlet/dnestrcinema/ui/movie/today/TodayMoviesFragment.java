@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
-import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
+import com.fallgamlet.dnestrcinema.app.AppFacade;
+import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTodayPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 import com.fallgamlet.dnestrcinema.ui.movie.DividerItemDecoration;
@@ -46,7 +46,7 @@ public class TodayMoviesFragment
     //endregion
 
     public TodayMoviesFragment() {
-        MvpTodayPresenter presenter = Config.getInstance()
+        MvpTodayPresenter presenter = AppFacade.getInstance()
                                             .getPresenterFactory()
                                             .createTodayPresenter();
         setPresenter(presenter);
@@ -211,11 +211,11 @@ public class TodayMoviesFragment
 
     @Override
     public void setContentVisible(boolean v) {
-        ViewUtils.setVisible(swipeLayout, v);
+        ViewUtils.INSTANCE.setVisible(swipeLayout, v);
     }
 
     @Override
     public void setNoContentVisible(boolean v) {
-        ViewUtils.setVisible(placeholderView, v);
+        ViewUtils.INSTANCE.setVisible(placeholderView, v);
     }
 }

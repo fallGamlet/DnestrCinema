@@ -1,6 +1,6 @@
 package com.fallgamlet.dnestrcinema.mvp.views;
 
-import com.fallgamlet.dnestrcinema.mvp.models.NewsItem;
+import com.fallgamlet.dnestrcinema.domain.models.NewsItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNewsPresenter;
 
 import java.util.List;

@@ -3,7 +3,7 @@ package com.fallgamlet.dnestrcinema.ui.tickets;
 import android.view.View;
 
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.mvp.models.TicketItem;
+import com.fallgamlet.dnestrcinema.domain.models.TicketItem;
 import com.fallgamlet.dnestrcinema.ui.adapters.BaseRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.ui.holders.TicketViewHolder;
 

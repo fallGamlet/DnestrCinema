@@ -10,14 +10,14 @@ import androidx.appcompat.app.AlertDialog;
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.app.GlideApp;
 import com.fallgamlet.dnestrcinema.mergers.MovieMerger;
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
-import com.fallgamlet.dnestrcinema.mvp.models.MovieDetailItem;
-import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
-import com.fallgamlet.dnestrcinema.mvp.models.ScheduleItem;
+import com.fallgamlet.dnestrcinema.app.AppFacade;
+import com.fallgamlet.dnestrcinema.domain.models.MovieDetailItem;
+import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
+import com.fallgamlet.dnestrcinema.domain.models.ScheduleItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpMovieDetailPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
-import com.fallgamlet.dnestrcinema.network.KinoTir;
+import com.fallgamlet.dnestrcinema.data.network.KinoTir;
 import com.fallgamlet.dnestrcinema.ui.ImageActivity;
 import com.fallgamlet.dnestrcinema.ui.movie.ImageRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
@@ -73,8 +73,8 @@ public class MvpMovieDetailPresenterImpl
         if (mMovie == null)
             return;
 
-        String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
-        String url = HttpUtils.getAbsoluteUrl(baseUrl, mMovie.getBuyTicketLink());
+        String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+        String url = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, mMovie.getBuyTicketLink());
         navigateToUrl(url);
     }
 
@@ -152,14 +152,14 @@ public class MvpMovieDetailPresenterImpl
         getView().setBudget(detail.getBudget());
         getView().setCountry(detail.getCountry());
         getView().setGenre(detail.getGenre());
-        getView().setDescription(HttpUtils.fromHtml(detail.getDescription()));
+        getView().setDescription(HttpUtils.INSTANCE.fromHtml(detail.getDescription()));
 
         getView().showBuyTicketButton(false);
 //        getView().showBuyTicketButton(movieItem.getBuyTicketLink() != null && !movieItem.getBuyTicketLink().isEmpty());
         getView().showTrailerButton(!movieItem.getTrailerUrlSet().isEmpty());
 
-        String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
-        String imgUrl = HttpUtils.getAbsoluteUrl(baseUrl, movieItem.getPosterUrl());
+        String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+        String imgUrl = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, movieItem.getPosterUrl());
         if (imgUrl != null && getView().getPosterImageView().getDrawable() == null) {
             GlideApp.with(getView().getPosterImageView())
                     .load(imgUrl)
@@ -182,7 +182,7 @@ public class MvpMovieDetailPresenterImpl
             return;
         }
 
-        Config.getInstance()
+        AppFacade.getInstance()
                 .getNetClient()
                 .getDetailMovies(urlStr)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -198,7 +198,7 @@ public class MvpMovieDetailPresenterImpl
                     return true;
                 })
                 .onErrorReturn(throwable -> {
-                    LogUtils.log("DetailMovie", "loaf error", throwable);
+                    LogUtils.INSTANCE.log("DetailMovie", "loaf error", throwable);
                     return false;
                 })
                 .subscribe(ObserverUtils.emptyDisposableObserver());
@@ -217,12 +217,12 @@ public class MvpMovieDetailPresenterImpl
 
     private void addImage(String imgUrl) {
         if (imgUrl != null) {
-            String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
-            imgUrl = HttpUtils.getAbsoluteUrl(baseUrl, imgUrl);
+            String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+            imgUrl = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, imgUrl);
         }
 
         if (imgUrl != null) {
-            LogUtils.log("LoadImage", "Image load by url: "+imgUrl);
+            LogUtils.INSTANCE.log("LoadImage", "Image load by url: "+imgUrl);
             getImagesAdapter().addItem(imgUrl);
             getView().showImages(true);
         }
@@ -287,8 +287,8 @@ public class MvpMovieDetailPresenterImpl
         }
 
         if (imgURL != null) {
-            String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
-            imgURL = HttpUtils.getAbsoluteUrl(baseUrl, imgURL);
+            String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+            imgURL = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, imgURL);
             ImageActivity.showActivity(getView().getContext(), imgURL);
         }
     }
@@ -344,7 +344,7 @@ public class MvpMovieDetailPresenterImpl
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             getView().getContext().startActivity(intent);
         } catch (Exception e) {
-            LogUtils.log("Intent", "Uri intent error", e);
+            LogUtils.INSTANCE.log("Intent", "Uri intent error", e);
         }
     }
 

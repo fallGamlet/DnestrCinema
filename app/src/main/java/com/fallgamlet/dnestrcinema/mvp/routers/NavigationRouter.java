@@ -1,6 +1,6 @@
 package com.fallgamlet.dnestrcinema.mvp.routers;
 
-import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
+import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
 
 /**
  * Created by fallgamlet on 02.07.17.

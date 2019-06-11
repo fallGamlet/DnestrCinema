@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "736373662310",
+    "firebase_url": "https://dnestr-cinema.firebaseio.com",
+    "project_id": "dnestr-cinema",
+    "storage_bucket": "dnestr-cinema.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736373662310:android:17801a322df8beef",
+        "android_client_info": {
+          "package_name": "com.fallgamlet.dnestrcinema"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736373662310-uiudini31peb20seev8u6q4bkdnic8h4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsjS9FiqnQAKHwmPsA6Ebra4NWcURpiYs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736373662310-uiudini31peb20seev8u6q4bkdnic8h4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

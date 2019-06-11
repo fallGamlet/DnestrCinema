@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.app.GlideApp;
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
+import com.fallgamlet.dnestrcinema.app.AppFacade;
 import com.fallgamlet.dnestrcinema.utils.GlideRequestListener;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 
@@ -64,8 +64,8 @@ public class ImageActivity extends AppCompatActivity {
     }
 
     private void showImage(String imgUrl) {
-        String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
-        imgUrl = HttpUtils.getAbsoluteUrl(baseUrl, imgUrl);
+        String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+        imgUrl = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, imgUrl);
 
         if (imgUrl == null) {
             showImageEmpty();

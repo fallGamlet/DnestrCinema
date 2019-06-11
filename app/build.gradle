@@ -40,6 +40,7 @@ android {
         project.ext.set("archivesBaseName", "DnestrCinema" + versionName)
         vectorDrawables.useSupportLibrary = true
         signingConfig signingConfigs.config
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -65,6 +66,7 @@ android {
 ext {
     androidLibVersion = '1.0.0-beta01'
     icepick = "3.2.0"
+    leakcanary = '1.6.1'
 }
 
 dependencies {
@@ -110,8 +112,12 @@ dependencies {
     implementation deps.timeThreetenabp
 
     api "frankiesardo:icepick:${icepick}"
-    compileOnly "frankiesardo:icepick-processor:${icepick}"
     kapt "frankiesardo:icepick-processor:${icepick}"
+
+    releaseImplementation "com.crashlytics.sdk.android:crashlytics:2.10.1"
+    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:${leakcanary}"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:${leakcanary}"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary}"
 
     testImplementation deps.junit
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {

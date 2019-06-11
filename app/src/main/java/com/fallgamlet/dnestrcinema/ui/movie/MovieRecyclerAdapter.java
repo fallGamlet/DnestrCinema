@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.app.GlideApp;
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
-import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
+import com.fallgamlet.dnestrcinema.app.AppFacade;
+import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
 import com.fallgamlet.dnestrcinema.ui.holders.MovieViewHolder;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 
@@ -78,8 +78,8 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieViewHolder> 
         String imgUrl = item.getPosterUrl();
 
         if (imgUrl != null) {
-            String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
-            imgUrl = HttpUtils.getAbsoluteUrl(baseUrl, imgUrl);
+            String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+            imgUrl = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, imgUrl);
         }
 
         if (imgUrl != null) {

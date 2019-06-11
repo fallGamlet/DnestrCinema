@@ -14,15 +14,15 @@ import android.view.MenuItem;
 
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.factory.KinotirConfigFactory;
-import com.fallgamlet.dnestrcinema.localstore.AccountLocalRepository;
-import com.fallgamlet.dnestrcinema.mvp.models.AccountItem;
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
-import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
-import com.fallgamlet.dnestrcinema.mvp.models.NavigationItem;
+import com.fallgamlet.dnestrcinema.data.localstore.AccountLocalRepository;
+import com.fallgamlet.dnestrcinema.domain.models.AccountItem;
+import com.fallgamlet.dnestrcinema.app.AppFacade;
+import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
+import com.fallgamlet.dnestrcinema.domain.models.NavigationItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
-import com.fallgamlet.dnestrcinema.network.NetClient;
+import com.fallgamlet.dnestrcinema.data.network.NetClient;
 import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity;
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpBottomNavigationView;
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpNavigationPresenterImpl;
@@ -70,7 +70,7 @@ public class StartActivity
     }
 
     private void initData() {
-        Config.getInstance().init(new KinotirConfigFactory());
+        AppFacade.getInstance().init(new KinotirConfigFactory());
         initAccount();
 
         initNavigation();
@@ -104,7 +104,7 @@ public class StartActivity
     }
 
     private void initAccount(List<AccountItem> items) {
-        long cinemaId = Config.getInstance().getCinemaItem().getId();
+        long cinemaId = AppFacade.getInstance().getCinemaItem().getId();
 
         AccountItem accountItem = null;
         for (AccountItem item: items) {
@@ -115,9 +115,9 @@ public class StartActivity
         }
 
         if (accountItem != null) {
-            Config.getInstance().setAccountItem(accountItem);
+            AppFacade.getInstance().setAccountItem(accountItem);
 
-            NetClient netClient = Config.getInstance().getNetClient();
+            NetClient netClient = AppFacade.getInstance().getNetClient();
             netClient.setLogin(accountItem.getLogin());
             netClient.setPassword(accountItem.getPassword());
         }
@@ -138,7 +138,7 @@ public class StartActivity
         if (adapter == null) {
             adapter = new ViewPagerAdapter(getSupportFragmentManager());;
 
-            for (Integer navId: Config.getInstance().getNavigations()) {
+            for (Integer navId: AppFacade.getInstance().getNavigations()) {
                 addFragment(navId);
             }
 
@@ -149,7 +149,7 @@ public class StartActivity
     }
 
     private void addFragment(Integer navigationId) {
-        Config config = Config.getInstance();
+        AppFacade config = AppFacade.getInstance();
         NavigationItem navigationItem = config.getNavigationCreator()
                                             .getNavigationItem(navigationId);
 
@@ -168,19 +168,19 @@ public class StartActivity
 
         switch (navigationId) {
             case NavigationItem.NavigationId.TODAY:
-                fragment = Config.getInstance().getFragmentFactory().createTodayView();
+                fragment = AppFacade.getInstance().getFragmentFactory().createTodayView();
                 break;
             case NavigationItem.NavigationId.SOON:
-                fragment = Config.getInstance().getFragmentFactory().createSoonView();
+                fragment = AppFacade.getInstance().getFragmentFactory().createSoonView();
                 break;
             case NavigationItem.NavigationId.TICKETS:
-                fragment = Config.getInstance().getFragmentFactory().createTicketsView();
+                fragment = AppFacade.getInstance().getFragmentFactory().createTicketsView();
                 break;
             case NavigationItem.NavigationId.NEWS:
-                fragment = Config.getInstance().getFragmentFactory().createNewsView();
+                fragment = AppFacade.getInstance().getFragmentFactory().createNewsView();
                 break;
             case NavigationItem.NavigationId.ABOUT:
-                fragment = Config.getInstance().getFragmentFactory().createAboutView();
+                fragment = AppFacade.getInstance().getFragmentFactory().createAboutView();
                 break;
             default:
                 fragment = null;
@@ -211,7 +211,7 @@ public class StartActivity
     }
 
     private void onPageSelected(int position) {
-        List<Integer> navigations = Config.getInstance().getNavigations();
+        List<Integer> navigations = AppFacade.getInstance().getNavigations();
         if (position < 0 || position >= navigations.size()) {
             return;
         }
@@ -255,7 +255,7 @@ public class StartActivity
         boolean res = false;
 
         if (id == R.id.actionShareApp) {
-            ViewUtils.shareApp(this);
+            ViewUtils.INSTANCE.shareApp(this);
             res = true;
         } else {
             res = super.onOptionsItemSelected(item);
@@ -275,14 +275,14 @@ public class StartActivity
 
     @Override
     protected void onPause() {
-        Config.getInstance().setNavigationRouter(null);
+        AppFacade.getInstance().setNavigationRouter(null);
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Config.getInstance().setNavigationRouter(this);
+        AppFacade.getInstance().setNavigationRouter(this);
     }
 
     @Override
@@ -316,7 +316,7 @@ public class StartActivity
     }
 
     private void showViewWithNavigationId(int navigationId) {
-        int pos = Config.getInstance().getNavigations().indexOf(navigationId);
+        int pos = AppFacade.getInstance().getNavigations().indexOf(navigationId);
         showViewWithPosition(pos);
     }
 
@@ -348,9 +348,9 @@ public class StartActivity
             return;
         }
 
-        String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
+        String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
         String path = movieItem.getBuyTicketLink();
-        String url = HttpUtils.getAbsoluteUrl(baseUrl, path);
+        String url = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, path);
 
         if (url == null) {
 //            ViewUtils.showToast(this, "");

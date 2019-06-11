@@ -1,23 +1,21 @@
 package com.fallgamlet.dnestrcinema;
 
-import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
-import com.fallgamlet.dnestrcinema.mvp.models.NewsItem;
-import com.fallgamlet.dnestrcinema.mvp.models.TicketItem;
-import com.fallgamlet.dnestrcinema.network.MapperFactory;
-import com.fallgamlet.dnestrcinema.network.NetClient;
-import com.fallgamlet.dnestrcinema.network.RequestFactory;
-import com.fallgamlet.dnestrcinema.network.kinotir.KinotirMapperFactory;
-import com.fallgamlet.dnestrcinema.network.kinotir.KinotirRequestFactory;
+import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
+import com.fallgamlet.dnestrcinema.domain.models.NewsItem;
+import com.fallgamlet.dnestrcinema.domain.models.TicketItem;
+import com.fallgamlet.dnestrcinema.data.network.MapperFactory;
+import com.fallgamlet.dnestrcinema.data.network.NetClient;
+import com.fallgamlet.dnestrcinema.data.network.RequestFactory;
+import com.fallgamlet.dnestrcinema.data.network.kinotir.KinotirMapperFactory;
+import com.fallgamlet.dnestrcinema.data.network.kinotir.KinotirRequestFactory;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.assertEquals;
 

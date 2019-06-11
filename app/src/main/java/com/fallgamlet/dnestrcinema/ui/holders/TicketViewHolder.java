@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.mvp.models.TicketItem;
+import com.fallgamlet.dnestrcinema.domain.models.TicketItem;
 
 /**
  * Created by fallgamlet on 23.07.17.

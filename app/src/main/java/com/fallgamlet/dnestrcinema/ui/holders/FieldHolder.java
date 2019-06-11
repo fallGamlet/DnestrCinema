@@ -94,7 +94,7 @@ public class FieldHolder {
     }
 
     public boolean setDataAndVisible(CharSequence key, CharSequence value) {
-        if (StringUtils.isEmpty(key) || StringUtils.isEmpty(value)) {
+        if (StringUtils.INSTANCE.isEmpty(key) || StringUtils.INSTANCE.isEmpty(value)) {
             setVisible(false);
             return false;
         }

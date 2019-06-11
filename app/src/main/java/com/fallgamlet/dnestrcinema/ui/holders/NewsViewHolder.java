@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.mvp.models.NewsItem;
+import com.fallgamlet.dnestrcinema.domain.models.NewsItem;
 import com.fallgamlet.dnestrcinema.utils.DateTimeUtils;
 
 import java.util.Date;

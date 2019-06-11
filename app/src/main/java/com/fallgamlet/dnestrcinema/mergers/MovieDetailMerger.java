@@ -1,6 +1,6 @@
 package com.fallgamlet.dnestrcinema.mergers;
 
-import com.fallgamlet.dnestrcinema.mvp.models.MovieDetailItem;
+import com.fallgamlet.dnestrcinema.domain.models.MovieDetailItem;
 import com.fallgamlet.dnestrcinema.utils.StringUtils;
 
 /**
@@ -23,49 +23,49 @@ public class MovieDetailMerger implements Merger<MovieDetailItem> {
     }
 
     private void mergeActors(MovieDetailItem to, MovieDetailItem from) {
-        if (StringUtils.isEmpty(to.getActors())) {
+        if (StringUtils.INSTANCE.isEmpty(to.getActors())) {
             to.setActors(from.getActors());
         }
     }
 
     private void mergeAgeLimit(MovieDetailItem to, MovieDetailItem from) {
-        if (StringUtils.isEmpty(to.getAgeLimit())) {
+        if (StringUtils.INSTANCE.isEmpty(to.getAgeLimit())) {
             to.setAgeLimit(from.getAgeLimit());
         }
     }
 
     private void mergeBudget(MovieDetailItem to, MovieDetailItem from) {
-        if (StringUtils.isEmpty(to.getBudget())) {
+        if (StringUtils.INSTANCE.isEmpty(to.getBudget())) {
             to.setBudget(from.getBudget());
         }
     }
 
     private void mergeCountry(MovieDetailItem to, MovieDetailItem from) {
-        if (StringUtils.isEmpty(to.getCountry())) {
+        if (StringUtils.INSTANCE.isEmpty(to.getCountry())) {
             to.setCountry(from.getCountry());
         }
     }
 
     private void mergeDescription(MovieDetailItem to, MovieDetailItem from) {
-        if (StringUtils.isEmpty(to.getDescription())) {
+        if (StringUtils.INSTANCE.isEmpty(to.getDescription())) {
             to.setDescription(from.getDescription());
         }
     }
 
     private void mergeDirector(MovieDetailItem to, MovieDetailItem from) {
-        if (StringUtils.isEmpty(to.getDirector())) {
+        if (StringUtils.INSTANCE.isEmpty(to.getDirector())) {
             to.setDirector(from.getDirector());
         }
     }
 
     private void mergeGenre(MovieDetailItem to, MovieDetailItem from) {
-        if (StringUtils.isEmpty(to.getGenre())) {
+        if (StringUtils.INSTANCE.isEmpty(to.getGenre())) {
             to.setGenre(from.getGenre());
         }
     }
 
     private void mergeScenario(MovieDetailItem to, MovieDetailItem from) {
-        if (StringUtils.isEmpty(to.getScenario())) {
+        if (StringUtils.INSTANCE.isEmpty(to.getScenario())) {
             to.setScenario(from.getScenario());
         }
     }

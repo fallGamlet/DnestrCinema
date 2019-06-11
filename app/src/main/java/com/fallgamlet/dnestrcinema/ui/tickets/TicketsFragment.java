@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
-import com.fallgamlet.dnestrcinema.mvp.models.TicketItem;
+import com.fallgamlet.dnestrcinema.app.AppFacade;
+import com.fallgamlet.dnestrcinema.domain.models.TicketItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTicketsPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.LoginRouter;
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
@@ -58,7 +58,7 @@ public class TicketsFragment
     }
 
     public TicketsFragment() {
-        MvpTicketsPresenter presenter = Config.getInstance().getPresenterFactory().createTicketPresenter();
+        MvpTicketsPresenter presenter = AppFacade.getInstance().getPresenterFactory().createTicketPresenter();
         setPresenter(presenter);
     }
 

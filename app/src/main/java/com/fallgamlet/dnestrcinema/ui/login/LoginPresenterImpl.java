@@ -2,9 +2,9 @@ package com.fallgamlet.dnestrcinema.ui.login;
 
 import android.text.TextUtils;
 
-import com.fallgamlet.dnestrcinema.localstore.AccountLocalRepository;
-import com.fallgamlet.dnestrcinema.mvp.models.AccountItem;
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
+import com.fallgamlet.dnestrcinema.data.localstore.AccountLocalRepository;
+import com.fallgamlet.dnestrcinema.domain.models.AccountItem;
+import com.fallgamlet.dnestrcinema.app.AppFacade;
 import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpLoginPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.LoginRouter;
@@ -37,7 +37,7 @@ public class LoginPresenterImpl
     }
 
     private void fillData() {
-        AccountItem configAccount = Config.getInstance().getAccountItem();
+        AccountItem configAccount = AppFacade.getInstance().getAccountItem();
         if (configAccount != null) {
             accountItem.setLogin(configAccount.getLogin());
             accountItem.setPassword(configAccount.getPassword());
@@ -47,7 +47,7 @@ public class LoginPresenterImpl
 
     @Override
     public void onLoginChanged(String value) {
-        if (!StringUtils.isEqual(accountItem.getLogin(), value)) {
+        if (!StringUtils.INSTANCE.isEqual(accountItem.getLogin(), value)) {
             accountItem.setLogin(value);
             updateLoginEnabled();
         }
@@ -55,7 +55,7 @@ public class LoginPresenterImpl
 
     @Override
     public void onPasswordChanged(String value) {
-        if (!StringUtils.isEqual(accountItem.getPassword(), value)) {
+        if (!StringUtils.INSTANCE.isEqual(accountItem.getPassword(), value)) {
             accountItem.setPassword(value);
             updateLoginEnabled();
         }
@@ -66,7 +66,7 @@ public class LoginPresenterImpl
         if (isLoginEnable()) {
             showLoading(true);
 
-            Config.getInstance()
+            AppFacade.getInstance()
                     .getNetClient()
                     .login(accountItem.getLogin(), accountItem.getPassword())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -112,10 +112,10 @@ public class LoginPresenterImpl
     }
 
     private void saveAccount() {
-        AccountItem configAccount = Config.getInstance().getAccountItem();
+        AccountItem configAccount = AppFacade.getInstance().getAccountItem();
         configAccount.setLogin(accountItem.getLogin());
         configAccount.setPassword(accountItem.getPassword());
-        configAccount.setCinemaId(Config.getInstance().getCinemaItem().getId());
+        configAccount.setCinemaId(AppFacade.getInstance().getCinemaItem().getId());
 
         AccountLocalRepository repository;
         repository = new AccountLocalRepository(getView().getContext());

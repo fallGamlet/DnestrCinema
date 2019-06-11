@@ -12,7 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
+import com.fallgamlet.dnestrcinema.app.AppFacade;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpLoginPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 import com.fallgamlet.dnestrcinema.utils.ViewUtils;
@@ -43,7 +43,7 @@ public class LoginFragment
 
 
     public LoginFragment() {
-        MvpLoginPresenter presenter = Config.getInstance().getPresenterFactory().createLoginPresenter();
+        MvpLoginPresenter presenter = AppFacade.getInstance().getPresenterFactory().createLoginPresenter();
         setPresenter(presenter);
     }
 
@@ -154,8 +154,8 @@ public class LoginFragment
     public void onPause() {
         getPresenter().unbindView();
 
-        ViewUtils.hideKeyboard(getContext(), loginEditText);
-        ViewUtils.hideKeyboard(getContext(), passwordEditText);
+        ViewUtils.INSTANCE.hideKeyboard(getContext(), loginEditText);
+        ViewUtils.INSTANCE.hideKeyboard(getContext(), passwordEditText);
 
         super.onPause();
     }

@@ -2,8 +2,8 @@ package com.fallgamlet.dnestrcinema.ui.news;
 
 import android.os.Bundle;
 
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
-import com.fallgamlet.dnestrcinema.mvp.models.NewsItem;
+import com.fallgamlet.dnestrcinema.app.AppFacade;
+import com.fallgamlet.dnestrcinema.domain.models.NewsItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNewsPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNewsView;
@@ -50,7 +50,7 @@ public class NewsPresenterImpl
             getView().showLoading();
         }
 
-        Config.getInstance()
+        AppFacade.getInstance()
                 .getNetClient()
                 .getNews()
                 .observeOn(AndroidSchedulers.mainThread())

@@ -13,10 +13,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
-import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
+import com.fallgamlet.dnestrcinema.app.AppFacade;
+import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
-import com.fallgamlet.dnestrcinema.network.KinoTir;
+import com.fallgamlet.dnestrcinema.data.network.KinoTir;
 import com.fallgamlet.dnestrcinema.ui.ImageActivity;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 import com.fallgamlet.dnestrcinema.utils.LogUtils;
@@ -194,7 +194,7 @@ public class AboutFragment
             intent.putExtra(Intent.EXTRA_SUBJECT, "Приложение К.Тирасполь - Афиша");
             startActivity(intent);
         } catch (Exception ignored) {
-            LogUtils.log("IntentStart", "Type: email, Value: "+email+" fail intent start", ignored);
+            LogUtils.INSTANCE.log("IntentStart", "Type: email, Value: "+email+" fail intent start", ignored);
             new AlertDialog.Builder(getContext(), R.style.AppTheme_Dialog)
                     .setTitle(R.string.error)
                     .setCancelable(true)
@@ -261,8 +261,8 @@ public class AboutFragment
         }
 
         if (imgURL != null) {
-            String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
-            imgURL = HttpUtils.getAbsoluteUrl(baseUrl,imgURL);
+            String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+            imgURL = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl,imgURL);
             Bundle bundle = new Bundle();
             bundle.putString(ImageActivity.ARG_IMG_URL, imgURL);
 

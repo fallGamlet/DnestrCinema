@@ -6,8 +6,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
-import com.fallgamlet.dnestrcinema.mvp.models.NavigationItem;
+import com.fallgamlet.dnestrcinema.app.AppFacade;
+import com.fallgamlet.dnestrcinema.domain.models.NavigationItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
 
@@ -38,7 +38,7 @@ public class MvpBottomNavigationView
         Menu menu = this.navigationView.getMenu();
         menu.clear();
 
-        for (NavigationItem item: Config.getInstance().createNavigations()) {
+        for (NavigationItem item: AppFacade.getInstance().createNavigations()) {
             int groupId = Menu.NONE;
             int id = item.getId();
             int order = Menu.NONE;

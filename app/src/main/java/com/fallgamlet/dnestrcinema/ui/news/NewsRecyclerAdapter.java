@@ -7,8 +7,8 @@ import android.view.View;
 
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.app.GlideApp;
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
-import com.fallgamlet.dnestrcinema.mvp.models.NewsItem;
+import com.fallgamlet.dnestrcinema.app.AppFacade;
+import com.fallgamlet.dnestrcinema.domain.models.NewsItem;
 import com.fallgamlet.dnestrcinema.ui.adapters.BaseRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.ui.holders.NewsViewHolder;
 import com.fallgamlet.dnestrcinema.utils.CollectionUtils;
@@ -52,8 +52,8 @@ public class NewsRecyclerAdapter extends BaseRecyclerAdapter<NewsItem, NewsViewH
         String imgUrl = iterator.hasNext()? iterator.next(): null;
 
         if (imgUrl != null) {
-            String baseUrl = Config.getInstance().getRequestFactory().getBaseUrl();
-            imgUrl = HttpUtils.getAbsoluteUrl(baseUrl, imgUrl);
+            String baseUrl = AppFacade.getInstance().getRequestFactory().getBaseUrl();
+            imgUrl = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, imgUrl);
         }
 
         if (imgUrl != null) {
@@ -68,7 +68,7 @@ public class NewsRecyclerAdapter extends BaseRecyclerAdapter<NewsItem, NewsViewH
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position, @NonNull List<Object> payloads) {
         super.onBindViewHolder(holder, position, payloads);
 
-        if (!CollectionUtils.isEmpty(payloads)) {
+        if (!CollectionUtils.INSTANCE.isEmpty(payloads)) {
             Object obj = payloads.get(0);
             // Если изменения не пустые и это пришла загруженная картинка
             if (obj instanceof Bitmap) {

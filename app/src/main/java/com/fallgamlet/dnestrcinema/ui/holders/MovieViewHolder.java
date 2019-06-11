@@ -7,8 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
-import com.fallgamlet.dnestrcinema.mvp.models.ScheduleItem;
+import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
+import com.fallgamlet.dnestrcinema.domain.models.ScheduleItem;
 import com.fallgamlet.dnestrcinema.utils.DateTimeUtils;
 
 import java.util.ArrayList;

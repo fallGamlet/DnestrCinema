@@ -2,8 +2,8 @@ package com.fallgamlet.dnestrcinema.ui.movie.today;
 
 import android.os.Bundle;
 
-import com.fallgamlet.dnestrcinema.mvp.models.Config;
-import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
+import com.fallgamlet.dnestrcinema.app.AppFacade;
+import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTodayPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter;
@@ -52,7 +52,7 @@ public class TodayPresenterImpl
             getView().showLoading();
         }
 
-        Config.getInstance()
+        AppFacade.getInstance()
                 .getNetClient()
                 .getTodayMovies()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -121,7 +121,7 @@ public class TodayPresenterImpl
     }
 
     private NavigationRouter getRouter() {
-        return Config.getInstance().getNavigationRouter();
+        return AppFacade.getInstance().getNavigationRouter();
     }
 
 

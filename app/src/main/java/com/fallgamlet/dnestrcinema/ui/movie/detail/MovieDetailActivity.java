@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
+import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpMovieDetailPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpBaseActivity;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
@@ -290,19 +290,19 @@ public class MovieDetailActivity
 
     @Override
     public void showImages(boolean v) {
-        ViewUtils.setVisible(mImageListView, v);
+        ViewUtils.INSTANCE.setVisible(mImageListView, v);
     }
 
     @Override
     public void showBuyTicketButton(boolean v) {
         if (mBuyTicketButton != null) {
-            ViewUtils.setVisible(mBuyTicketButton, v);
+            ViewUtils.INSTANCE.setVisible(mBuyTicketButton, v);
         }
     }
 
     @Override
     public void showTrailerButton(boolean v) {
-        ViewUtils.setVisible(mTrailerBtn, v);
+        ViewUtils.INSTANCE.setVisible(mTrailerBtn, v);
     }
 
     @Override

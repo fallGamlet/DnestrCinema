@@ -1,6 +1,6 @@
 package com.fallgamlet.dnestrcinema.ui.tickets.detail;
 
-import com.fallgamlet.dnestrcinema.mvp.models.TicketItem;
+import com.fallgamlet.dnestrcinema.domain.models.TicketItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTicketDetailPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpTicketDetailView;

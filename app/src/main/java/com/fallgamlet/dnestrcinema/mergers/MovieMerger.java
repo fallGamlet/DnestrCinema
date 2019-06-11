@@ -1,6 +1,6 @@
 package com.fallgamlet.dnestrcinema.mergers;
 
-import com.fallgamlet.dnestrcinema.mvp.models.MovieItem;
+import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
 import com.fallgamlet.dnestrcinema.utils.StringUtils;
 
 /**
@@ -31,7 +31,7 @@ public class MovieMerger implements Merger <MovieItem> {
     }
 
     private void mergeTitle(MovieItem to, MovieItem from) {
-        if (StringUtils.isEmpty(to.getTitle())) {
+        if (StringUtils.INSTANCE.isEmpty(to.getTitle())) {
             to.setTitle(from.getTitle());
         }
     }
@@ -43,25 +43,25 @@ public class MovieMerger implements Merger <MovieItem> {
     }
 
     private void mergeLink(MovieItem to, MovieItem from) {
-        if (StringUtils.isEmpty(to.getLink())) {
+        if (StringUtils.INSTANCE.isEmpty(to.getLink())) {
             to.setLink(from.getLink());
         }
     }
 
     private void mergeBuyTicketLink(MovieItem to, MovieItem from) {
-        if (StringUtils.isEmpty(to.getBuyTicketLink())) {
+        if (StringUtils.INSTANCE.isEmpty(to.getBuyTicketLink())) {
             to.setBuyTicketLink(from.getBuyTicketLink());
         }
     }
 
     private void mergePosterUrl(MovieItem to, MovieItem from) {
-        if (StringUtils.isEmpty(to.getPosterUrl())) {
+        if (StringUtils.INSTANCE.isEmpty(to.getPosterUrl())) {
             to.setPosterUrl(from.getPosterUrl());
         }
     }
 
     private void mergeDuration(MovieItem to, MovieItem from) {
-        if (StringUtils.isEmpty(to.getDuration())) {
+        if (StringUtils.INSTANCE.isEmpty(to.getDuration())) {
             to.setDuration(from.getDuration());
         }
     }
