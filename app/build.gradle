@@ -72,6 +72,9 @@ ext {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+    implementation deps.firebase.core
+    implementation deps.play_services_stats
+
     implementation deps.kotlin.stdlib
     implementation deps.support.annotations
     implementation deps.support.app_compat
@@ -125,3 +128,5 @@ dependencies {
         exclude group: 'com.google.code.findbugs'
     })
 }
+
+apply plugin: 'com.google.gms.google-services'
