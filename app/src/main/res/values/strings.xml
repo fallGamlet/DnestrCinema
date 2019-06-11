@@ -63,4 +63,6 @@
     <string name="label_status">Status</string>
     <string name="msg_login_fail">Incorrect email or password</string>
 
+    <string name="label_more">More</string>
+
 </resources>

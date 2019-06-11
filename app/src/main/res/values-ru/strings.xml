@@ -50,4 +50,6 @@
     <string name="label_session_date">Дата сеанса</string>
     <string name="label_status">Статус</string>
     <string name="msg_login_fail">Неправильный email или пароль</string>
+
+    <string name="label_more">Подробнее</string>
 </resources>

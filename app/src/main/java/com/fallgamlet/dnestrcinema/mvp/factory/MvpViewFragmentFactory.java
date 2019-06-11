@@ -1,27 +1,24 @@
 package com.fallgamlet.dnestrcinema.mvp.factory;
 
-import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
+import androidx.fragment.app.Fragment;
 
-/**
- * Created by fallgamlet on 10.07.17.
- */
 
 public interface MvpViewFragmentFactory {
 
-    Fragments.MvpNavigationViewFragment createNavigationView();
+    Fragment createNavigationView();
 
-    Fragments.MvpTodayViewFragment createTodayView();
+    Fragment createTodayView();
 
-    Fragments.MvpSoonViewFragment createSoonView();
+    Fragment createSoonView();
 
-    Fragments.MvpTicketsViewFragment createTicketsView();
+    Fragment createTicketsView();
 
-    Fragments.MvpLoginViewFragment createLoginView();
+    Fragment createLoginView();
 
-    Fragments.MvpNewsViewFragment createNewsView();
+    Fragment createNewsView();
 
-    Fragments.MvpAboutViewFragment createAboutView();
+    Fragment createAboutView();
 
-    Fragments.MvpMovieDetailViewFragment createMovieDetailView();
+    Fragment createMovieDetailView();
 
 }

@@ -8,9 +8,6 @@ import com.fallgamlet.dnestrcinema.mvp.routers.LoginRouter;
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 import com.fallgamlet.dnestrcinema.utils.LogUtils;
 
-/**
- * Created by fallgamlet on 30.07.17.
- */
 
 public class LoginRouterImpl
         implements LoginRouter
@@ -34,7 +31,8 @@ public class LoginRouterImpl
     @Override
     public void showLogin() {
         if (!isLoginShown) {
-            fragment = AppFacade.Companion.getInstance().getFragmentFactory().createLoginView();
+            fragment = (Fragments.MvpLoginViewFragment)
+                    AppFacade.Companion.getInstance().getFragmentFactory().createLoginView();
             fragment.getPresenter().setRouter(this);
 
             try {
