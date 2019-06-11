@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
@@ -29,8 +33,8 @@ android {
 
     defaultConfig {
         applicationId "com.fallgamlet.dnestrcinema"
-        minSdkVersion 15
-        targetSdkVersion 28
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
         versionCode 28
         versionName "1.0.${versionCode}"
         project.ext.set("archivesBaseName", "DnestrCinema" + versionName)
@@ -66,15 +70,22 @@ ext {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+    implementation deps.kotlin.stdlib
+    implementation deps.support.annotations
     implementation deps.support.app_compat
-    implementation deps.support.v4
     implementation deps.support.design
-    implementation deps.support.palette
-    implementation deps.support.recyclerview
-    implementation deps.support.cardview
+    implementation deps.support.v4
     implementation deps.constraint_layout
-
     implementation deps.support.multidex
+    implementation deps.support.recyclerview
+    implementation deps.support.vectordrawable
+    implementation deps.support.vectordrawable_animated
+    implementation deps.support.core_ktx
+    implementation deps.support.fragment_ktx
+    implementation deps.support.palette_ktx
+
+    implementation deps.lifecycle.extensions
+    kapt deps.lifecycle.compiler
 
     implementation deps.flexbox
 
@@ -85,23 +96,24 @@ dependencies {
     implementation deps.okhttp_logging_interceptor
 
     implementation deps.glide.runtime
-    annotationProcessor deps.glide.compiler
+    kapt deps.glide.compiler
 
     implementation deps.rxjava2
+    implementation deps.rx_kotlin2
     implementation deps.rx_android
 
     implementation deps.jsoup
 
     implementation deps.butterKnifeX.runtime
-    annotationProcessor deps.butterKnifeX.compiler
+    kapt deps.butterKnifeX.compiler
 
     implementation deps.timeThreetenabp
 
     api "frankiesardo:icepick:${icepick}"
     compileOnly "frankiesardo:icepick-processor:${icepick}"
-    annotationProcessor "frankiesardo:icepick-processor:${icepick}"
+    kapt "frankiesardo:icepick-processor:${icepick}"
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation deps.junit
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'

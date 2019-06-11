@@ -1,10 +1,10 @@
 /**
-* Shared file between builds so that they can all use the same dependencies and
-* maven repositories.
-**/
+ * Shared file between builds so that they can all use the same dependencies and
+ * maven repositories.
+ **/
 ext.deps = [:]
 def versions = [:]
-versions.android_gradle_plugin = '3.3.2'
+versions.android_gradle_plugin = '3.4.1'
 versions.googleServices = "4.2.0"
 versions.playServiceStats = "16.0.1"
 versions.playServiceLocation = "16.0.0"
@@ -22,37 +22,39 @@ versions.espresso = "3.1.0-alpha4"
 versions.glide = "4.9.0"
 versions.hamcrest = "1.3"
 versions.junit = "4.12"
-versions.kotlin = "1.3.21"
+versions.kotlin = "1.3.31"
 versions.lifecycle = "2.0.0"
 versions.mockito = "2.7.19"
 versions.mockito_all = "1.10.19"
 versions.mockito_android = "2.22.0"
 versions.mockwebserver = "3.8.1"
-versions.navigation = "2.0.0-rc02"
-versions.okhttp = "3.12.1"
+versions.navigation = "2.1.0-alpha02"
 versions.gson = "2.8.5"
+versions.okhttp = "3.12.1"
+versions.retrofit = "2.5.0"
+versions.socket_io = "1.0.0"
 versions.timeThreetenabp = "1.1.1"
 versions.paging = "2.1.0-rc01"
-versions.retrofit = "2.5.0"
 versions.room = "2.1.0-alpha03"
-versions.rx_android = "2.0.1"
-versions.rxjava2 = "2.1.3"
+versions.rx_android = "2.1.1"
+versions.rxjava2 = "2.2.9"
+versions.rxKotlin2 = "2.3.0"
 versions.support = "1.0.0"
 versions.timber = "4.5.1"
 versions.work = "1.0.0"
-versions.palette = "1.0.0"
 versions.palette_ktx = "1.0.0"
 versions.multidex = "2.0.1"
 versions.vectordrawable = "1.0.1"
 versions.vectordrawable_animated = "1.0.0"
-versions.firebase_core = "16.0.1"
-versions.firebase_ui_auth = "4.2.0"
-versions.firebase_auth = "16.2.0"
-versions.facebook = "[4,5)"
 versions.jsoup = "1.11.3"
 versions.flexbox = "1.1.0"
 versions.butterKnife = "9.0.0"
 versions.butterKnifeX = "10.1.0"
+versions.firebase_core = "16.0.1"
+versions.firebase_ui_auth = "4.2.0"
+versions.firebase_auth = "16.2.0"
+versions.facebook = "[4,5)"
+versions.keyboardvisibilityevent = "2.3.0"
 
 def deps = [:]
 
@@ -66,7 +68,6 @@ support.v4 = "androidx.legacy:legacy-support-v4:$versions.support"
 support.core_utils = "androidx.legacy:legacy-support-core-utils:$versions.support"
 support.core_ktx = "androidx.core:core-ktx:$versions.core_ktx"
 support.fragment_ktx = "androidx.fragment:fragment-ktx:$versions.core_ktx"
-support.palette = "androidx.palette:palette:${versions.palette}"
 support.palette_ktx = "androidx.palette:palette-ktx:$versions.palette_ktx"
 support.multidex = "androidx.multidex:multidex:$versions.multidex"
 support.vectordrawable = "androidx.vectordrawable:vectordrawable:$versions.vectordrawable"
@@ -100,6 +101,7 @@ deps.retrofit = retrofit
 deps.okhttp = "com.squareup.okhttp3:okhttp:${versions.okhttp}"
 deps.okhttp_urlconnection = "com.squareup.okhttp3:okhttp-urlconnection:${versions.okhttp}"
 deps.okhttp_logging_interceptor = "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}"
+deps.socket_io = "io.socket:socket.io-client:${versions.socket_io}"
 deps.gson = "com.google.code.gson:gson:${versions.gson}"
 deps.timeThreetenabp = "com.jakewharton.threetenabp:threetenabp:${versions.timeThreetenabp}"
 
@@ -131,7 +133,8 @@ mockito.android = "org.mockito:mockito-android:$versions.mockito_android"
 deps.mockito = mockito
 
 def kotlin = [:]
-kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+kotlin.stdlib7 = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
 kotlin.test = "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin"
 kotlin.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
 kotlin.allopen = "org.jetbrains.kotlin:kotlin-allopen:$versions.kotlin"
@@ -150,6 +153,7 @@ deps.timber = "com.jakewharton.timber:timber:$versions.timber"
 deps.junit = "junit:junit:$versions.junit"
 deps.mock_web_server = "com.squareup.okhttp3:mockwebserver:$versions.mockwebserver"
 deps.rxjava2 = "io.reactivex.rxjava2:rxjava:$versions.rxjava2"
+deps.rx_kotlin2 = "io.reactivex.rxjava2:rxkotlin:$versions.rxKotlin2"
 deps.rx_android = "io.reactivex.rxjava2:rxandroid:$versions.rx_android"
 deps.hamcrest = "org.hamcrest:hamcrest-all:$versions.hamcrest"
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
@@ -171,6 +175,7 @@ def butterKnifeX = [:]
 butterKnifeX.runtime = "com.jakewharton:butterknife:${versions.butterKnifeX}"
 butterKnifeX.compiler = "com.jakewharton:butterknife-compiler:${versions.butterKnifeX}"
 deps.butterKnifeX = butterKnifeX
+deps.keyboardvisibilityevent = "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:${versions.keyboardvisibilityevent}"
 
 ext.deps = deps
 
