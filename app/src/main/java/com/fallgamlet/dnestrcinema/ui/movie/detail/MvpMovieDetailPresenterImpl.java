@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.app.GlideApp;
-import com.fallgamlet.dnestrcinema.mergers.MovieMerger;
+import com.fallgamlet.dnestrcinema.ui.mergers.MovieMerger;
 import com.fallgamlet.dnestrcinema.app.AppFacade;
 import com.fallgamlet.dnestrcinema.domain.models.MovieDetailItem;
 import com.fallgamlet.dnestrcinema.domain.models.MovieItem;

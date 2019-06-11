@@ -1,4 +1,4 @@
-package com.fallgamlet.dnestrcinema.mergers;
+package com.fallgamlet.dnestrcinema.ui.mergers;
 
 import com.fallgamlet.dnestrcinema.domain.models.MovieDetailItem;
 import com.fallgamlet.dnestrcinema.utils.StringUtils;
