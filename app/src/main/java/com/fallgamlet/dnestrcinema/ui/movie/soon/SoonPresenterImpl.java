@@ -20,7 +20,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by fallgamlet on 03.07.17.
  */
-
+@Deprecated
 public class SoonPresenterImpl
         extends BasePresenter <MvpSoonView>
         implements MvpSoonPresenter
@@ -57,18 +57,8 @@ public class SoonPresenterImpl
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
-                        new Consumer<List<MovieItem>>() {
-                            @Override
-                            public void accept(@NonNull List<MovieItem> movieItems) throws Exception {
-                                updateData(movieItems);
-                            }
-                        },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@NonNull Throwable throwable) throws Exception {
-                                updateData(getEmptyList());
-                            }
-                        }
+                        movieItems -> updateData(movieItems),
+                        throwable -> updateData(getEmptyList())
                 );
     }
 

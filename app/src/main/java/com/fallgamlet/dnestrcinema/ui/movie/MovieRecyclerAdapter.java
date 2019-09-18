@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.app.GlideApp;
 import com.fallgamlet.dnestrcinema.app.AppFacade;
@@ -59,18 +60,18 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieViewHolder> 
         holder.initData(item);
 
         String imgUrl = item.getPosterUrl();
-
-        if (imgUrl != null) {
+        if (imgUrl != null && !imgUrl.isEmpty()) {
             String baseUrl = AppFacade.Companion.getInstance().getRequestFactory().getBaseUrl();
             imgUrl = HttpUtils.INSTANCE.getAbsoluteUrl(baseUrl, imgUrl);
         }
 
-        if (imgUrl != null) {
-            GlideApp.with(holder.getImageView())
-                    .load(imgUrl)
-                    .placeholder(R.drawable.ic_local_movies_24dp)
-                    .into(holder.getImageView());
-        }
+        GlideApp.with(holder.getImageView())
+                .load(imgUrl)
+                .placeholder(R.drawable.ic_local_movies_24dp)
+                .fallback(R.drawable.ic_local_movies_24dp)
+                .error(R.drawable.ic_local_movies_24dp)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(holder.getImageView());
     }
 
     @Override

@@ -57,10 +57,10 @@ public class MovieViewHolder extends RecyclerView.ViewHolder {
     public void initView(View itemView) {
         mRootView = itemView;
         if (mRootView != null) {
-            mImageView = (ImageView) mRootView.findViewById(R.id.imageView);
-            mTitleView = (TextView) mRootView.findViewById(R.id.titleView);
-            mPubdateView = (TextView) mRootView.findViewById(R.id.pubdateView);
-            mScheduleView = (TextView) mRootView.findViewById(R.id.roomView);
+            mImageView = mRootView.findViewById(R.id.imageView);
+            mTitleView = mRootView.findViewById(R.id.titleView);
+            mPubdateView = mRootView.findViewById(R.id.pubdateView);
+            mScheduleView = mRootView.findViewById(R.id.roomView);
             mBuyTicketButton = mRootView.findViewById(R.id.buyTicketButton);
         }
     }

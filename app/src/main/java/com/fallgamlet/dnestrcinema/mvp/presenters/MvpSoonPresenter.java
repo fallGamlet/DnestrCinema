@@ -6,7 +6,7 @@ import com.fallgamlet.dnestrcinema.mvp.views.MvpSoonView;
 /**
  * Created by fallgamlet on 03.07.17.
  */
-
+@Deprecated
 public interface MvpSoonPresenter extends MvpPresenter<MvpSoonView> {
 
     void onRefresh();

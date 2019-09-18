@@ -19,7 +19,7 @@ public interface MvpPresenterFactory {
 
     @Deprecated
     MvpTodayPresenter createTodayPresenter();
-
+    @Deprecated
     MvpSoonPresenter createSoonPresenter();
 
     MvpTicketsPresenter createTicketPresenter();
