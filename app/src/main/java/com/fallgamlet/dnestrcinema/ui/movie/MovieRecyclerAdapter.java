@@ -20,48 +20,32 @@ import java.util.List;
 
 public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 
-    //region Sub classes and Interfaces
-    public interface OnAdapterListener {
-        void onItemPressed(MovieItem item, int pos);
-        void onItemSchedulePressed(MovieItem item, int pos);
-        void onItemBuyTicketPressed(MovieItem item, int pos);
-    }
-    //endregion
-
-    //region Fields
     private int itemLayoutId;
     private OnAdapterListener mListener;
     private List<MovieItem> mListData, mListDataFiltered;
-    //endregion
 
-    //region Methods
     public MovieRecyclerAdapter(int itemLayoutId) {
         this.itemLayoutId = itemLayoutId;
     }
 
+    @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(itemLayoutId, parent, false);
         final MovieViewHolder holder = new MovieViewHolder(view);
 
-        holder.getRootView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener != null) {
-                    int pos = getPosition(holder.getItem());
-                    mListener.onItemPressed(holder.getItem(), pos);
-                }
+        holder.getRootView().setOnClickListener(view1 -> {
+            if (mListener != null) {
+                int pos = getPosition(holder.getItem());
+                mListener.onItemPressed(holder.getItem(), pos);
             }
         });
 
         if (holder.getBuyTicketButton() != null) {
-            holder.getBuyTicketButton().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mListener != null) {
-                        int pos = getPosition(holder.getItem());
-                        mListener.onItemBuyTicketPressed(holder.getItem(), pos);
-                    }
+            holder.getBuyTicketButton().setOnClickListener(view12 -> {
+                if (mListener != null) {
+                    int pos = getPosition(holder.getItem());
+                    mListener.onItemBuyTicketPressed(holder.getItem(), pos);
                 }
             });
         }
@@ -74,7 +58,6 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieViewHolder> 
         final MovieItem item = getItem(position);
         holder.initData(item);
 
-        //region Load and set Image
         String imgUrl = item.getPosterUrl();
 
         if (imgUrl != null) {
@@ -88,7 +71,6 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieViewHolder> 
                     .placeholder(R.drawable.ic_local_movies_24dp)
                     .into(holder.getImageView());
         }
-        //endregion
     }
 
     @Override
@@ -134,5 +116,11 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieViewHolder> 
     public void setListener(OnAdapterListener listener) {
         mListener = listener;
     }
-    //endregion
+
+
+    public interface OnAdapterListener {
+        void onItemPressed(MovieItem item, int pos);
+        void onItemSchedulePressed(MovieItem item, int pos);
+        void onItemBuyTicketPressed(MovieItem item, int pos);
+    }
 }

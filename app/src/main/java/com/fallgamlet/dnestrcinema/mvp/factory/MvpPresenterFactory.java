@@ -17,6 +17,7 @@ public interface MvpPresenterFactory {
 
     MvpNavigationPresenter createNavigationPresenter();
 
+    @Deprecated
     MvpTodayPresenter createTodayPresenter();
 
     MvpSoonPresenter createSoonPresenter();

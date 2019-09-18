@@ -22,7 +22,7 @@ import com.fallgamlet.dnestrcinema.ui.ImageActivity;
 import com.fallgamlet.dnestrcinema.ui.movie.ImageRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 import com.fallgamlet.dnestrcinema.utils.LogUtils;
-import com.fallgamlet.dnestrcinema.utils.ObserverUtils;
+import com.fallgamlet.dnestrcinema.utils.reactive.ObserverUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;

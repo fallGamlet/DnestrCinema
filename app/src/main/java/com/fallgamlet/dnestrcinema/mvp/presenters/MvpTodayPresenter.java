@@ -7,6 +7,7 @@ import com.fallgamlet.dnestrcinema.mvp.views.MvpTodayView;
  * Created by fallgamlet on 03.07.17.
  */
 
+@Deprecated
 public interface MvpTodayPresenter extends MvpPresenter<MvpTodayView> {
 
     void onRefresh();

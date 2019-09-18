@@ -81,7 +81,7 @@ public class ImageActivity extends AppCompatActivity {
         }
     }
 
-    //region Start activity
+
     public static void showActivity(Context context, String imgUrl) {
         Bundle bundle = new Bundle();
         bundle.putString(ImageActivity.ARG_IMG_URL, imgUrl);
@@ -90,5 +90,4 @@ public class ImageActivity extends AppCompatActivity {
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
-    //endregion
 }

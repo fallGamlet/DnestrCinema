@@ -3,40 +3,37 @@ package com.fallgamlet.dnestrcinema.ui.start;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import com.fallgamlet.dnestrcinema.utils.ObserverUtils;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.factory.KinotirConfigFactory;
-import com.fallgamlet.dnestrcinema.data.localstore.AccountLocalRepository;
-import com.fallgamlet.dnestrcinema.domain.models.AccountItem;
 import com.fallgamlet.dnestrcinema.app.AppFacade;
+import com.fallgamlet.dnestrcinema.data.localstore.AccountLocalRepository;
+import com.fallgamlet.dnestrcinema.data.network.NetClient;
+import com.fallgamlet.dnestrcinema.domain.models.AccountItem;
 import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
 import com.fallgamlet.dnestrcinema.domain.models.NavigationItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
-import com.fallgamlet.dnestrcinema.data.network.NetClient;
 import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity;
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpBottomNavigationView;
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpNavigationPresenterImpl;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 import com.fallgamlet.dnestrcinema.utils.ViewUtils;
+import com.fallgamlet.dnestrcinema.utils.reactive.ObserverUtils;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class StartActivity
@@ -45,12 +42,6 @@ public class StartActivity
         implements
             NavigationRouter
 {
-
-    static {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-    }
-
-    //region Fields
     @BindView(R.id.viewpager)
     protected ViewPager mViewPager;
     @BindView(R.id.bottomNavigationView)
@@ -58,7 +49,6 @@ public class StartActivity
 
     private ViewPagerAdapter adapter;
     private MvpNavigationPresenter bottomNavigationPresenter;
-    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +118,7 @@ public class StartActivity
 
     private synchronized ViewPagerAdapter getPageAdapter() {
         if (adapter == null) {
-            adapter = new ViewPagerAdapter(getSupportFragmentManager());;
+            adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
             for (Integer navId: AppFacade.Companion.getInstance().getNavigations()) {
                 addFragment(navId);

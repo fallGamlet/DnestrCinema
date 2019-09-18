@@ -22,7 +22,7 @@ import java.util.ArrayList
 class AppFacade private constructor() {
 
     companion object {
-        val instance: AppFacade = AppFacade()
+        val instance: AppFacade by lazy { AppFacade() }
     }
 
 

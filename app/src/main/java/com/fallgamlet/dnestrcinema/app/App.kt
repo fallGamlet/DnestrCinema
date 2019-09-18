@@ -2,6 +2,7 @@ package com.fallgamlet.dnestrcinema.app
 
 import androidx.multidex.MultiDexApplication
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import com.fallgamlet.dnestrcinema.data.KinoTirCinemaRepository
 import com.fallgamlet.dnestrcinema.factory.KinotirConfigFactory
 
@@ -39,4 +40,9 @@ class App : MultiDexApplication() {
         }
     }
 
+    companion object {
+        init {
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+        }
+    }
 }
