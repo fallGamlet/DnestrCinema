@@ -25,7 +25,7 @@ public interface MvpPresenterFactory {
     MvpTicketsPresenter createTicketPresenter();
 
     MvpLoginPresenter createLoginPresenter();
-
+    @Deprecated
     MvpNewsPresenter createNewsPresenter();
 
     MvpAboutPresenter createAboutPresenter();

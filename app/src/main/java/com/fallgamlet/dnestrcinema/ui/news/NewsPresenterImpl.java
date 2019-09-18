@@ -20,6 +20,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by fallgamlet on 03.07.17.
  */
 
+@Deprecated
 public class NewsPresenterImpl
         extends
             BasePresenter <MvpNewsView>

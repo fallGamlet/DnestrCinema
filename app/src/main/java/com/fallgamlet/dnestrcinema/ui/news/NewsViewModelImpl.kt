@@ -1,24 +1,30 @@
-package com.fallgamlet.dnestrcinema.ui.movie.today
+package com.fallgamlet.dnestrcinema.ui.news
 
+import android.os.Bundle
 import androidx.lifecycle.ViewModel
+
 import com.fallgamlet.dnestrcinema.app.AppFacade
-import com.fallgamlet.dnestrcinema.domain.models.MovieItem
-import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter
+import com.fallgamlet.dnestrcinema.domain.models.NewsItem
+import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter
+import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNewsPresenter
+import com.fallgamlet.dnestrcinema.mvp.views.MvpNewsView
 import com.fallgamlet.dnestrcinema.utils.LiveDataUtils
 import com.fallgamlet.dnestrcinema.utils.reactive.mapTrue
 import com.fallgamlet.dnestrcinema.utils.reactive.schedulersIoToUi
 import com.fallgamlet.dnestrcinema.utils.reactive.subscribeDisposable
 
+import java.util.ArrayList
 
-class TodayMoviesViewModelImpl : ViewModel() {
-
-    val viewState = TodayMoviesViewState()
-    private var movies: List<MovieItem> = emptyList()
-
-    private val router: NavigationRouter?
-        get() = AppFacade.instance.navigationRouter
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.annotations.NonNull
+import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 
 
+class NewsViewModelImpl : ViewModel() {
+
+    val viewState = NewsViewState()
+    private var newsItems: List<NewsItem> = emptyList()
 
     init {
         loadData()
@@ -29,13 +35,13 @@ class TodayMoviesViewModelImpl : ViewModel() {
 
         viewState.loading.value = true
 
-        client.todayMovies
+        client.news
             .schedulersIoToUi()
-            .doOnNext { movies = it }
+            .doOnNext { newsItems = it }
             .doOnError { viewState.error.value = it }
             .mapTrue()
             .doOnComplete {
-                viewState.movies.value = movies
+                viewState.items.value = newsItems
                 viewState.loading.value = false
             }
             .subscribeDisposable()
@@ -47,14 +53,7 @@ class TodayMoviesViewModelImpl : ViewModel() {
             viewState.loading
         )
 
-        viewState.movies.value = movies
+        viewState.items.value = newsItems
     }
 
-    fun onMovieSelected(movieItem: MovieItem) {
-        router?.showMovieDetail(movieItem)
-    }
-
-    fun onTicketBuySelected(movieItem: MovieItem) {
-        router?.showBuyTicket(movieItem)
-    }
 }
