@@ -8,9 +8,7 @@ import io.reactivex.observers.DisposableObserver
 import io.reactivex.subscribers.DisposableSubscriber
 
 
-/**
- * Created by fallgamlet on 02.10.17.
- */
+
 object ObserverUtils {
 
     fun <T> wrapSafeDisposable(observable: Observable<T>): Observable<T> {

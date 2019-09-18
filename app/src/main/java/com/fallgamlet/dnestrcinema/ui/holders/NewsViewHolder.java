@@ -105,7 +105,7 @@ public class NewsViewHolder extends BaseViewHolder<NewsItem> {
 
     public void setDate(Date val) {
         if (mDateView != null) {
-            mDateView.setText(DateTimeUtils.getDateDotWithoutTime(val));
+            mDateView.setText(DateTimeUtils.INSTANCE.getDateDotWithoutTime(val));
         }
         setDateVisible(val != null);
     }

@@ -92,7 +92,7 @@ public class StartActivity
                     return true;
                 })
                 .onErrorReturnItem(false)
-                .subscribe(ObserverUtils.emptyDisposableObserver());
+                .subscribe(ObserverUtils.INSTANCE.emptyDisposableObserver());
     }
 
     private void initAccount(List<AccountItem> items) {

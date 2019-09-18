@@ -4,12 +4,14 @@
  **/
 ext.deps = [:]
 def versions = [:]
-versions.android_gradle_plugin = '3.4.1'
+versions.android_gradle_plugin = '3.5.0'
 versions.googleServices = "4.2.0"
-versions.playServiceStats = "16.0.1"
+versions.playServiceAuth='17.0.0'
+versions.playServiceStats = "17.0.0"
 versions.playServiceLocation = "16.0.0"
 versions.playServiceMap = "16.0.0"
 versions.androidMapUtils = "0.5"
+versions.androidMapServices = "0.9.3"
 versions.apache_commons = "2.5"
 versions.arch_core = "2.0.0"
 versions.atsl_rules = "1.1.0-alpha4"
@@ -22,7 +24,7 @@ versions.espresso = "3.1.0-alpha4"
 versions.glide = "4.9.0"
 versions.hamcrest = "1.3"
 versions.junit = "4.12"
-versions.kotlin = "1.3.31"
+versions.kotlin = "1.3.41"
 versions.lifecycle = "2.0.0"
 versions.mockito = "2.7.19"
 versions.mockito_all = "1.10.19"
@@ -30,8 +32,8 @@ versions.mockito_android = "2.22.0"
 versions.mockwebserver = "3.8.1"
 versions.navigation = "2.1.0-alpha02"
 versions.gson = "2.8.5"
-versions.okhttp = "3.12.1"
-versions.retrofit = "2.5.0"
+versions.okhttp = "3.14.2"
+versions.retrofit = "2.6.1"
 versions.socket_io = "1.0.0"
 versions.timeThreetenabp = "1.1.1"
 versions.paging = "2.1.0-rc01"
@@ -46,15 +48,18 @@ versions.palette_ktx = "1.0.0"
 versions.multidex = "2.0.1"
 versions.vectordrawable = "1.0.1"
 versions.vectordrawable_animated = "1.0.0"
+versions.firebase_core = "17.1.0"
+versions.firebase_messaging = "20.0.0"
+versions.firebase_ui_auth = "4.2.0"
+versions.firebase_auth = "19.0.0"
+versions.facebook = "[5,6]"
+versions.vk_sdk="2.1.0"
+versions.keyboardvisibilityevent = "2.3.0"
+versions.slidingUpPanel = "3.4.0"
 versions.jsoup = "1.11.3"
 versions.flexbox = "1.1.0"
 versions.butterKnife = "9.0.0"
 versions.butterKnifeX = "10.1.0"
-versions.firebase_core = "16.0.9"
-versions.firebase_ui_auth = "4.2.0"
-versions.firebase_auth = "16.2.0"
-versions.facebook = "[4,5)"
-versions.keyboardvisibilityevent = "2.3.0"
 
 def deps = [:]
 
@@ -95,6 +100,7 @@ deps.arch_core = arch_core
 def retrofit = [:]
 retrofit.runtime = "com.squareup.retrofit2:retrofit:$versions.retrofit"
 retrofit.gson = "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+retrofit.simplexml = "com.squareup.retrofit2:converter-simplexml:$versions.retrofit"
 retrofit.rxjava2 = "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
 retrofit.mock = "com.squareup.retrofit2:retrofit-mock:$versions.retrofit"
 deps.retrofit = retrofit
@@ -103,6 +109,9 @@ deps.okhttp_urlconnection = "com.squareup.okhttp3:okhttp-urlconnection:${version
 deps.okhttp_logging_interceptor = "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}"
 deps.socket_io = "io.socket:socket.io-client:${versions.socket_io}"
 deps.gson = "com.google.code.gson:gson:${versions.gson}"
+deps.simple_xml = "org.simpleframework:simple-xml:2.7.1"
+deps.javax_annotation_api = "javax.annotation:javax.annotation-api:1.3.2"
+
 deps.timeThreetenabp = "com.jakewharton.threetenabp:threetenabp:${versions.timeThreetenabp}"
 
 
@@ -158,11 +167,20 @@ deps.rx_android = "io.reactivex.rxjava2:rxandroid:$versions.rx_android"
 deps.hamcrest = "org.hamcrest:hamcrest-all:$versions.hamcrest"
 deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 deps.google_services = "com.google.gms:google-services:${versions.googleServices}"
-deps.play_services_location = "com.google.android.gms:play-services-location:${versions.playServiceLocation}"
-deps.play_services_maps = "com.google.android.gms:play-services-maps:${versions.playServiceMap}"
-deps.android_maps_utils = "com.google.maps.android:android-maps-utils:${versions.androidMapUtils}"
+deps.play_services_auth = "com.google.android.gms:play-services-auth:${versions.playServiceAuth}"
 deps.play_services_stats = "com.google.android.gms:play-services-stats:${versions.playServiceStats}"
+deps.play_services_flags = "com.google.android.gms:play-services-flags:${versions.playServiceStats}"
+deps.play_services_location = "com.google.android.gms:play-services-location:${versions.playServiceLocation}"
+deps.play_services_places = "com.google.android.gms:play-services-places:${versions.playServiceLocation}"
+deps.play_services_maps = "com.google.android.gms:play-services-maps:${versions.playServiceMap}"
+deps.android_maps_services = "com.google.maps:google-maps-services:${versions.androidMapServices}"
+deps.android_maps_utils = "com.google.maps.android:android-maps-utils:${versions.androidMapUtils}"
+
 deps.facebook = "com.facebook.android:facebook-login:${versions.facebook}"
+deps.vk_sdk = "com.vk:androidsdk:${versions.vk_sdk}"
+deps.keyboardvisibilityevent = "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:${versions.keyboardvisibilityevent}"
+deps.android_reactive_location2 = "pl.charmas.android:android-reactive-location2:2.1@aar"
+deps.sliding_up_panel = "com.sothree.slidinguppanel:library:${versions.slidingUpPanel}"
 deps.jsoup = "org.jsoup:jsoup:${versions.jsoup}"
 deps.flexbox = "com.google.android:flexbox:${versions.flexbox}"
 
@@ -175,7 +193,6 @@ def butterKnifeX = [:]
 butterKnifeX.runtime = "com.jakewharton:butterknife:${versions.butterKnifeX}"
 butterKnifeX.compiler = "com.jakewharton:butterknife-compiler:${versions.butterKnifeX}"
 deps.butterKnifeX = butterKnifeX
-deps.keyboardvisibilityevent = "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:${versions.keyboardvisibilityevent}"
 
 ext.deps = deps
 
@@ -195,6 +212,7 @@ deps.work = work
 
 def firebase = [:]
 firebase.core = "com.google.firebase:firebase-core:${versions.firebase_core}"
+firebase.messaging = "com.google.firebase:firebase-messaging:${versions.firebase_messaging}"
 firebase.ui_auth = "com.firebaseui:firebase-ui-auth:${versions.firebase_ui_auth}"
 firebase.auth = "com.google.firebase:firebase-auth:${versions.firebase_auth}"
 deps.firebase = firebase

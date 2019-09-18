@@ -97,7 +97,7 @@ public class MovieViewHolder extends RecyclerView.ViewHolder {
 
     public void setPubDate(Date date) {
         if (mPubdateView != null) {
-            mPubdateView.setText(DateTimeUtils.getDateNamed(date));
+            mPubdateView.setText(DateTimeUtils.INSTANCE.getDateNamed(date));
         }
     }
 

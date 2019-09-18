@@ -201,7 +201,7 @@ public class MvpMovieDetailPresenterImpl
                     LogUtils.INSTANCE.log("DetailMovie", "loaf error", throwable);
                     return false;
                 })
-                .subscribe(ObserverUtils.emptyDisposableObserver());
+                .subscribe(ObserverUtils.INSTANCE.emptyDisposableObserver());
     }
 
     private synchronized void loadImages(Collection<String> urlList) {
