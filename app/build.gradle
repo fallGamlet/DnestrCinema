@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
@@ -20,7 +20,6 @@ android {
             keyPassword keystoreProperties['keyPassword']
             storeFile file(keystoreProperties['storeFile'])
             storePassword keystoreProperties['storePassword']
-
         }
     }
 
@@ -72,10 +71,8 @@ ext {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation deps.firebase.core
-    implementation deps.play_services_stats
-
     implementation deps.kotlin.stdlib
+
     implementation deps.support.annotations
     implementation deps.support.app_compat
     implementation deps.support.design
@@ -117,16 +114,19 @@ dependencies {
     api "frankiesardo:icepick:${icepick}"
     kapt "frankiesardo:icepick-processor:${icepick}"
 
+    implementation deps.firebase.core
+    implementation deps.play_services_stats
+
     releaseImplementation "com.crashlytics.sdk.android:crashlytics:2.10.1"
     debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:${leakcanary}"
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${leakcanary}"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary}"
 
     testImplementation deps.junit
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {
+    androidTestImplementation(deps.espresso.core) {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'
-    })
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'
