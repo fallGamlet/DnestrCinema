@@ -1,9 +1,9 @@
 package com.fallgamlet.dnestrcinema.data.network.kinotir.mappers;
 
+import com.fallgamlet.dnestrcinema.data.network.Mapper;
 import com.fallgamlet.dnestrcinema.domain.models.MovieDetailItem;
 import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
 import com.fallgamlet.dnestrcinema.domain.models.ScheduleItem;
-import com.fallgamlet.dnestrcinema.data.network.Mapper;
 import com.fallgamlet.dnestrcinema.utils.StringUtils;
 
 import org.jsoup.Jsoup;
@@ -101,7 +101,7 @@ public class HtmlMoviesMapper implements Mapper<String, List<MovieItem>> {
         }
 
         Date start = dateMapper.map(strStart);
-        MovieDetailItem detail = movieItem.getDetail();
+        MovieDetailItem detail = movieItem.getDetails();
 
         movieItem.setDuration(strDuration);
         movieItem.setPubDate(start);

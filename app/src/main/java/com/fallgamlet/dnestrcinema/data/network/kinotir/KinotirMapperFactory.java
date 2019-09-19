@@ -1,8 +1,5 @@
 package com.fallgamlet.dnestrcinema.data.network.kinotir;
 
-import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
-import com.fallgamlet.dnestrcinema.domain.models.NewsItem;
-import com.fallgamlet.dnestrcinema.domain.models.TicketItem;
 import com.fallgamlet.dnestrcinema.data.network.Mapper;
 import com.fallgamlet.dnestrcinema.data.network.MapperFactory;
 import com.fallgamlet.dnestrcinema.data.network.kinotir.mappers.HtmlMovieDetailMapper;
@@ -10,6 +7,9 @@ import com.fallgamlet.dnestrcinema.data.network.kinotir.mappers.HtmlMoviesMapper
 import com.fallgamlet.dnestrcinema.data.network.kinotir.mappers.HtmlNewsMapper;
 import com.fallgamlet.dnestrcinema.data.network.kinotir.mappers.HtmlTicketsMapper;
 import com.fallgamlet.dnestrcinema.data.network.kinotir.mappers.JsonLoginMapper;
+import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
+import com.fallgamlet.dnestrcinema.domain.models.NewsItem;
+import com.fallgamlet.dnestrcinema.domain.models.TicketItem;
 
 import java.util.List;
 

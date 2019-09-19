@@ -1,15 +1,16 @@
 package com.fallgamlet.dnestrcinema.ui.navigation;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
 
 import com.fallgamlet.dnestrcinema.app.AppFacade;
 import com.fallgamlet.dnestrcinema.domain.models.NavigationItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
  * Created by fallgamlet on 02.07.17.

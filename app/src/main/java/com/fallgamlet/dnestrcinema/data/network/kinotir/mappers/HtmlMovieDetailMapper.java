@@ -1,8 +1,8 @@
 package com.fallgamlet.dnestrcinema.data.network.kinotir.mappers;
 
+import com.fallgamlet.dnestrcinema.data.network.Mapper;
 import com.fallgamlet.dnestrcinema.domain.models.MovieDetailItem;
 import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
-import com.fallgamlet.dnestrcinema.data.network.Mapper;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -152,10 +152,10 @@ public class HtmlMovieDetailMapper implements Mapper<String, MovieItem> {
     }
 
     private MovieDetailItem getDetail(MovieItem movieItem) {
-        MovieDetailItem detail = movieItem.getDetail();
+        MovieDetailItem detail = movieItem.getDetails();
         if (detail == null) {
             detail = new MovieDetailItem();
-            movieItem.setDetail(detail);
+            movieItem.setDetails(detail);
         }
 
         return detail;

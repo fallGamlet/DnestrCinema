@@ -1,15 +1,13 @@
 package com.fallgamlet.dnestrcinema.app
 
-import androidx.multidex.MultiDexApplication
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.multidex.MultiDexApplication
 import com.fallgamlet.dnestrcinema.data.KinoTirCinemaRepository
 import com.fallgamlet.dnestrcinema.factory.KinotirConfigFactory
-
 import com.fallgamlet.dnestrcinema.utils.LogUtils
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
-
 import io.reactivex.plugins.RxJavaPlugins
 
 class App : MultiDexApplication() {

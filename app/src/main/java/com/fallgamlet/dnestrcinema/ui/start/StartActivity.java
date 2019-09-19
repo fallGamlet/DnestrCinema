@@ -316,7 +316,7 @@ public class StartActivity
     public void showMovieDetail(MovieItem movieItem) {
         if (movieItem != null) {
             Bundle bundle = new Bundle();
-            bundle.putParcelable(MovieDetailActivity.ARG_MOVIE, movieItem);
+            bundle.putParcelable(MovieDetailActivity.Companion.getARG_MOVIE(), movieItem);
 
             Intent intent = new Intent(this, MovieDetailActivity.class);
             intent.putExtras(bundle);

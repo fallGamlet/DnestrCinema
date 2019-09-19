@@ -27,7 +27,7 @@ public class MovieMerger implements Merger <MovieItem> {
         mergeSchedulers(to, from);
         mergeTrailers(to, from);
 
-        detailMerger.merge(to.getDetail(), from.getDetail());
+        detailMerger.merge(to.getDetails(), from.getDetails());
     }
 
     private void mergeTitle(MovieItem to, MovieItem from) {

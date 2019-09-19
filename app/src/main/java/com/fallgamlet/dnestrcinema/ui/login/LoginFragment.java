@@ -1,7 +1,6 @@
 package com.fallgamlet.dnestrcinema.ui.login;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.app.AppFacade;

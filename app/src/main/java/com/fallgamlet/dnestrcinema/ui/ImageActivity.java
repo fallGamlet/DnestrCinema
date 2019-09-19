@@ -5,14 +5,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.core.widget.ContentLoadingProgressBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.ContentLoadingProgressBar;
+
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.app.GlideApp;
 import com.fallgamlet.dnestrcinema.app.AppFacade;
+import com.fallgamlet.dnestrcinema.app.GlideApp;
 import com.fallgamlet.dnestrcinema.utils.GlideRequestListener;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 

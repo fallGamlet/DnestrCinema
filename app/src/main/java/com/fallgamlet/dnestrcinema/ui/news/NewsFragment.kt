@@ -13,7 +13,6 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.fallgamlet.dnestrcinema.R
 import com.fallgamlet.dnestrcinema.domain.models.NewsItem
-import com.fallgamlet.dnestrcinema.ui.adapters.BaseRecyclerAdapter
 import com.fallgamlet.dnestrcinema.ui.base.BaseFragment
 
 

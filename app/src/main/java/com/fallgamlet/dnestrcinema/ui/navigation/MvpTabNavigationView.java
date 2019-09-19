@@ -1,11 +1,11 @@
 package com.fallgamlet.dnestrcinema.ui.navigation;
 
 import android.content.Context;
-import com.google.android.material.tabs.TabLayout;
 import android.view.View;
 
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
+import com.google.android.material.tabs.TabLayout;
 
 /**
  * Created by fallgamlet on 02.07.17.

@@ -14,7 +14,7 @@ import com.fallgamlet.dnestrcinema.R
 import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment: Fragment() {
-    private var errorLive: MutableLiveData<Throwable> = MutableLiveData()
+    private var errorLive: MutableLiveData<Throwable?> = MutableLiveData()
 
     abstract val layoutId: Int
 
@@ -26,13 +26,13 @@ abstract class BaseFragment: Fragment() {
         return inflater.inflate(layoutId, container, false)
     }
 
-    protected fun setErrorLive(errorLive: MutableLiveData<Throwable>) {
+    protected fun setErrorLive(errorLive: MutableLiveData<Throwable?>) {
         this.errorLive.removeObservers(this)
         this.errorLive = errorLive
         errorLive.observe(this, Observer { onError(it) } )
     }
 
-    protected fun setLoadingLive(loadingLive: MutableLiveData<Boolean>) {
+    protected fun setLoadingLive(loadingLive: MutableLiveData<Boolean?>) {
         loadingLive.observe(this, Observer { onLoading(it) } )
     }
 

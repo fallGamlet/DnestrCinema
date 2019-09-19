@@ -1,8 +1,8 @@
 package com.fallgamlet.dnestrcinema.data.network.kinotir.mappers;
 
+import com.fallgamlet.dnestrcinema.data.network.Mapper;
 import com.fallgamlet.dnestrcinema.domain.models.TicketItem;
 import com.fallgamlet.dnestrcinema.domain.models.TicketPlace;
-import com.fallgamlet.dnestrcinema.data.network.Mapper;
 import com.fallgamlet.dnestrcinema.utils.StringUtils;
 
 import org.jsoup.Jsoup;

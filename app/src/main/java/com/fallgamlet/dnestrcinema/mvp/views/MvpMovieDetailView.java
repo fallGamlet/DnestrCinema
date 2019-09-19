@@ -1,8 +1,9 @@
 package com.fallgamlet.dnestrcinema.mvp.views;
 
 import android.graphics.drawable.Drawable;
-import androidx.recyclerview.widget.RecyclerView;
 import android.widget.ImageView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpMovieDetailPresenter;
 

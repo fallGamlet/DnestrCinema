@@ -1,6 +1,9 @@
 package com.fallgamlet.dnestrcinema.domain
 
-import com.fallgamlet.dnestrcinema.domain.models.*
+import com.fallgamlet.dnestrcinema.domain.models.CinemaItem
+import com.fallgamlet.dnestrcinema.domain.models.MovieItem
+import com.fallgamlet.dnestrcinema.domain.models.NewsItem
+import com.fallgamlet.dnestrcinema.domain.models.TicketItem
 import io.reactivex.Single
 
 interface CinemaRepository {

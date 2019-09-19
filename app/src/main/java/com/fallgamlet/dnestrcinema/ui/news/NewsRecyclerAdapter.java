@@ -2,13 +2,14 @@ package com.fallgamlet.dnestrcinema.ui.news;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.app.GlideApp;
 import com.fallgamlet.dnestrcinema.app.AppFacade;
+import com.fallgamlet.dnestrcinema.app.GlideApp;
 import com.fallgamlet.dnestrcinema.domain.models.NewsItem;
 import com.fallgamlet.dnestrcinema.ui.adapters.BaseRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.ui.holders.NewsViewHolder;

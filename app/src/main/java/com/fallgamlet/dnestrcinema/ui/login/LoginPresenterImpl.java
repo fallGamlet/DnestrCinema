@@ -2,9 +2,9 @@ package com.fallgamlet.dnestrcinema.ui.login;
 
 import android.text.TextUtils;
 
+import com.fallgamlet.dnestrcinema.app.AppFacade;
 import com.fallgamlet.dnestrcinema.data.localstore.AccountLocalRepository;
 import com.fallgamlet.dnestrcinema.domain.models.AccountItem;
-import com.fallgamlet.dnestrcinema.app.AppFacade;
 import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpLoginPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.LoginRouter;

@@ -1,8 +1,8 @@
 package com.fallgamlet.dnestrcinema.factory
 
 import com.fallgamlet.dnestrcinema.R
-import com.fallgamlet.dnestrcinema.mvp.factory.MvpNavigationCreator
 import com.fallgamlet.dnestrcinema.domain.models.NavigationItem
+import com.fallgamlet.dnestrcinema.mvp.factory.MvpNavigationCreator
 
 
 class NavigationCreatorImpl : MvpNavigationCreator {

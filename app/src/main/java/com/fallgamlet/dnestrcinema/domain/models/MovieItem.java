@@ -2,6 +2,7 @@ package com.fallgamlet.dnestrcinema.domain.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.collection.ArraySet;
 
@@ -33,7 +34,7 @@ public class MovieItem implements Parcelable {
     @SerializedName("trailerUrls") private Set<String> mTrailerUrlList;
     @SerializedName("schedulers") private ArrayList<ScheduleItem> mSchedules = new ArrayList<>();
     @SerializedName("pubDate") private Date pubDate;
-    @SerializedName("detail") private MovieDetailItem detail;
+    @SerializedName("detail") private MovieDetailItem details;
     //endregion
 
     //region Getters and Setters
@@ -101,16 +102,16 @@ public class MovieItem implements Parcelable {
     }
 
     @NonNull
-    public synchronized MovieDetailItem getDetail() {
-        if (detail == null) {
-            detail = new MovieDetailItem();
+    public synchronized MovieDetailItem getDetails() {
+        if (details == null) {
+            details = new MovieDetailItem();
         }
 
-        return detail;
+        return details;
     }
 
-    public void setDetail(MovieDetailItem detail) {
-        this.detail = detail;
+    public void setDetails(MovieDetailItem detail) {
+        this.details = detail;
     }
     //endregion
 
@@ -149,7 +150,7 @@ public class MovieItem implements Parcelable {
         dest.writeString(posterUrl);
         dest.writeTypedList(mSchedules);
         dest.writeStringList(new ArrayList<>(getTrailerUrlSet()));
-        dest.writeParcelable(detail, flags);
+        dest.writeParcelable(details, flags);
     }
 
     public void readFromParcel(Parcel in) {
@@ -163,7 +164,7 @@ public class MovieItem implements Parcelable {
         posterUrl = in.readString();
         mSchedules = in.createTypedArrayList(ScheduleItem.CREATOR);
         in.readStringList(moveUrlList);
-        detail = in.readParcelable(MovieDetailItem.class.getClassLoader());
+        details = in.readParcelable(MovieDetailItem.class.getClassLoader());
 
         getTrailerUrlSet().addAll(moveUrlList);
         pubDate = d == 0? null: new Date(d);

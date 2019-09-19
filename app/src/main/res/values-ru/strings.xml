@@ -52,4 +52,11 @@
     <string name="msg_login_fail">Неправильный email или пароль</string>
 
     <string name="label_more">Подробнее</string>
+    <string name="label_choose_room">Выберите зал</string>
+
+    <string name="send_email_chooser_title">Choose email application</string>
+    <string name="err_msg_phone_caller_not_found">Phone caller not found</string>
+    <string name="err_msg_email_sender_not_found">Email application not found</string>
+    <string name="err_msg_webbrowser_not_found">Web browser application not found</string>
+
 </resources>

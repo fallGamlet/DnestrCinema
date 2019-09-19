@@ -1,7 +1,7 @@
 package com.fallgamlet.dnestrcinema.data.network.kinotir.mappers;
 
-import com.fallgamlet.dnestrcinema.domain.models.NewsItem;
 import com.fallgamlet.dnestrcinema.data.network.Mapper;
+import com.fallgamlet.dnestrcinema.domain.models.NewsItem;
 import com.fallgamlet.dnestrcinema.utils.StringUtils;
 
 import org.jsoup.Jsoup;

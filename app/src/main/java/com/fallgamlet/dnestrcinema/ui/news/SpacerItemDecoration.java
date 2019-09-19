@@ -1,8 +1,9 @@
 package com.fallgamlet.dnestrcinema.ui.news;
 
 import android.graphics.Rect;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by fallgamlet on 16.02.16.

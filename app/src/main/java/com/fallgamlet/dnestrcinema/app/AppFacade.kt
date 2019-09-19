@@ -1,6 +1,12 @@
 package com.fallgamlet.dnestrcinema.app
 
 import com.fallgamlet.dnestrcinema.data.DummyCinemaRepository
+import com.fallgamlet.dnestrcinema.data.network.MapperFactory
+import com.fallgamlet.dnestrcinema.data.network.NetClient
+import com.fallgamlet.dnestrcinema.data.network.RequestFactory
+import com.fallgamlet.dnestrcinema.domain.CinemaInteractor
+import com.fallgamlet.dnestrcinema.domain.CinemaRepository
+import com.fallgamlet.dnestrcinema.domain.KinoTirCinemaInteractor
 import com.fallgamlet.dnestrcinema.domain.models.AccountItem
 import com.fallgamlet.dnestrcinema.domain.models.CinemaItem
 import com.fallgamlet.dnestrcinema.domain.models.NavigationItem
@@ -9,14 +15,7 @@ import com.fallgamlet.dnestrcinema.mvp.factory.MvpNavigationCreator
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpPresenterFactory
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpViewFragmentFactory
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter
-import com.fallgamlet.dnestrcinema.data.network.MapperFactory
-import com.fallgamlet.dnestrcinema.data.network.NetClient
-import com.fallgamlet.dnestrcinema.data.network.RequestFactory
-import com.fallgamlet.dnestrcinema.domain.CinemaInteractor
-import com.fallgamlet.dnestrcinema.domain.CinemaRepository
-import com.fallgamlet.dnestrcinema.domain.KinoTirCinemaInteractor
-
-import java.util.ArrayList
+import java.util.*
 
 
 class AppFacade private constructor() {

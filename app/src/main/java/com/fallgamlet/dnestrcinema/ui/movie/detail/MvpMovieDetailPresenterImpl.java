@@ -4,21 +4,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
 import com.fallgamlet.dnestrcinema.R;
-import com.fallgamlet.dnestrcinema.app.GlideApp;
-import com.fallgamlet.dnestrcinema.ui.mergers.MovieMerger;
 import com.fallgamlet.dnestrcinema.app.AppFacade;
+import com.fallgamlet.dnestrcinema.app.GlideApp;
+import com.fallgamlet.dnestrcinema.data.network.KinoTir;
 import com.fallgamlet.dnestrcinema.domain.models.MovieDetailItem;
 import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
 import com.fallgamlet.dnestrcinema.domain.models.ScheduleItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.BasePresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpMovieDetailPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
-import com.fallgamlet.dnestrcinema.data.network.KinoTir;
 import com.fallgamlet.dnestrcinema.ui.ImageActivity;
+import com.fallgamlet.dnestrcinema.ui.mergers.MovieMerger;
 import com.fallgamlet.dnestrcinema.ui.movie.ImageRecyclerAdapter;
 import com.fallgamlet.dnestrcinema.utils.HttpUtils;
 import com.fallgamlet.dnestrcinema.utils.LogUtils;
@@ -138,7 +139,7 @@ public class MvpMovieDetailPresenterImpl
             movieItem = new MovieItem();
         }
 
-        MovieDetailItem detail = movieItem.getDetail();
+        MovieDetailItem detail = movieItem.getDetails();
 
         getView().setTitle(movieItem.getTitle());
         getView().setPubDate(movieItem.getPubDate());

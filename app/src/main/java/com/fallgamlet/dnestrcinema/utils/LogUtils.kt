@@ -1,9 +1,7 @@
 package com.fallgamlet.dnestrcinema.utils
 
 import android.util.Log
-
 import com.fallgamlet.dnestrcinema.BuildConfig
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
 

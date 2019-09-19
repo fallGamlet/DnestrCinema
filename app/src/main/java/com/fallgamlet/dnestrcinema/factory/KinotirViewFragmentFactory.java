@@ -1,6 +1,7 @@
 package com.fallgamlet.dnestrcinema.factory;
 
 import androidx.fragment.app.Fragment;
+
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpViewFragmentFactory;
 import com.fallgamlet.dnestrcinema.ui.about.AboutFragment;
 import com.fallgamlet.dnestrcinema.ui.login.LoginFragment;
