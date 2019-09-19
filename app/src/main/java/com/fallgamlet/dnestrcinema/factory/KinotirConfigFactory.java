@@ -1,15 +1,15 @@
 package com.fallgamlet.dnestrcinema.factory;
 
-import com.fallgamlet.dnestrcinema.mvp.factory.ConfigFactory;
-import com.fallgamlet.dnestrcinema.mvp.factory.MvpNavigationCreator;
-import com.fallgamlet.dnestrcinema.mvp.factory.MvpPresenterFactory;
-import com.fallgamlet.dnestrcinema.mvp.factory.MvpViewFragmentFactory;
-import com.fallgamlet.dnestrcinema.domain.models.CinemaItem;
-import com.fallgamlet.dnestrcinema.domain.models.NavigationItem;
 import com.fallgamlet.dnestrcinema.data.network.MapperFactory;
 import com.fallgamlet.dnestrcinema.data.network.RequestFactory;
 import com.fallgamlet.dnestrcinema.data.network.kinotir.KinotirMapperFactory;
 import com.fallgamlet.dnestrcinema.data.network.kinotir.KinotirRequestFactory;
+import com.fallgamlet.dnestrcinema.domain.models.CinemaItem;
+import com.fallgamlet.dnestrcinema.domain.models.NavigationItem;
+import com.fallgamlet.dnestrcinema.mvp.factory.ConfigFactory;
+import com.fallgamlet.dnestrcinema.mvp.factory.MvpNavigationCreator;
+import com.fallgamlet.dnestrcinema.mvp.factory.MvpPresenterFactory;
+import com.fallgamlet.dnestrcinema.mvp.factory.MvpViewFragmentFactory;
 
 import java.util.ArrayList;
 import java.util.List;

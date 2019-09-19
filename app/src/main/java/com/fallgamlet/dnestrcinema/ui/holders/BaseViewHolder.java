@@ -1,7 +1,8 @@
 package com.fallgamlet.dnestrcinema.ui.holders;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by fallgamlet on 23.07.17.

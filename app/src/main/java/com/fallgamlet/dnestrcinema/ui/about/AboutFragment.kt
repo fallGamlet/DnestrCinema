@@ -4,25 +4,21 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.appcompat.app.AlertDialog
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-
 import com.fallgamlet.dnestrcinema.R
 import com.fallgamlet.dnestrcinema.app.AppFacade
+import com.fallgamlet.dnestrcinema.data.network.KinoTir
 import com.fallgamlet.dnestrcinema.domain.models.MovieItem
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments
-import com.fallgamlet.dnestrcinema.data.network.KinoTir
 import com.fallgamlet.dnestrcinema.ui.ImageActivity
 import com.fallgamlet.dnestrcinema.utils.HttpUtils
 import com.fallgamlet.dnestrcinema.utils.LogUtils
-
-
 
 
 class AboutFragment : Fragments.MvpAboutViewFragment(), View.OnClickListener {

@@ -1,8 +1,9 @@
 package com.fallgamlet.dnestrcinema.ui.holders;
 
-import androidx.annotation.StringRes;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.StringRes;
 
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.domain.models.TicketItem;

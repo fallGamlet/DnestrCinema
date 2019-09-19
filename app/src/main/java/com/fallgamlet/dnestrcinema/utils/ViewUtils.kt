@@ -3,12 +3,11 @@ package com.fallgamlet.dnestrcinema.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import com.google.android.material.snackbar.Snackbar
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-
 import com.fallgamlet.dnestrcinema.R
+import com.google.android.material.snackbar.Snackbar
 
 
 object ViewUtils {

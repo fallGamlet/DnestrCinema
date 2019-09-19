@@ -3,15 +3,23 @@ package com.fallgamlet.dnestrcinema.data.network;
 import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
 import com.fallgamlet.dnestrcinema.domain.models.NewsItem;
 import com.fallgamlet.dnestrcinema.domain.models.TicketItem;
-import io.reactivex.Observable;
-import okhttp3.*;
 
-import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import javax.security.auth.login.LoginException;
+
+import io.reactivex.Observable;
+import okhttp3.Call;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 public class NetClient {
