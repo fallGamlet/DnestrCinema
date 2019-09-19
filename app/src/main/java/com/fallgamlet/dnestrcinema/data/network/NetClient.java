@@ -87,35 +87,53 @@ public class NetClient {
         Request request = requestFactory.todayMoviesRequest();
 
         return createObservable(request)
-                .map(html -> mapperFactory.todayMoviesMapper().map(html));
+                .map(html -> {
+                    List<MovieItem> items = mapperFactory.todayMoviesMapper().map(html);
+                    return items != null ? items : new ArrayList<>();
+                });
     }
 
     public Observable<List<MovieItem>> getSoonMovies() {
         Request request = requestFactory.soonMoviesRequest();
 
         return createObservable(request)
-                .map(html -> mapperFactory.soonMoviesMapper().map(html));
+                .map(html -> {
+                    List<MovieItem> items = mapperFactory.soonMoviesMapper().map(html);
+                    return items != null ? items : new ArrayList<>();
+                });
     }
 
     public Observable<MovieItem> getDetailMovies(String path) {
         Request request = requestFactory.detailMovieRequest(path);
 
         return createObservable(request)
-                .map(html -> mapperFactory.detailMoviesMapper().map(html));
+                .map(html -> {
+                    MovieItem movie = mapperFactory.detailMoviesMapper().map(html);
+                    if (movie == null) {
+                        throw new RuntimeException("Movie details has not found or not parse by "+path);
+                    }
+                    return movie;
+                });
     }
 
     public Observable<List<NewsItem>> getNews() {
         Request request = requestFactory.newsRequest();
 
         return createObservable(request)
-                .map(html -> mapperFactory.newsMapper().map(html));
+                .map(html -> {
+                    List<NewsItem> items = mapperFactory.newsMapper().map(html);
+                    return items != null ? items : new ArrayList<>();
+                });
     }
 
     public Observable<List<TicketItem>> getTickets() {
         Request request = requestFactory.ticketsRequest();
 
         return createObservable(request)
-                .map(html -> mapperFactory.ticketsMapper().map(html));
+                .map(html -> {
+                    List<TicketItem> items = mapperFactory.ticketsMapper().map(html);
+                    return items != null ? items : new ArrayList<>();
+                });
     }
 
     public Observable<Boolean> login() {
