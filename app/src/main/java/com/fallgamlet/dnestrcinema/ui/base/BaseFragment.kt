@@ -49,7 +49,7 @@ abstract class BaseFragment: Fragment() {
 
         val message = throwable.toString()
 
-        Snackbar.make(view, message, Snackbar.LENGTH_SHORT)
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
             .setAction(R.string.label_more) { showErrorDetails(throwable) }
             .show()
     }
