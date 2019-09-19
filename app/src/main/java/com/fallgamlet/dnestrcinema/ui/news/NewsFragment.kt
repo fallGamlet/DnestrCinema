@@ -89,4 +89,9 @@ class NewsFragment : BaseFragment() {
             setSpace(space)
         })
     }
+
+    override fun onLoading(value: Boolean?) {
+        super.onLoading(value)
+        swipeLayout.isRefreshing = value == true
+    }
 }
