@@ -1,9 +1,6 @@
 package com.fallgamlet.dnestrcinema.mvp.factory;
 
-import com.fallgamlet.dnestrcinema.mvp.presenters.MvpAboutPresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpLoginPresenter;
-import com.fallgamlet.dnestrcinema.mvp.presenters.MvpMovieDetailPresenter;
-import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNewsPresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpSoonPresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTicketsPresenter;
@@ -15,8 +12,6 @@ import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTodayPresenter;
 
 public interface MvpPresenterFactory {
 
-    MvpNavigationPresenter createNavigationPresenter();
-
     @Deprecated
     MvpTodayPresenter createTodayPresenter();
     @Deprecated
@@ -27,9 +22,5 @@ public interface MvpPresenterFactory {
     MvpLoginPresenter createLoginPresenter();
     @Deprecated
     MvpNewsPresenter createNewsPresenter();
-
-    MvpAboutPresenter createAboutPresenter();
-
-    MvpMovieDetailPresenter createMovieDetailPresenter();
 
 }

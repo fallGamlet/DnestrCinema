@@ -56,9 +56,10 @@ abstract class BaseFragment: Fragment() {
 
     open protected fun showErrorDetails(throwable: Throwable) {
         val context = this.context ?: return
+        val message = "${throwable.message}\n\n$throwable"
 
         AlertDialog.Builder(context)
-            .setMessage(throwable.toString())
+            .setMessage(message)
             .create()
             .show()
     }

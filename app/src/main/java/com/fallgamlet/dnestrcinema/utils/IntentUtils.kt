@@ -1,79 +1,110 @@
 package com.fallgamlet.dnestrcinema.utils
 
-import android.content.ActivityNotFoundException
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.widget.Toast
-import com.fallgamlet.dnestrcinema.R
-
+import android.provider.MediaStore
+import androidx.fragment.app.Fragment
 
 object IntentUtils {
 
-    fun startPhoneCall(context: Context?, phone: String?) {
-        if (context == null) return
-        if (phone.isNullOrEmpty()) return
+    fun callPhone(context: Context?, phone: String) {
         try {
-            context.startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)))
-        } catch (e: ActivityNotFoundException) {
-            Toast.makeText(context, R.string.err_msg_phone_caller_not_found, Toast.LENGTH_SHORT).show()
+            context ?: return
+            val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            LogUtils.log("Intent onStart", "Type: tel, Value: $phone error", e)
         }
     }
 
-    fun startEmail(context: Context?, email: String?) {
-        if (context == null) return
-        if (email.isNullOrEmpty()) return
+    fun sendEmail(context: Context?, email: String) {
         try {
+            context ?: return
             val intent = Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null))
-            context.startActivity(Intent.createChooser(intent, context.getString(R.string.send_email_chooser_title)))
-        } catch (e: ActivityNotFoundException) {
-            Toast.makeText(context, context.getString(R.string.err_msg_email_sender_not_found), Toast.LENGTH_SHORT).show()
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            LogUtils.log("Intent onStart", "Type: tel, Value: $email error", e)
         }
     }
 
-    fun openSite(context: Context?, url: String?) {
-        if (context == null) return
-        if (url.isNullOrEmpty()) return
+    @JvmOverloads
+    fun showMap(context: Context?, latitude: Double, longitude: Double, name: String? = "") {
         try {
-            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-        } catch (e: ActivityNotFoundException) {
-            Toast.makeText(context, context.getString(R.string.err_msg_webbrowser_not_found), Toast.LENGTH_SHORT).show()
-        }
-    }
+            context ?: return
+            val point = "$latitude,$longitude"
+            var url = "geo:$point?z=17"
 
-//    fun showGoogleMap(context: Context?, startPoint: LatLng, endPoint: LatLng?) {
-//        if (context == null) return
-//        try {
-//            val uriBuilder = Uri.Builder()
-//                    .scheme("http")
-//                    .authority("maps.google.com")
-//                    .path("maps")
-//                    .appendQueryParameter("saddr", "${startPoint.latitude},${startPoint.longitude}")
-//
-//            if (endPoint != null) {
-//                uriBuilder.appendQueryParameter("daddr", "${endPoint.latitude},${endPoint.longitude}")
-//            }
-//
-//            val intent = Intent(Intent.ACTION_VIEW, uriBuilder.build())
-//                    .setPackage(GOOGLE_ROUTE_PACKAGE)
-//
-//            context.startActivity(intent)
-//        } catch (e: ActivityNotFoundException) {
-//            Toast.makeText(context, context.getString(R.string.err_msg_google_maps_is_no_installed), Toast.LENGTH_SHORT).show()
-//        }
-//
-//    }
+            if (!name.isNullOrBlank()) {
+                url += "&q=" + point + "(" + Uri.encode(name) + ")"
+            }
 
-    fun isAppInstalled(context: Context?, packageName: String): Boolean {
-        return try {
-            context?.packageManager?.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES) != null
-        } catch (e: PackageManager.NameNotFoundException) {
-            false
+            val intentUri = Uri.parse(url)
+            val intent = Intent(Intent.ACTION_VIEW, intentUri)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//            intent.setPackage("com.google.android.apps.maps")
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            LogUtils.log("Map", e.toString())
         }
 
     }
 
-    private const val GOOGLE_ROUTE_PACKAGE = "com.google.android.apps.maps"
+    fun openUrl(context: Context?, url: String) {
+        try {
+            context ?: return
+            val uri = Uri.parse(url)
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            LogUtils.log("Intent onStart", "Open url: $url error", e)
+        }
+
+    }
+
+
+    fun startActivityForResult(activity: Activity, intent: Intent, requestCode: Int, failure: ((Throwable) -> Unit)? = null) {
+        try {
+            activity.startActivityForResult(intent, requestCode)
+        } catch (err: Throwable) {
+            failure?.invoke(err)
+        }
+    }
+
+    fun startActivityForResult(fragment: Fragment, intent: Intent, requestCode: Int, failure: ((Throwable) -> Unit)? = null) {
+        try {
+            fragment.startActivityForResult(intent, requestCode)
+        } catch (err: Throwable) {
+            failure?.invoke(err)
+        }
+    }
+
+    fun startActivity(context: Context, intent: Intent, failure: ((Throwable) -> Unit)? = null) {
+        try {
+            context.startActivity(intent)
+        } catch (err: Throwable) {
+            failure?.invoke(err)
+        }
+    }
+
+    fun chooserIntent(intent: Intent, title: String): Intent {
+        return Intent.createChooser(intent, title)
+    }
+
+    fun cameraIntent(): Intent {
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+    }
+
+    fun galleryIntent(): Intent {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.type = "image/*"
+        return intent
+    }
 
 }

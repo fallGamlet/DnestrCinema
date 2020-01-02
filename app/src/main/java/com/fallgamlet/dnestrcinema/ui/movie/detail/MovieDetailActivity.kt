@@ -316,7 +316,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
     private fun showTrainer(url: String?) {
         url ?: return
-        IntentUtils.openSite(this, url)
+        IntentUtils.openUrl(this, url)
     }
 
     companion object {
