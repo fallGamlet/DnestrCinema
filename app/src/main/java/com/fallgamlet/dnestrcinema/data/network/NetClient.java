@@ -37,18 +37,13 @@ public class NetClient {
     public NetClient (RequestFactory requestFactory, MapperFactory mapperFactory) {
         this.requestFactory = requestFactory;
         this.mapperFactory = mapperFactory;
-
         setSessionTimeout(15*60);
-
         endSession = new Date(0);
-
         createHttpClient();
-
     }
 
     private void createHttpClient() {
         this.cookieJar = new CookieJarImpl();
-
         this.httpClient = new OkHttpClient.Builder()
                                         .cookieJar(cookieJar)
                                         .build();

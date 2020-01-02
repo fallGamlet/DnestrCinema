@@ -35,16 +35,11 @@ object StringUtils {
     }
 
     fun slice(value: String, start: Int, end: Int): String {
-        var value = value
-        if (isEmpty(value)) {
-            return ""
+        return if (value.length > end) {
+            value.substring(start, end)
+        } else {
+            value
         }
-
-        if (value.length > end) {
-            value = value.substring(start, end)
-        }
-
-        return value
     }
 
 }

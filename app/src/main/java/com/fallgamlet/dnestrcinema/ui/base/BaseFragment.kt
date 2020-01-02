@@ -11,10 +11,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.fallgamlet.dnestrcinema.R
+import com.fallgamlet.dnestrcinema.utils.ViewUtils
 import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment: Fragment() {
     private var errorLive: MutableLiveData<Throwable?> = MutableLiveData()
+    private var loadingLive: MutableLiveData<Boolean?> = MutableLiveData()
 
     abstract val layoutId: Int
 
@@ -33,6 +35,8 @@ abstract class BaseFragment: Fragment() {
     }
 
     protected fun setLoadingLive(loadingLive: MutableLiveData<Boolean?>) {
+        this.loadingLive.removeObservers(this)
+        this.loadingLive = loadingLive
         loadingLive.observe(this, Observer { onLoading(it) } )
     }
 
@@ -49,7 +53,7 @@ abstract class BaseFragment: Fragment() {
 
         val message = throwable.toString()
 
-        Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+        ViewUtils.makeSnackbar(view, message, Snackbar.LENGTH_LONG)
             .setAction(R.string.label_more) { showErrorDetails(throwable) }
             .show()
     }
