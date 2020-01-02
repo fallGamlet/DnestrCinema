@@ -1,6 +1,7 @@
 package com.fallgamlet.dnestrcinema.mvp.views;
 
-import com.fallgamlet.dnestrcinema.mvp.presenters.MvpAboutPresenter;
+import androidx.fragment.app.Fragment;
+
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpLoginPresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTicketsPresenter;
@@ -15,10 +16,6 @@ public interface Fragments {
     abstract class MvpNavigationViewFragment
             extends MvpBaseFragment <MvpNavigationPresenter>
             implements MvpNavigationView {}
-
-    abstract class MvpAboutViewFragment
-            extends MvpBaseFragment<MvpAboutPresenter>
-            implements MvpAboutView {}
 
     abstract class MvpTicketsViewFragment
             extends MvpBaseFragment<MvpTicketsPresenter>

@@ -6,17 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.fallgamlet.dnestrcinema.R
 import com.fallgamlet.dnestrcinema.app.AppFacade
 import com.fallgamlet.dnestrcinema.data.network.KinoTir
 import com.fallgamlet.dnestrcinema.domain.models.MovieItem
-import com.fallgamlet.dnestrcinema.mvp.views.Fragments
 import com.fallgamlet.dnestrcinema.ui.ImageActivity
 import com.fallgamlet.dnestrcinema.utils.HttpUtils
 import com.fallgamlet.dnestrcinema.utils.IntentUtils
 
 
-open class AboutFragment : Fragments.MvpAboutViewFragment() {
+open class AboutFragment : Fragment() {
 
     private lateinit var phoneAutoAnswerView1: View
     private lateinit var phoneAutoAnswerView2: View
