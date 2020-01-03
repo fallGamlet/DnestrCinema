@@ -53,11 +53,6 @@ public class TicketsFragment
     //endregion
 
 
-    public static TicketsFragment newInstance() {
-        TicketsFragment fragment = new TicketsFragment();
-        return fragment;
-    }
-
     public TicketsFragment() {
         MvpTicketsPresenter presenter = AppFacade.Companion.getInstance().getPresenterFactory().createTicketPresenter();
         setPresenter(presenter);
