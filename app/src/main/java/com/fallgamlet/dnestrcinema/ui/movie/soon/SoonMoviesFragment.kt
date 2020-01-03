@@ -96,7 +96,7 @@ class SoonMoviesFragment : BaseFragment() {
             }
         }
         listView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL_LIST).apply {
-            val left = resources.getDimension(R.dimen.DividerLeft).toInt()
+            val left = resources.getDimension(R.dimen.ImageDividerLeft).toInt()
             setPaddingStart(left)
         })
     }

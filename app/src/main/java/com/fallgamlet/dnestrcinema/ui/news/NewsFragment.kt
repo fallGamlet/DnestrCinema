@@ -84,10 +84,6 @@ class NewsFragment : BaseFragment() {
                 return true
             }
         }
-        listView.addItemDecoration(SpacerItemDecoration().apply {
-            val space = resources.getDimension(R.dimen.SpaceMiddle).toInt()
-            setSpace(space)
-        })
     }
 
     override fun onLoading(value: Boolean?) {

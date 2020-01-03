@@ -8,9 +8,13 @@
     android:theme="@style/AppTheme"
     android:paddingTop="@dimen/SpaceSmall"
     android:paddingBottom="@dimen/SpaceSmall"
-    android:background="?attr/selectableItemBackground"
+    android:paddingLeft="@dimen/SpaceMiddle"
+    android:paddingRight="@dimen/SpaceMiddle"
+    android:focusable="true"
+    android:focusableInTouchMode="false"
+    android:background="?selectableItemBackground"
     android:id="@+id/itemRootView">
-    
+
     <ImageView android:id="@+id/imageView"
         android:layout_width="@dimen/ImageWidth"
         android:layout_height="@dimen/ImageHeight"

@@ -36,7 +36,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppTheme.TextView" parent="android:Widget.TextView">
-        <item name="android:textSize">@dimen/TextMedium</item>
+<!--        <item name="android:textSize">@dimen/TextMedium</item>-->
         <item name="android:textColor">@color/colorTextPrimary</item>
     </style>
 
@@ -53,4 +53,44 @@
         <item name="android:background">@drawable/selector_bd_link_rounded</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="AppTheme.CardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:clipChildren">true</item>
+        <item name="android:padding">0dp</item>
+        <item name="cardCornerRadius">@dimen/SpaceMiddle</item>
+        <item name="contentPadding">0dp</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardPreventCornerOverlap">false</item>
+    </style>
+
+    <style name="AppTheme.Guideline">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="AppTheme.Guideline.Start">
+        <item name="android:id">@id/guidelineStart</item>
+        <item name="layout_constraintGuide_begin">@dimen/SpaceMiddle</item>
+    </style>
+
+    <style name="AppTheme.Guideline.End">
+        <item name="android:id">@id/guidelineEnd</item>
+        <item name="layout_constraintGuide_end">@dimen/SpaceMiddle</item>
+    </style>
+
+    <style name="AppTheme.Guideline.Top">
+        <item name="android:id">@id/guidelineTop</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="layout_constraintGuide_begin">@dimen/SpaceMiddle</item>
+    </style>
+
+    <style name="AppTheme.Guideline.Bottom">
+        <item name="android:id">@id/guidelineBottom</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="layout_constraintGuide_end">@dimen/SpaceMiddle</item>
+    </style>
+
 </resources>

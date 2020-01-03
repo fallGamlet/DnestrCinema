@@ -7,6 +7,7 @@
     <dimen name="SpaceMiddle">16dp</dimen>
     <dimen name="SpaceTini">4dp</dimen>
     <dimen name="SpaceBig">20dp</dimen>
+    <dimen name="SpaceBigX2">40dp</dimen>
 
     <dimen name="IconMiddle">24dp</dimen>
     <dimen name="IconSmall">16dp</dimen>
@@ -21,4 +22,5 @@
     <dimen name="ImageWidth">64dp</dimen>
     <dimen name="ImageHeight">96dp</dimen>
     <dimen name="DividerLeft">72dp</dimen>
+    <dimen name="ImageDividerLeft">80dp</dimen>
 </resources>

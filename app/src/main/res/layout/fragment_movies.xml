@@ -15,9 +15,6 @@
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:focusable="true"
-            android:paddingLeft="@dimen/SpaceSmall"
-            android:paddingRight="@dimen/SpaceSmall"
             tools:listitem="@layout/movie_item_now" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
