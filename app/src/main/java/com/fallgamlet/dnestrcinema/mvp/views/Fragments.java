@@ -1,7 +1,5 @@
 package com.fallgamlet.dnestrcinema.mvp.views;
 
-import androidx.fragment.app.Fragment;
-
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpLoginPresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpTicketsPresenter;
