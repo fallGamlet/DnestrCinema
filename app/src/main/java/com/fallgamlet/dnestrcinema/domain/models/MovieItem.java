@@ -19,13 +19,10 @@ import java.util.Set;
 
 public class MovieItem implements Parcelable {
 
-    //region Static Constants
     public static final String ROOM_BLUE = "Синий зал";
     public static final String ROOM_BORDO = "Бордовый зал";
     public static final String ROOM_DVD = "Малый зал";
-    //endregion
 
-    //region Fields
     @SerializedName("title") private String title;
     @SerializedName("link") private String link;
     @SerializedName("buyLink") private String buyTicketLink;
@@ -35,9 +32,7 @@ public class MovieItem implements Parcelable {
     @SerializedName("schedulers") private ArrayList<ScheduleItem> mSchedules = new ArrayList<>();
     @SerializedName("pubDate") private Date pubDate;
     @SerializedName("detail") private MovieDetailItem details;
-    //endregion
 
-    //region Getters and Setters
     public String getTitle() {
         return title;
     }
@@ -113,9 +108,7 @@ public class MovieItem implements Parcelable {
     public void setDetails(MovieDetailItem detail) {
         this.details = detail;
     }
-    //endregion
 
-    //region Methods
     public MovieItem() {
 
     }
@@ -169,5 +162,4 @@ public class MovieItem implements Parcelable {
         getTrailerUrlSet().addAll(moveUrlList);
         pubDate = d == 0? null: new Date(d);
     }
-    //endregion
 }
