@@ -17,6 +17,7 @@ import java.util.Set;
  * Created by fallgamlet on 07.01.17.
  */
 
+@Deprecated
 public class MovieItem implements Parcelable {
 
     public static final String ROOM_BLUE = "Синий зал";

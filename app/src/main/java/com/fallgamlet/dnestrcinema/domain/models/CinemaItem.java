@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by fallgamlet on 06.07.17.
  */
 
+@Deprecated
 public class CinemaItem {
 
     @SerializedName("id")

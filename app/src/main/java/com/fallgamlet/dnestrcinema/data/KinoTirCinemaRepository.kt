@@ -3,7 +3,7 @@ package com.fallgamlet.dnestrcinema.data
 import com.fallgamlet.dnestrcinema.data.network.NetClient
 import com.fallgamlet.dnestrcinema.data.network.kinotir.KinotirMapperFactory
 import com.fallgamlet.dnestrcinema.data.network.kinotir.KinotirRequestFactory
-import com.fallgamlet.dnestrcinema.domain.CinemaRepository
+import com.fallgamlet.dnestrcinema.domain.repositories.DeprecatedCinemaRepository
 import com.fallgamlet.dnestrcinema.domain.models.CinemaItem
 import com.fallgamlet.dnestrcinema.domain.models.MovieItem
 import com.fallgamlet.dnestrcinema.domain.models.NewsItem
@@ -12,7 +12,8 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 
-class KinoTirCinemaRepository: CinemaRepository {
+class KinoTirCinemaRepository:
+    DeprecatedCinemaRepository {
 
     private val netClient: NetClient = NetClient(
         KinotirRequestFactory(),

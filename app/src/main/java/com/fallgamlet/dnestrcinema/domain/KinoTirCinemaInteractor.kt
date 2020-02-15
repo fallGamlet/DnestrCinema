@@ -4,10 +4,11 @@ import com.fallgamlet.dnestrcinema.domain.models.CinemaItem
 import com.fallgamlet.dnestrcinema.domain.models.MovieItem
 import com.fallgamlet.dnestrcinema.domain.models.NewsItem
 import com.fallgamlet.dnestrcinema.domain.models.TicketItem
+import com.fallgamlet.dnestrcinema.domain.repositories.DeprecatedCinemaRepository
 import io.reactivex.Observable
 
 
-class KinoTirCinemaInteractor(private val cinemaRepository: CinemaRepository)
+class KinoTirCinemaInteractor(private val cinemaRepository: DeprecatedCinemaRepository)
     : CinemaInteractor {
 
     override fun todayMovies(): Observable<List<MovieItem>> {

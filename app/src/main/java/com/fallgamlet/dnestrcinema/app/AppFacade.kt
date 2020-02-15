@@ -5,7 +5,7 @@ import com.fallgamlet.dnestrcinema.data.network.MapperFactory
 import com.fallgamlet.dnestrcinema.data.network.NetClient
 import com.fallgamlet.dnestrcinema.data.network.RequestFactory
 import com.fallgamlet.dnestrcinema.domain.CinemaInteractor
-import com.fallgamlet.dnestrcinema.domain.CinemaRepository
+import com.fallgamlet.dnestrcinema.domain.repositories.DeprecatedCinemaRepository
 import com.fallgamlet.dnestrcinema.domain.KinoTirCinemaInteractor
 import com.fallgamlet.dnestrcinema.domain.models.AccountItem
 import com.fallgamlet.dnestrcinema.domain.models.CinemaItem
@@ -28,7 +28,7 @@ class AppFacade private constructor() {
     private var cinemaInteractor: CinemaInteractor = KinoTirCinemaInteractor(DummyCinemaRepository())
 
 
-    fun init(cinemaRepository: CinemaRepository) {
+    fun init(cinemaRepository: DeprecatedCinemaRepository) {
         cinemaInteractor = KinoTirCinemaInteractor(cinemaRepository)
     }
 

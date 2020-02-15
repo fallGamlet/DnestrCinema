@@ -1,13 +1,14 @@
 package com.fallgamlet.dnestrcinema.data
 
-import com.fallgamlet.dnestrcinema.domain.CinemaRepository
+import com.fallgamlet.dnestrcinema.domain.repositories.DeprecatedCinemaRepository
 import com.fallgamlet.dnestrcinema.domain.models.CinemaItem
 import com.fallgamlet.dnestrcinema.domain.models.MovieItem
 import com.fallgamlet.dnestrcinema.domain.models.NewsItem
 import com.fallgamlet.dnestrcinema.domain.models.TicketItem
 import io.reactivex.Single
 
-class DummyCinemaRepository: CinemaRepository {
+class DummyCinemaRepository:
+    DeprecatedCinemaRepository {
 
     override fun todayMovies(): Single<List<MovieItem>> {
         return Single.error(getDummyException())
