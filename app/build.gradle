@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
-
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
@@ -36,7 +35,7 @@ android {
         applicationId "com.fallgamlet.dnestrcinema"
         minSdkVersion build_versions.min_sdk
         targetSdkVersion build_versions.target_sdk
-        versionCode 30
+        versionCode 31
         versionName "1.0.${versionCode}"
         project.ext.set("archivesBaseName", "DnestrCinema" + versionName)
         vectorDrawables.useSupportLibrary = true
