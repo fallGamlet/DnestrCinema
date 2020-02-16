@@ -97,6 +97,8 @@ dependencies {
 
     implementation deps.gson
 
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.rxjava2
     implementation deps.okhttp
     implementation deps.okhttp_urlconnection
     implementation deps.okhttp_logging_interceptor

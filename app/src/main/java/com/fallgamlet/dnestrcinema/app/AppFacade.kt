@@ -1,15 +1,12 @@
 package com.fallgamlet.dnestrcinema.app
 
-import com.fallgamlet.dnestrcinema.data.DummyCinemaRepository
 import com.fallgamlet.dnestrcinema.data.network.MapperFactory
 import com.fallgamlet.dnestrcinema.data.network.NetClient
 import com.fallgamlet.dnestrcinema.data.network.RequestFactory
-import com.fallgamlet.dnestrcinema.domain.CinemaInteractor
-import com.fallgamlet.dnestrcinema.domain.repositories.DeprecatedCinemaRepository
-import com.fallgamlet.dnestrcinema.domain.KinoTirCinemaInteractor
 import com.fallgamlet.dnestrcinema.domain.models.AccountItem
 import com.fallgamlet.dnestrcinema.domain.models.CinemaItem
 import com.fallgamlet.dnestrcinema.domain.models.NavigationItem
+import com.fallgamlet.dnestrcinema.domain.repositories.DeprecatedCinemaRepository
 import com.fallgamlet.dnestrcinema.mvp.factory.ConfigFactory
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpNavigationCreator
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpPresenterFactory
@@ -25,11 +22,8 @@ class AppFacade private constructor() {
     }
 
 
-    private var cinemaInteractor: CinemaInteractor = KinoTirCinemaInteractor(DummyCinemaRepository())
-
-
     fun init(cinemaRepository: DeprecatedCinemaRepository) {
-        cinemaInteractor = KinoTirCinemaInteractor(cinemaRepository)
+
     }
 
     fun init(configFactory: ConfigFactory) {
@@ -41,11 +35,6 @@ class AppFacade private constructor() {
         this.requestFactory = configFactory.requestFactory
         this.mapperFactory = configFactory.mapperFactory
         this.netClient = NetClient(this.requestFactory, this.mapperFactory)
-    }
-
-
-    fun getCinemaInteractor(): CinemaInteractor {
-        return cinemaInteractor
     }
 
 

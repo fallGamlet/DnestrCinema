@@ -11,12 +11,13 @@ import okhttp3.Request;
 
 public class KinotirRequestFactory implements RequestFactory {
 
-    private String scheme = "http";
-    private String domain = "kinotir.md";
+    private final String scheme = "http";
+    private final String domain = "kinotir.md";
+    private final String baseUrl = scheme +"://"+ domain;
 
     @Override
     public String getBaseUrl() {
-        return scheme +"://"+ domain;
+        return baseUrl;
     }
 
     @Override
