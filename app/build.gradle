@@ -75,6 +75,8 @@ ext {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+    implementation project(':KinotirApi')
+
     implementation deps.kotlin.stdlib
 
     implementation deps.support.annotations

@@ -36,52 +36,52 @@ class HtmlFilmDetailMapper implements Mapper<String, FilmDetailsJson> {
 
         String posterUrl = info.select(">.additional-poster>.image>img").attr("src");
 
-        FilmDetailsJson movieItem = new FilmDetailsJson();
-        movieItem.setPosterUrl(posterUrl);
-        movieItem.setBuyTicketLink(buyTicketUrl);
+        FilmDetailsJson result = new FilmDetailsJson();
+        result.setPosterUrl(posterUrl);
+        result.setBuyTicketLink(buyTicketUrl);
 
         Element mainInfo  = info.select(".main-info").first();
         if (mainInfo != null) {
-            parseFeatures(info.select(".features"), movieItem);
+            parseFeatures(info.select(".features"), result);
             String description = info.select(".description").text();
-            movieItem.setDescription(description);
+            result.setDescription(description);
         }
 
-        parseImages(info.select(".slider"), movieItem);
-        parseTrailers(info.select(".trailer"), movieItem);
+        parseImages(info.select(".slider"), result);
+        parseTrailers(info.select(".trailer"), result);
 
-        return movieItem;
+        return result;
     }
 
-    private void parseFeatures(Elements src, FilmDetailsJson movieItem) {
+    private void parseFeatures(Elements src, FilmDetailsJson destination) {
         src = src.select(">li");
 
         for (Element el: src) {
             String key = el.select("label").text().trim().toLowerCase();
             String val = el.select("div").text().trim();
             if (key.contains("старт")) {
-                movieItem.setPubDate(dateMapper.map(val));
+                destination.setPubDate(dateMapper.map(val));
             } else if (key.contains("страна")) {
-                movieItem.setCountry(val);
+                destination.setCountry(val);
             } else if (key.contains("режисер")) {
-                movieItem.setDirector(val);
+                destination.setDirector(val);
             } else if (key.contains("сценарий")) {
-                movieItem.setScenario(val);
+                destination.setScenario(val);
             } else if (key.contains("в ролях")) {
-                movieItem.setActors(val);
+                destination.setActors(val);
             } else if (key.contains("жанр")) {
-                movieItem.setGenre(val);
+                destination.setGenre(val);
             } else if (key.contains("бюджет")) {
-                movieItem.setBudget(val);
+                destination.setBudget(val);
             } else if (key.contains("возраст")) {
-                movieItem.setAgeLimit(val);
+                destination.setAgeLimit(val);
             } else if (key.contains("продолжительность")) {
-                movieItem.setDuration(val);
+                destination.setDuration(val);
             }
         }
     }
 
-    private void parseImages(Elements src, FilmDetailsJson movieItem) {
+    private void parseImages(Elements src, FilmDetailsJson destination) {
         List<ImageUrlJson> urls = new ArrayList<>();
         src = src.select(">a");
         for (Element el: src) {
@@ -93,10 +93,10 @@ class HtmlFilmDetailMapper implements Mapper<String, FilmDetailsJson> {
             }
         }
 
-        movieItem.setImageUrls(urls);
+        destination.setImageUrls(urls);
     }
 
-    private void parseTrailers(Elements src, FilmDetailsJson movieItem) {
+    private void parseTrailers(Elements src, FilmDetailsJson destination) {
         if (src == null) return;
         List<String> trailerUrls = new ArrayList<>();
         src = src.select(">iframe");
@@ -108,6 +108,6 @@ class HtmlFilmDetailMapper implements Mapper<String, FilmDetailsJson> {
             }
         }
 
-        movieItem.setTrailerUrls(trailerUrls);
+        destination.setTrailerUrls(trailerUrls);
     }
 }

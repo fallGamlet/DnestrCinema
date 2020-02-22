@@ -3,14 +3,15 @@ package com.fallgamlet.dnestrcinema.data.repository.remote.kinotir
 import com.fallgamlet.dnestrcinema.domain.repositories.remote.FilmRepository
 import com.fallgamlet.dnestrcinema.domain.repositories.remote.NewsRepository
 import com.fallgamlet.dnestrcinema.domain.repositories.remote.RemoteRepositoryFactory
+import com.kinotir.api.KinotirApi
 
-class RepositoryFactoryImpl: RemoteRepositoryFactory {
+class RepositoryFactoryImpl(
+  api: KinotirApi
+) : RemoteRepositoryFactory {
 
-    override fun filmRepository(): FilmRepository {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    private val filmRepository: FilmRepository = FilmRepositoryImpl(api)
+    private val newsRepository: NewsRepository = NewsRepositoryImpl(api)
 
-    override fun newsRepository(): NewsRepository {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun filmRepository(): FilmRepository = filmRepository
+    override fun newsRepository(): NewsRepository = newsRepository
 }

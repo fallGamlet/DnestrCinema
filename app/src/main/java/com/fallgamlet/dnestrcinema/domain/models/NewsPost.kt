@@ -9,4 +9,11 @@ data class NewsPost(
     val date: Date = Date(0),
     val text: String = "",
     val imageUrls: List<String> = emptyList()
-)
+) {
+
+    fun isEmpty() = this == EMPTY
+
+    companion object {
+        val EMPTY = NewsPost()
+    }
+}

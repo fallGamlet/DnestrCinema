@@ -7,10 +7,11 @@ data class Film(
     val id: String = "",
     val title: String = "",
     val link: String = "",
+    val buyTicketLink: String = "",
     val duration: String = "",
     val posterUrl: String = "",
     val trailerUrls: List<String> = emptyList(),
-    val imageUrls: List<String> = emptyList(),
+    val imageUrls: List<ImageUrl> = emptyList(),
     val sessions: List<FilmSession> = emptyList(),
     val pubDate: Date = Date(0),
     val description: String = "",
@@ -22,6 +23,9 @@ data class Film(
     val actors: String = "",
     val budget: String = ""
 ) {
+
+    fun isEmpty() = this == EMPTY
+
     companion object {
         val EMPTY = Film()
     }

@@ -34,8 +34,7 @@ data class FilmDetailsJson(
     var budget: String? = null,
     var ageLimit: String? = null,
     var imageUrls: List<ImageUrlJson>? = null,
-    var trailerUrls: List<String>? = null,
-    var imit: String? = null
+    var trailerUrls: List<String>? = null
 )
 
 data class ImageUrlJson(
