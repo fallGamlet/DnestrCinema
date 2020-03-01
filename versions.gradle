@@ -4,7 +4,7 @@
  **/
 ext.deps = [:]
 def versions = [:]
-versions.android_gradle_plugin = '3.5.3'
+versions.android_gradle_plugin = '3.6.1'
 versions.googleServices = "4.2.0"
 versions.playServiceAuth='17.0.0'
 versions.playServiceStats = "17.0.0"

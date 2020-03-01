@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DnestrCinema.iml" filepath="$PROJECT_DIR$/DnestrCinema.iml" />
-      <module fileurl="file://$PROJECT_DIR$/KinotirApi/KinotirApi.iml" filepath="$PROJECT_DIR$/KinotirApi/KinotirApi.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DnestrCinema.iml" filepath="$PROJECT_DIR$/DnestrCinema.iml" group="DnestrCinema" />
+      <module fileurl="file://$PROJECT_DIR$/KinotirApi/KinotirApi.iml" filepath="$PROJECT_DIR$/KinotirApi/KinotirApi.iml" group="DnestrCinema/KinotirApi" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="DnestrCinema/app" />
     </modules>
   </component>
 </project>
