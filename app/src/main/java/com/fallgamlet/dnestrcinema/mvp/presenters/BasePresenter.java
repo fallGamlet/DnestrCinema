@@ -27,11 +27,6 @@ public abstract class BasePresenter<T extends MvpView> implements MvpPresenter<T
     }
 
     @Override
-    public void onDestroy() {
-        unbindView();
-    }
-
-    @Override
     public void onSave(Bundle bundle) {
 
     }

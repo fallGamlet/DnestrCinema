@@ -9,11 +9,5 @@ import com.fallgamlet.dnestrcinema.mvp.views.MvpMovieDetailView;
 
 public interface MvpMovieDetailPresenter extends MvpPresenter<MvpMovieDetailView> {
 
-    void onTrailerButtonPressed();
-
-    void onBuyTicketButtonPressed();
-
-    void onRoomsPressed();
-
     void setData(MovieItem item);
 }

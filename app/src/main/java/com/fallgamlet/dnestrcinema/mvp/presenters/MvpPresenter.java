@@ -16,8 +16,6 @@ public interface MvpPresenter<T extends MvpView> {
 
     void unbindView();
 
-    void onDestroy();
-
     void onSave(Bundle bundle);
 
     void onRestore(Bundle bundle);

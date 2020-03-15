@@ -25,11 +25,6 @@ public class TicketDetailPresenterImpl
 
 
     @Override
-    public void onMoviePressed() {
-
-    }
-
-    @Override
     public void setData(TicketItem ticketItem) {
 
     }

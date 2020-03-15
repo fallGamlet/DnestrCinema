@@ -11,8 +11,6 @@ public interface MvpTicketDetailPresenter
         extends MvpPresenter <MvpTicketDetailView>
 {
 
-    void onMoviePressed();
-
     void setData(TicketItem ticketItem);
 
 }

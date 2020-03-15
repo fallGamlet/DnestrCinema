@@ -182,37 +182,9 @@ public class LoginFragment
     }
 
     @Override
-    public void setLoginEnabled(boolean enabled) {
-        if (this.loginEditText != null) {
-            this.loginEditText.setEnabled(enabled);
-        }
-    }
-
-    @Override
-    public void setPasswordEnabled(boolean enabled) {
-        if (this.passwordEditText != null) {
-            this.passwordEditText.setEnabled(enabled);
-        }
-    }
-
-    @Override
     public void setLoginButtonEnabled(boolean enabled) {
         if (this.loginButton != null) {
             this.loginButton.setEnabled(enabled);
-        }
-    }
-
-    @Override
-    public void setLoginVisible(boolean v) {
-        if (this.loginEditText != null) {
-            this.loginEditText.setVisibility(v ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    @Override
-    public void setPasswordVisible(boolean v) {
-        if (this.passwordEditText != null) {
-            this.passwordEditText.setVisibility(v ? View.VISIBLE : View.GONE);
         }
     }
 

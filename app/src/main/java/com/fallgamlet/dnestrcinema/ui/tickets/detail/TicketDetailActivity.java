@@ -49,34 +49,4 @@ public class TicketDetailActivity
 
     }
 
-    @Override
-    public void setOrderVisible(boolean value) {
-
-    }
-
-    @Override
-    public void setStatusVisible(boolean value) {
-
-    }
-
-    @Override
-    public void setTitleVisible(boolean value) {
-
-    }
-
-    @Override
-    public void setRoomVisible(boolean value) {
-
-    }
-
-    @Override
-    public void setDateVisible(boolean value) {
-
-    }
-
-    @Override
-    public void setTimeVisible(boolean value) {
-
-    }
-
 }

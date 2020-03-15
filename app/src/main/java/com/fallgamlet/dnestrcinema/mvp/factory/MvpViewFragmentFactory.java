@@ -5,8 +5,6 @@ import androidx.fragment.app.Fragment;
 
 public interface MvpViewFragmentFactory {
 
-    Fragment createNavigationView();
-
     Fragment createTodayView();
 
     Fragment createSoonView();
@@ -18,7 +16,5 @@ public interface MvpViewFragmentFactory {
     Fragment createNewsView();
 
     Fragment createAboutView();
-
-    Fragment createMovieDetailView();
 
 }

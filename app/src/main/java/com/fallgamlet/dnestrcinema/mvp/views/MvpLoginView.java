@@ -14,15 +14,7 @@ public interface MvpLoginView
 
     void setPassword(CharSequence value);
 
-    void setLoginEnabled(boolean enabled);
-
-    void setPasswordEnabled(boolean enabled);
-
     void setLoginButtonEnabled(boolean enabled);
-
-    void setLoginVisible(boolean v);
-
-    void setPasswordVisible(boolean v);
 
     void setLoginButtonVisible(boolean v);
 

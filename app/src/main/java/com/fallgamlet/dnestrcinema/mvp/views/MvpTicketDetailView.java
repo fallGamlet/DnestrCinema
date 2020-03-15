@@ -22,16 +22,4 @@ public interface MvpTicketDetailView
 
     void setTime(CharSequence value);
 
-    void setOrderVisible(boolean value);
-
-    void setStatusVisible(boolean value);
-
-    void setTitleVisible(boolean value);
-
-    void setRoomVisible(boolean value);
-
-    void setDateVisible(boolean value);
-
-    void setTimeVisible(boolean value);
-
 }
