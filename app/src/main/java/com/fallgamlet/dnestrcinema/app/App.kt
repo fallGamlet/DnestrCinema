@@ -9,20 +9,35 @@ import com.fallgamlet.dnestrcinema.factory.KinotirConfigFactory
 import com.fallgamlet.dnestrcinema.utils.LogUtils
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.squareup.leakcanary.LeakCanary
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import io.reactivex.plugins.RxJavaPlugins
+import javax.inject.Inject
 
-class App : MultiDexApplication() {
 
-    val appComponent = DaggerAppComponent.create()
+class App : MultiDexApplication(), HasAndroidInjector {
+
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+
+    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
 
     override fun onCreate() {
         super.onCreate()
+        initDagger()
         AndroidThreeTen.init(this)
         initRx()
         initLeakCanary()
 
         AppFacade.instance.init(KinotirConfigFactory())
         AppFacade.instance.init(KinoTirCinemaRepository())
+    }
+
+    private fun initDagger() {
+        DaggerAppComponent.factory()
+            .create(this)
+            .inject(this)
     }
 
     private fun initRx() {

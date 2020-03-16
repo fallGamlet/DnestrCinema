@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -21,6 +20,7 @@ import com.fallgamlet.dnestrcinema.domain.models.NavigationItem;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter;
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter;
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView;
+import com.fallgamlet.dnestrcinema.ui.base.BaseActivity;
 import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity;
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpBottomNavigationView;
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpNavigationPresenterImpl;
@@ -37,10 +37,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class StartActivity
-        extends
-            AppCompatActivity
-        implements
-            NavigationRouter
+        extends BaseActivity
+        implements NavigationRouter
 {
     @BindView(R.id.viewpager)
     protected ViewPager mViewPager;
@@ -54,19 +52,14 @@ public class StartActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start);
-
         ButterKnife.bind(this);
-
         initData();
     }
 
     private void initData() {
         initAccount();
-
         initNavigation();
-
         setupViewPager(mViewPager);
-
         showToday();
     }
 
@@ -224,7 +217,6 @@ public class StartActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return true;
-//        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
