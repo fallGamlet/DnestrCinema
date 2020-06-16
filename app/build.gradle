@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
-
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
@@ -29,7 +29,7 @@ android {
     }
 
     compileSdkVersion 29
-    buildToolsVersion '29.0.2'
+    buildToolsVersion '29.0.3'
 
     defaultConfig {
         applicationId "com.fallgamlet.dnestrcinema"
@@ -129,9 +129,9 @@ dependencies {
     kapt "frankiesardo:icepick-processor:${icepick}"
 
     implementation deps.firebase.core
-    implementation deps.play_services_stats
+    implementation deps.firebase.analytics_ktx
 
-    releaseImplementation "com.crashlytics.sdk.android:crashlytics:2.10.1"
+    releaseImplementation 'com.google.firebase:firebase-crashlytics:17.0.1'
     debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:${leakcanary}"
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${leakcanary}"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary}"
@@ -142,5 +142,3 @@ dependencies {
         exclude group: 'com.google.code.findbugs'
     }
 }
-
-apply plugin: 'com.google.gms.google-services'
