@@ -1,9 +1,10 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+}
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
@@ -28,13 +29,13 @@ android {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
     }
 
-    compileSdkVersion 29
-    buildToolsVersion '29.0.3'
+    compileSdkVersion 31
+    buildToolsVersion = '31.0.0'
 
     defaultConfig {
         applicationId "com.fallgamlet.dnestrcinema"
-        minSdkVersion build_versions.min_sdk
-        targetSdkVersion build_versions.target_sdk
+        minSdkVersion 16
+        targetSdkVersion 30
         versionCode 31
         versionName "1.0.${versionCode}"
         project.ext.set("archivesBaseName", "DnestrCinema" + versionName)
@@ -67,78 +68,72 @@ android {
     }
 }
 
-ext {
-    icepick = "3.2.0"
-    leakcanary = '1.6.1'
-}
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation project(':KinotirApi')
 
-    implementation deps.kotlin.stdlib
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    implementation deps.support.annotations
-    implementation deps.support.app_compat
-    implementation deps.support.design
-    implementation deps.support.v4
-    implementation deps.constraint_layout
-    implementation deps.support.multidex
-    implementation deps.support.recyclerview
-    implementation deps.support.vectordrawable
-    implementation deps.support.vectordrawable_animated
-    implementation deps.support.core_ktx
-    implementation deps.support.fragment_ktx
-    implementation deps.support.palette_ktx
+    implementation "androidx.annotation:annotation:1.3.0"
+    implementation "androidx.appcompat:appcompat:1.4.0"
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.2"
+    implementation "androidx.multidex:multidex:2.0.1"
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation "androidx.vectordrawable:vectordrawable:1.1.0"
+    implementation "androidx.vectordrawable:vectordrawable-animated:1.1.0"
+    implementation "androidx.core:core-ktx:1.7.0"
+    implementation "androidx.fragment:fragment-ktx:1.4.0"
+    implementation "androidx.palette:palette-ktx:1.0.0"
 
-    implementation deps.lifecycle.extensions
-    kapt deps.lifecycle.compiler
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.4.0'
+    runtimeOnly 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
 
-    implementation deps.dagger.runtime
-    implementation deps.dagger.android
-    implementation deps.dagger.android_support
-    kapt deps.dagger.compiler
-    kapt deps.dagger.android_support_compiler
+    implementation "com.google.dagger:dagger:2.37"
+    implementation "com.google.dagger:dagger-android:2.37"
+    implementation "com.google.dagger:dagger-android-support:2.37"
+    kapt "com.google.dagger:dagger-compiler:2.37"
+    kapt "com.google.dagger:dagger-android-processor:2.37"
 
-    implementation deps.flexbox
+    implementation "com.google.android:flexbox:2.0.0"
 
-    implementation deps.gson
+    implementation "com.google.code.gson:gson:2.8.6"
+    implementation "org.jsoup:jsoup:1.12.1"
+//    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+//    implementation "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
+//    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+    implementation "com.squareup.okhttp3:okhttp:4.9.0"
+//    implementation "com.squareup.okhttp3:okhttp-urlconnection:3.12.12"
 
-    implementation deps.retrofit.runtime
-    implementation deps.retrofit.rxjava2
-    implementation deps.okhttp
-    implementation deps.okhttp_urlconnection
-    implementation deps.okhttp_logging_interceptor
+    implementation "com.github.bumptech.glide:glide:4.12.0"
+    kapt "com.github.bumptech.glide:compiler:4.12.0"
 
-    implementation deps.glide.runtime
-    kapt deps.glide.compiler
+    implementation "io.reactivex.rxjava2:rxjava:2.2.19"
+    implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
 
-    implementation deps.rxjava2
-    implementation deps.rx_kotlin2
-    implementation deps.rx_android
+    implementation "com.jakewharton:butterknife:10.2.3"
+    kapt "com.jakewharton:butterknife-compiler:10.2.3"
 
-    implementation deps.jsoup
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.3.0'
 
-    implementation deps.butterKnifeX.runtime
-    kapt deps.butterKnifeX.compiler
+    api "frankiesardo:icepick:3.2.0"
+    kapt "frankiesardo:icepick-processor:3.2.0"
 
-    implementation deps.timeThreetenabp
+    implementation platform('com.google.firebase:firebase-bom:26.5.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
-    api "frankiesardo:icepick:${icepick}"
-    kapt "frankiesardo:icepick-processor:${icepick}"
+    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:1.6.1"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:1.6.1"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:1.6.1"
 
-    implementation deps.firebase.core
-    implementation deps.firebase.analytics_ktx
-
-    releaseImplementation 'com.google.firebase:firebase-crashlytics:17.0.1'
-    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:${leakcanary}"
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:${leakcanary}"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary}"
-
-    testImplementation deps.junit
-    androidTestImplementation(deps.espresso.core) {
+    testImplementation "junit:junit:4.13.2"
+    androidTestImplementation ('androidx.test.espresso:espresso-core:3.3.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'
-    }
+    })
 }

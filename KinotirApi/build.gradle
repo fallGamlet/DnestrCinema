@@ -1,19 +1,23 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
+plugins {
+    id 'java-library'
+    id 'kotlin'
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation deps.kotlin.stdlib
-    implementation deps.rxjava2
-    implementation deps.rx_kotlin2
-    implementation deps.retrofit.runtime
-    implementation deps.retrofit.rxjava2
-    implementation deps.okhttp_logging_interceptor
-    implementation deps.jsoup
-    implementation deps.gson
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "io.reactivex.rxjava2:rxjava:2.2.19"
+    implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
+    implementation "org.jsoup:jsoup:1.12.1"
+    implementation "com.google.code.gson:gson:2.8.6"
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+    implementation "com.squareup.okhttp3:okhttp:4.9.0"
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:4.9.0"
 
-    testImplementation deps.junit
+    testImplementation "junit:junit:4.13.2"
 }
 
 sourceCompatibility = "8"
