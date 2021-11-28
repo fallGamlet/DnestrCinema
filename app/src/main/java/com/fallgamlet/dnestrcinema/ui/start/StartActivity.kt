@@ -95,7 +95,7 @@ class StartActivity : BaseActivity(), NavigationRouter {
         adapter = ViewPagerAdapter(
             fragmentManager = supportFragmentManager,
             lifecycle = lifecycle,
-            getCount = { 4 },
+            getCount = { instance.navigations.size },
             createPage = ::createFragment
         )
     }
