@@ -39,7 +39,8 @@ object ViewUtils {
         } catch (ignored: Exception) { }
     }
 
-    private fun hideKeyboard(context: Context, binder: IBinder) {
+    private fun hideKeyboard(context: Context, binder: IBinder?) {
+        binder ?: return
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         imm?.hideSoftInputFromWindow(binder, InputMethodManager.HIDE_NOT_ALWAYS)
         imm?.hideSoftInputFromInputMethod(binder, InputMethodManager.HIDE_NOT_ALWAYS)

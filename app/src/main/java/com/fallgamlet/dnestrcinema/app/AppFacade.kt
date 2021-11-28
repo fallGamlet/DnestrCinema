@@ -12,7 +12,6 @@ import com.fallgamlet.dnestrcinema.mvp.factory.MvpNavigationCreator
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpPresenterFactory
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpViewFragmentFactory
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter
-import java.util.*
 
 
 class AppFacade private constructor() {
@@ -38,15 +37,13 @@ class AppFacade private constructor() {
     }
 
 
-
-
     var navigationRouter: NavigationRouter? = null
     var netClient: NetClient? = null
         private set
     var accountItem: AccountItem = AccountItem()
     var cinemaItem: CinemaItem? = null
         private set
-    var navigations: List<Int>? = null
+    var navigations: List<Int> = emptyList()
         private set
     var presenterFactory: MvpPresenterFactory? = null
         private set
@@ -59,19 +56,13 @@ class AppFacade private constructor() {
     var mapperFactory: MapperFactory? = null
         private set
 
-    private val isCanCreateNavigations: Boolean
-        get() = this.navigations != null && this.navigationCreator != null
-
     fun createNavigations(): List<NavigationItem> {
-        val items = ArrayList<NavigationItem>()
+        val items = mutableListOf<NavigationItem>()
 
-        if (!isCanCreateNavigations) {
-            return items
-        }
+        val navigationCreator = navigationCreator ?: return items
 
-        for (navigationId in this.navigations!!) {
-            val item = this.navigationCreator!!.getNavigationItem(navigationId)
-
+        for (navigationId in this.navigations) {
+            val item = navigationCreator.getNavigationItem(navigationId)
             if (item != null) {
                 items.add(item)
             }

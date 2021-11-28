@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
-import butterknife.BindView
-import butterknife.ButterKnife
+import androidx.viewpager2.widget.ViewPager2
 import com.fallgamlet.dnestrcinema.R
 import com.fallgamlet.dnestrcinema.app.AppFacade.Companion.instance
 import com.fallgamlet.dnestrcinema.data.localstore.AccountLocalRepository
@@ -32,17 +29,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class StartActivity : BaseActivity(), NavigationRouter {
-    @BindView(R.id.viewpager)
-    protected lateinit var mViewPager: ViewPager
-    @BindView(R.id.bottomNavigationView)
-    protected lateinit var mBottomNavigationView: BottomNavigationView
+    private lateinit var mViewPager: ViewPager2
+    private lateinit var mBottomNavigationView: BottomNavigationView
     private lateinit var adapter: ViewPagerAdapter
     private lateinit var bottomNavigationPresenter: MvpNavigationPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.start)
-        ButterKnife.bind(this)
+        mViewPager = findViewById(R.id.viewpager)
+        mBottomNavigationView = findViewById(R.id.bottomNavigationView)
         initData()
     }
 
@@ -84,54 +80,44 @@ class StartActivity : BaseActivity(), NavigationRouter {
         bottomNavigationView.presenter = bottomNavigationPresenter
     }
 
-    private fun setupViewPager(viewPager: ViewPager?) {
-        viewPager!!.addOnPageChangeListener(onPageChangeListener)
-        viewPager.adapter = pageAdapter
-    }
-
-    @get:Synchronized
-    private val pageAdapter: ViewPagerAdapter
-        get() = adapter
-
-    private fun addFragment(navigationId: Int) {
-        val config = instance
-        val navigationItem = config.navigationCreator?.getNavigationItem(navigationId) ?: return
-        val fragment = createFragment(navigationId) ?: return
-        val title = getString(navigationItem.titleId)
-        adapter.addFragment(fragment, title)
-    }
-
-    private fun createFragment(navigationId: Int): Fragment? {
-        return when (navigationId) {
-            NavigationItem.NavigationId.TODAY -> instance.fragmentFactory!!.createTodayView()
-            NavigationItem.NavigationId.SOON -> instance.fragmentFactory!!.createSoonView()
-            NavigationItem.NavigationId.TICKETS -> instance.fragmentFactory!!.createTicketsView()
-            NavigationItem.NavigationId.NEWS -> instance.fragmentFactory!!.createNewsView()
-            NavigationItem.NavigationId.ABOUT -> instance.fragmentFactory!!.createAboutView()
-            else -> null
-        }
-    }
-
-    private val onPageChangeListener: OnPageChangeListener
-        get() = object : OnPageChangeListener {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {}
-
+    private fun setupViewPager(viewPager: ViewPager2) {
+        initViewPagerAdapter()
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                this@StartActivity.onPageSelected(position)
+                super.onPageSelected(position)
+                handlePageSelection(position)
             }
+        })
+        viewPager.adapter = adapter
+    }
 
-            override fun onPageScrollStateChanged(state: Int) {}
+    private fun initViewPagerAdapter() {
+        adapter = ViewPagerAdapter(
+            fragmentManager = supportFragmentManager,
+            lifecycle = lifecycle,
+            getCount = { 4 },
+            createPage = ::createFragment
+        )
+    }
+
+    private fun createFragment(position: Int): Fragment {
+        val fragmentFactory = instance.fragmentFactory
+            ?: throw IllegalArgumentException("fragment factory must be initialized")
+        val id = instance.navigations.getOrNull(position)
+        return when (id) {
+            NavigationItem.NavigationId.TODAY -> fragmentFactory.createTodayView()
+            NavigationItem.NavigationId.SOON -> fragmentFactory.createSoonView()
+            NavigationItem.NavigationId.NEWS -> fragmentFactory.createNewsView()
+            NavigationItem.NavigationId.ABOUT -> fragmentFactory.createAboutView()
+            else -> throw IllegalArgumentException("Not implemented page (position is $position, id is $id)")
         }
+    }
 
-    private fun onPageSelected(position: Int) {
-        when (instance.navigations?.getOrNull(position)) {
+    private fun handlePageSelection(position: Int) {
+        val id = instance.navigations.getOrNull(position)
+        when (id) {
             NavigationItem.NavigationId.TODAY -> showToday()
             NavigationItem.NavigationId.SOON -> showSoon()
-            NavigationItem.NavigationId.TICKETS -> showTickets()
             NavigationItem.NavigationId.NEWS -> showNews()
             NavigationItem.NavigationId.ABOUT -> showAbout()
         }
@@ -193,9 +179,9 @@ class StartActivity : BaseActivity(), NavigationRouter {
     }
 
     private fun showViewWithPosition(position: Int) {
-        if (position < 0 || position >= mViewPager.adapter!!.count) {
+        if (position < 0 || position >= adapter.itemCount)
             return
-        }
+
         if (mViewPager.currentItem != position) {
             mViewPager.currentItem = position
         }
