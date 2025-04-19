@@ -27,11 +27,6 @@ import com.fallgamlet.dnestrcinema.ui.movie.DividerItemDecoration;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
-
 public class TicketsFragment
     extends
         Fragments.MvpTicketsViewFragment
@@ -41,11 +36,8 @@ public class TicketsFragment
 
     //region Fields
     private View rootView;
-    @BindView(R.id.swipeLayout)
     SwipeRefreshLayout swipeLayout;
-    @BindView(R.id.listView)
     RecyclerView listView;
-    @BindView(R.id.placeholderView)
     TextView placeholderView;
 
     private TicketRecyclerAdapter mAdapter;
@@ -72,11 +64,20 @@ public class TicketsFragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rootView = view;
-        ButterKnife.bind(this, view);
+
+        swipeLayout = view.findViewById(R.id.swipeLayout);
+        listView = view.findViewById(R.id.listView);
+        placeholderView = view.findViewById(R.id.placeholderView);
+        var button = view.findViewById(R.id.logoutButton);
+        if (button != null) {
+            button.setOnClickListener(this::onLogoutPressed);
+        }
+
         initViews();
     }
 
     private void initViews() {
+
         rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,9 +171,7 @@ public class TicketsFragment
         getPresenter().bindView(this);
     }
 
-
-    @OnClick(R.id.logoutButton)
-    void onLogoutPressed(View view) {
+    private void onLogoutPressed(View view) {
         getPresenter().onLogout();
     }
 

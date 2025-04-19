@@ -2,6 +2,7 @@ package com.fallgamlet.dnestrcinema.utils
 
 import android.text.Html
 import android.text.Spanned
+import java.util.Locale
 
 
 object HttpUtils {
@@ -12,7 +13,7 @@ object HttpUtils {
         var postfixUrl: String? = url
 
         postfixUrl = postfixUrl!!.trim { it <= ' ' }
-        if (postfixUrl.toLowerCase().startsWith("http://")) {
+        if (postfixUrl.lowercase(Locale.getDefault()).startsWith("http://")) {
             return postfixUrl
         }
 

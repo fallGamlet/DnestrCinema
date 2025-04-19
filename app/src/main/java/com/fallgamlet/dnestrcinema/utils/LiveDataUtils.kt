@@ -35,8 +35,12 @@ object LiveDataUtils {
 
     fun refreshSignal(vararg liveData: MutableLiveData<*>) {
         liveData.forEach {
-            it.value = it.value
+            it.refreshSignal()
         }
+    }
+
+    fun <T> MutableLiveData<T>.refreshSignal() {
+        value = value
     }
 
 }

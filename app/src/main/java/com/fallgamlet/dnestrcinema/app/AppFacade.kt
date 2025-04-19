@@ -20,11 +20,6 @@ class AppFacade private constructor() {
         val instance: AppFacade by lazy { AppFacade() }
     }
 
-
-    fun init(cinemaRepository: DeprecatedCinemaRepository) {
-
-    }
-
     fun init(configFactory: ConfigFactory) {
         this.cinemaItem = configFactory.cinema
         this.navigations = configFactory.navigations

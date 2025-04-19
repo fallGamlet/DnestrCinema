@@ -20,7 +20,7 @@ object ObserverUtils {
 
         }
 
-        override fun onNext(t: T) {
+        override fun onNext(t: T & Any) {
 
         }
 
@@ -48,7 +48,7 @@ object ObserverUtils {
 
     class EmptyDisposableObserver<T> : DisposableObserver<T>() {
 
-        override fun onNext(t: T) {
+        override fun onNext(t: T & Any) {
 
         }
 

@@ -15,10 +15,10 @@ fun <T> Observable<T>.mapTrue() =
         .onErrorReturnItem(false)
 
 
-fun <T> Single<T>.emitSubject(subject: Subject<T>) =
+fun <T> Single<T & Any>.emitSubject(subject: Subject<T>) =
     this.doOnSuccess { subject.onNext(it) }
 
-fun <T> Observable<T>.emitSubject(subject: Subject<T>) =
+fun <T> Observable<T & Any>.emitSubject(subject: Subject<T>) =
     this.doOnNext { subject.onNext(it) }
 
 

@@ -13,10 +13,6 @@ import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-
 public class MvpNavigationFragment
         extends
             Fragments.MvpNavigationViewFragment
@@ -25,7 +21,6 @@ public class MvpNavigationFragment
             BottomNavigationView.OnNavigationItemReselectedListener
 {
 
-    @BindView(R.id.bottomNavigationView)
     BottomNavigationView navigationView;
     View rootView;
 
@@ -33,9 +28,7 @@ public class MvpNavigationFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.bottom_navigation, container, false);
-
-        ButterKnife.bind(this, rootView);
-
+        navigationView = rootView.findViewById(R.id.bottomNavigationView);
         initListeners();
 
         return rootView;
@@ -50,30 +43,24 @@ public class MvpNavigationFragment
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         boolean checked;
 
-        switch (item.getItemId()) {
-            case R.id.actionToday:
-                getPresenter().onTodaySelected();
-                checked = true;
-                break;
-            case R.id.actionSoon:
-                getPresenter().onSoonSelected();
-                checked = true;
-                break;
-            case R.id.actionTickets:
-                getPresenter().onTicketsSelected();
-                checked = true;
-                break;
-            case R.id.actionNews:
-                getPresenter().onNewsSelected();
-                checked = true;
-                break;
-            case R.id.actionAbout:
-                getPresenter().onAboutSelected();
-                checked = true;
-                break;
-            default:
-                checked = false;
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.actionToday) {
+            getPresenter().onTodaySelected();
+            checked = true;
+        } else if (itemId == R.id.actionSoon) {
+            getPresenter().onSoonSelected();
+            checked = true;
+        } else if (itemId == R.id.actionTickets) {
+            getPresenter().onTicketsSelected();
+            checked = true;
+        } else if (itemId == R.id.actionNews) {
+            getPresenter().onNewsSelected();
+            checked = true;
+        } else if (itemId == R.id.actionAbout) {
+            getPresenter().onAboutSelected();
+            checked = true;
+        } else {
+            checked = false;
         }
 
         return checked;

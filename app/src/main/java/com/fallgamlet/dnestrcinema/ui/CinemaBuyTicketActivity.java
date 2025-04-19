@@ -3,15 +3,11 @@ package com.fallgamlet.dnestrcinema.ui;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.webkit.WebView;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import com.fallgamlet.dnestrcinema.R;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class CinemaBuyTicketActivity extends AppCompatActivity
 {
@@ -24,9 +20,7 @@ public class CinemaBuyTicketActivity extends AppCompatActivity
     private String url;
     private String title;
 
-    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.webView)
     WebView mWebView;
     //endregion
 
@@ -36,7 +30,8 @@ public class CinemaBuyTicketActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_ticket);
 
-        ButterKnife.bind(this);
+        mToolbar = findViewById(R.id.toolbar);
+        mWebView = findViewById(R.id.webView);
         initViews();
 
         Bundle bundle = getIntent().getExtras();

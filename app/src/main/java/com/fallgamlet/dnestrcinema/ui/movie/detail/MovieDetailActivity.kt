@@ -15,8 +15,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.fallgamlet.dnestrcinema.R
 import com.fallgamlet.dnestrcinema.app.AppFacade
@@ -42,36 +40,21 @@ class MovieDetailActivity : AppCompatActivity() {
     private lateinit var genreHolder: FieldHolder
     private lateinit var countryHolder: FieldHolder
 
-    @BindView(R.id.posterImageView)
-    protected lateinit var posterImageView: ImageView
-    @BindView(R.id.toolbar)
-    protected lateinit var toolbar: Toolbar
-    @BindView(R.id.shortInfoContainer)
-    protected lateinit var shortInfoContainer: View
-    @BindView(R.id.directorView)
-    protected lateinit var directorView: View
-    @BindView(R.id.scenarioView)
-    protected lateinit var scenarioView: View
-    @BindView(R.id.actorsView)
-    protected lateinit var actorsView: View
-    @BindView(R.id.ageLimitView)
-    protected lateinit var ageLimitView: View
-    @BindView(R.id.durationView)
-    protected lateinit var durationView: View
-    @BindView(R.id.budgetView)
-    protected lateinit var budgetView: View
-    @BindView(R.id.genreView)
-    protected lateinit var genreView: View
-    @BindView(R.id.countryView)
-    protected lateinit var countryView: View
-    @BindView(R.id.descriptionView)
-    protected lateinit var descriptionView: TextView
-    @BindView(R.id.imageList)
-    protected lateinit var imageListView: RecyclerView
-    @BindView(R.id.trailerBtn)
-    protected lateinit var trailerBtn: View
-    @BindView(R.id.buyTicketButton)
-    protected lateinit var buyTicketButton: View
+    private lateinit var posterImageView: ImageView
+    private lateinit var toolbar: Toolbar
+    private lateinit var shortInfoContainer: View
+    private lateinit var directorView: View
+    private lateinit var scenarioView: View
+    private lateinit var actorsView: View
+    private lateinit var ageLimitView: View
+    private lateinit var durationView: View
+    private lateinit var budgetView: View
+    private lateinit var genreView: View
+    private lateinit var countryView: View
+    private lateinit var descriptionView: TextView
+    private lateinit var imageListView: RecyclerView
+    private lateinit var trailerBtn: View
+    private lateinit var buyTicketButton: View
 
     private lateinit var viewModel: MovieDetailsViewModelImpl
     private lateinit var imageListAdapter: ImageRecyclerAdapter
@@ -81,7 +64,21 @@ class MovieDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cinema_detail)
 
-        ButterKnife.bind(this)
+        posterImageView = findViewById(R.id.posterImageView)
+        toolbar = findViewById(R.id.toolbar)
+        shortInfoContainer = findViewById(R.id.shortInfoContainer)
+        directorView = findViewById(R.id.directorView)
+        scenarioView = findViewById(R.id.scenarioView)
+        actorsView = findViewById(R.id.actorsView)
+        ageLimitView = findViewById(R.id.ageLimitView)
+        durationView = findViewById(R.id.durationView)
+        budgetView = findViewById(R.id.budgetView)
+        genreView = findViewById(R.id.genreView)
+        countryView = findViewById(R.id.countryView)
+        descriptionView = findViewById(R.id.descriptionView)
+        imageListView = findViewById(R.id.imageList)
+        trailerBtn = findViewById(R.id.trailerBtn)
+        buyTicketButton = findViewById(R.id.buyTicketButton)
 
         initViews()
         initViewModel()

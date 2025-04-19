@@ -27,7 +27,7 @@ internal class HtmlFilmDetailMapper : Mapper<String?, FilmDetailsJson?> {
     private fun parseFeatures(src: Elements?, destination: FilmDetailsJson) {
         src?.select(">li")
             ?.forEach {
-                val key = it.select("label")?.text()?.trim()?.toLowerCase() ?: ""
+                val key = it.select("label")?.text()?.trim()?.lowercase() ?: ""
                 val value = it.select("div")?.text()?.trim() ?: ""
                 when {
                     key.contains("старт") -> destination.pubDate = dateMapper.map(value)

@@ -6,4 +6,7 @@
     <item name="guidelineEnd" type="id"/>
     <item name="guidelineDividerVertical" type="id"/>
     <item name="guidelineDividerHorizontal" type="id"/>
+
+    <item name="listView" type="id"/>
+    <item name="swipeLayout" type="id"/>
 </resources>

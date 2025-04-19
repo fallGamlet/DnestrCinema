@@ -27,10 +27,9 @@ class GlideRequestListener<T> : RequestListener<T> {
         return this
     }
 
-
     override fun onLoadFailed(
         e: GlideException?,
-        model: Any,
+        model: Any?,
         target: Target<T>,
         isFirstResource: Boolean
     ): Boolean {
@@ -45,9 +44,9 @@ class GlideRequestListener<T> : RequestListener<T> {
     }
 
     override fun onResourceReady(
-        resource: T,
+        resource: T & Any,
         model: Any,
-        target: Target<T>,
+        target: Target<T>?,
         dataSource: DataSource,
         isFirstResource: Boolean
     ): Boolean {

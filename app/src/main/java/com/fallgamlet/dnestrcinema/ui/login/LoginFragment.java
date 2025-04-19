@@ -11,15 +11,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-
 import com.fallgamlet.dnestrcinema.R;
 import com.fallgamlet.dnestrcinema.app.AppFacade;
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpLoginPresenter;
 import com.fallgamlet.dnestrcinema.mvp.views.Fragments;
 import com.fallgamlet.dnestrcinema.utils.ViewUtils;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class LoginFragment
         extends
@@ -28,15 +24,10 @@ public class LoginFragment
             View.OnClickListener
 {
 
-    @BindView(R.id.login)
     EditText loginEditText;
-    @BindView(R.id.password)
     EditText passwordEditText;
-    @BindView(R.id.loginButton)
     View loginButton;
-    @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    @BindView(R.id.error)
     TextView errorView;
     View rootView;
 
@@ -57,7 +48,12 @@ public class LoginFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_login, container, false);
-        ButterKnife.bind(this, rootView);
+
+        loginEditText = errorView.findViewById(R.id.login);
+        passwordEditText = errorView.findViewById(R.id.password);
+        loginButton = errorView.findViewById(R.id.loginButton);
+        progressBar = errorView.findViewById(R.id.progressBar);
+        errorView = errorView.findViewById(R.id.error);
 
         return rootView;
     }

@@ -61,7 +61,7 @@ internal class HtmlFilmsMapper : Mapper<String?, List<FilmJson>> {
         item ?: return null
 
         val last = item.select(">i")?.last()
-        val index = item.childNodes()?.indexOf(last) ?: -1
+        val index = last?.let { item.childNodes()?.indexOf(it) } ?: -1
         val elTime = item.childNodes().getOrNull(index+1)
 
         return FilmSessionJson(
