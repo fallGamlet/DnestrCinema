@@ -15,13 +15,13 @@ import kotlinx.coroutines.launch
 
 class TodayMoviesFragment : BaseFragment() {
 
-    private lateinit var viewModel: TodayMoviesViewModelImpl
+    private lateinit var viewModel: TodayMoviesViewModel
 
     override val layoutId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = getViewModelProvider().get(TodayMoviesViewModelImpl::class.java)
+        viewModel = getViewModelProvider().get(TodayMoviesViewModel::class.java)
     }
 
     override fun onCreateView(

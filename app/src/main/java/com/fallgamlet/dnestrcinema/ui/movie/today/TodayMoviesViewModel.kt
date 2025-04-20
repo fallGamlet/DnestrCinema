@@ -1,6 +1,7 @@
 package com.fallgamlet.dnestrcinema.ui.movie.today
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.fallgamlet.dnestrcinema.app.AppFacade
 import com.fallgamlet.dnestrcinema.domain.models.MovieItem
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class TodayMoviesViewModelImpl : ViewModel() {
+class TodayMoviesViewModel : ViewModel() {
 
     private var movies: List<MovieItem> = emptyList()
 
@@ -67,5 +68,15 @@ class TodayMoviesViewModelImpl : ViewModel() {
             ?: return
 
         router?.showMovieDetail(movie)
+    }
+
+    class Factory(
+
+    ) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            require(modelClass == TodayMoviesViewModel::class.java)
+            return TodayMoviesViewModel() as T
+        }
     }
 }
