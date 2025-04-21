@@ -2,6 +2,7 @@ package com.kinotir.api
 
 import com.kinotir.api.mappers.KinotirMapper
 import io.reactivex.Single
+import okhttp3.ResponseBody
 import retrofit2.Response
 
 internal class KinotirApiImpl(
@@ -38,13 +39,13 @@ internal class KinotirApiImpl(
             .map { KinotirMapper.mapTickets(it) ?: emptyList() }
     }
 
-    private fun Single<Response<String>>.checkResponse(): Single<String>
+    private fun Single<Response<ResponseBody>>.checkResponse(): Single<String>
             = map { it.checkResponse() }
 
-    private fun Response<String>.checkResponse(): String {
-        if (this.code() >= 400) {
-            throw ApiException(this.code(), this.message())
+    private fun Response<ResponseBody>.checkResponse(): String {
+        if (code() >= 400) {
+            throw ApiException(code(), message())
         }
-        return this.body() ?: ""
+        return body()?.string() ?: ""
     }
 }
