@@ -1,6 +1,5 @@
 package com.kinotir.api
 
-import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -18,11 +17,22 @@ class ApiFactory(
     val api: KinotirApi
 
     init {
-        val serverApi = createServerApi(debug)
+        val httpClient = createHttpClient(debug)
+        val serverApi = createServerApi(httpClient)
         api = KinotirApiImpl(serverApi)
     }
 
-    private fun createServerApi(debug: Boolean = false): ServerApi {
+    private fun createServerApi(httpClient: OkHttpClient): ServerApi {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(httpClient)
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+
+        return retrofit.create(ServerApi::class.java)
+    }
+
+    private fun createHttpClient(debug: Boolean = false): OkHttpClient {
         val clientBuilder = OkHttpClient.Builder()
 
         clientBuilder.addInterceptor(::intercept)
@@ -33,13 +43,7 @@ class ApiFactory(
             clientBuilder.addInterceptor(interceptor)
         }
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(clientBuilder.build())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
-
-        return retrofit.create(ServerApi::class.java)
+        return clientBuilder.build()
     }
 
     private fun intercept(chain: Interceptor.Chain): Response {

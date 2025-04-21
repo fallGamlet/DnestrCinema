@@ -1,20 +1,33 @@
 package com.fallgamlet.dnestrcinema.dagger
 
 import com.fallgamlet.dnestrcinema.app.App
+import com.fallgamlet.dnestrcinema.ui.movie.soon.SoonMoviesFragment
+import com.fallgamlet.dnestrcinema.ui.movie.today.TodayMoviesFragment
+import com.fallgamlet.dnestrcinema.ui.news.NewsFragment
+import com.fallgamlet.dnestrcinema.ui.start.StartActivity
+import dagger.BindsInstance
 import dagger.Component
-import dagger.android.AndroidInjector
-import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [
-    AndroidSupportInjectionModule::class,
     AppModule::class,
-    ActivityModule::class
 ])
-interface AppComponent : AndroidInjector<App> {
+interface AppComponent {
 
-    @Component.Factory
-    interface Factory: AndroidInjector.Factory<App>
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun setApp(app: App): Builder
+        fun build(): AppComponent
+    }
+
+    fun inject(activity: StartActivity)
+
+    fun inject(fragment: TodayMoviesFragment)
+
+    fun inject(fragment: SoonMoviesFragment)
+
+    fun inject(fragment: NewsFragment)
 
 }

@@ -14,6 +14,7 @@ import com.fallgamlet.dnestrcinema.R
 import com.fallgamlet.dnestrcinema.utils.ViewUtils
 import com.google.android.material.snackbar.Snackbar
 
+@Deprecated("must be remove in future")
 abstract class BaseFragment: Fragment() {
     private var errorLive: MutableLiveData<Throwable?> = MutableLiveData()
     private var loadingLive: MutableLiveData<Boolean?> = MutableLiveData()

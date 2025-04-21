@@ -6,22 +6,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.fallgamlet.dnestrcinema.dagger.getAppComponent
 import com.fallgamlet.dnestrcinema.ui.base.BaseFragment
 import com.fallgamlet.dnestrcinema.ui.movie.composable.MoviesComposable
+import com.fallgamlet.dnestrcinema.ui.utils.showError
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TodayMoviesFragment : BaseFragment() {
+class TodayMoviesFragment : Fragment() {
 
-    private lateinit var viewModel: TodayMoviesViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    override val layoutId: Int = 0
+    private val viewModel: TodayMoviesViewModel by viewModels { viewModelFactory }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = getViewModelProvider().get(TodayMoviesViewModel::class.java)
+        getAppComponent().inject(this)
     }
 
     override fun onCreateView(
@@ -52,9 +61,11 @@ class TodayMoviesFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.errorsState.collect {
-                    onError(it)
-                }
+                viewModel.errorsState
+                    .filterNotNull()
+                    .collect {
+                        showError(it)
+                    }
             }
         }
     }

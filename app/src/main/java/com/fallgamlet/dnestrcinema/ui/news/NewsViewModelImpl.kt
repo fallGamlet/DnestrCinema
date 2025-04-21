@@ -13,8 +13,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NewsViewModelImpl : ViewModel() {
+class NewsViewModelImpl @Inject constructor() : ViewModel() {
 
     private var newsItems: List<NewsItem> = emptyList()
 

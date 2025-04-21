@@ -5,10 +5,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.fallgamlet.dnestrcinema.R
 import com.fallgamlet.dnestrcinema.app.AppFacade.Companion.instance
+import com.fallgamlet.dnestrcinema.dagger.getAppComponent
 import com.fallgamlet.dnestrcinema.data.localstore.AccountLocalRepository
 import com.fallgamlet.dnestrcinema.domain.models.AccountItem
 import com.fallgamlet.dnestrcinema.domain.models.MovieItem
@@ -16,7 +18,6 @@ import com.fallgamlet.dnestrcinema.domain.models.NavigationItem
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView
-import com.fallgamlet.dnestrcinema.ui.base.BaseActivity
 import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity
 import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity.Companion.ARG_MOVIE
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpBottomNavigationView
@@ -28,13 +29,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class StartActivity : BaseActivity(), NavigationRouter {
+class StartActivity : AppCompatActivity(), NavigationRouter {
     private lateinit var mViewPager: ViewPager2
     private lateinit var mBottomNavigationView: BottomNavigationView
     private lateinit var adapter: ViewPagerAdapter
     private lateinit var bottomNavigationPresenter: MvpNavigationPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        getAppComponent().inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.start)
         mViewPager = findViewById(R.id.viewpager)

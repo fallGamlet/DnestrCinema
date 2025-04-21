@@ -15,8 +15,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SoonMoviesViewModelImpl : ViewModel() {
+class SoonMoviesViewModel @Inject constructor() : ViewModel() {
 
     private var movies: List<MovieItem> = emptyList()
 

@@ -3,22 +3,19 @@ package com.fallgamlet.dnestrcinema.app
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDexApplication
+import com.fallgamlet.dnestrcinema.dagger.AppComponent
+import com.fallgamlet.dnestrcinema.dagger.AppComponentProvider
 import com.fallgamlet.dnestrcinema.dagger.DaggerAppComponent
 import com.fallgamlet.dnestrcinema.factory.KinotirConfigFactory
 import com.jakewharton.threetenabp.AndroidThreeTen
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
 import io.reactivex.plugins.RxJavaPlugins
-import javax.inject.Inject
 
 
-class App : MultiDexApplication(), HasAndroidInjector {
+class App : MultiDexApplication(),
+    AppComponentProvider
+{
 
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
-
-    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
+    private lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
@@ -30,15 +27,19 @@ class App : MultiDexApplication(), HasAndroidInjector {
     }
 
     private fun initDagger() {
-        DaggerAppComponent.factory()
-            .create(this)
-            .inject(this)
+        appComponent = DaggerAppComponent.builder()
+            .setApp(this)
+            .build()
     }
 
     private fun initRx() {
         RxJavaPlugins.setErrorHandler { throwable ->
             Log.d("App", "RxJavaPlugins error handle", throwable)
         }
+    }
+
+    override fun provideComponent(): AppComponent {
+        return appComponent
     }
 
     companion object {
