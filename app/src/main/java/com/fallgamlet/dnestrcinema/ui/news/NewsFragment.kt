@@ -25,7 +25,7 @@ class NewsFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val viewModel: NewsViewModelImpl by viewModels { viewModelFactory }
+    private val viewModel: NewsViewModel by viewModels { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

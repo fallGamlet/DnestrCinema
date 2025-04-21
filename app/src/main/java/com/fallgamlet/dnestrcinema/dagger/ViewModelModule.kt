@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.fallgamlet.dnestrcinema.ui.movie.soon.SoonMoviesViewModel
 import com.fallgamlet.dnestrcinema.ui.movie.today.TodayMoviesViewModel
-import com.fallgamlet.dnestrcinema.ui.news.NewsViewModelImpl
+import com.fallgamlet.dnestrcinema.ui.news.NewsViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -27,7 +27,7 @@ interface ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(NewsViewModelImpl::class)
-    fun bindNewsViewModel(viewModel: NewsViewModelImpl): ViewModel
+    @ViewModelKey(NewsViewModel::class)
+    fun bindNewsViewModel(viewModel: NewsViewModel): ViewModel
 
 }
