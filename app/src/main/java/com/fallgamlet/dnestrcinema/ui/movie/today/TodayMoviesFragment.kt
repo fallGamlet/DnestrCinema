@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.fallgamlet.dnestrcinema.dagger.getAppComponent
-import com.fallgamlet.dnestrcinema.ui.base.BaseFragment
 import com.fallgamlet.dnestrcinema.ui.movie.composable.MoviesComposable
 import com.fallgamlet.dnestrcinema.ui.utils.showError
 import kotlinx.coroutines.flow.filterNotNull
