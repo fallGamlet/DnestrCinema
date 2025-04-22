@@ -3,8 +3,10 @@ package com.fallgamlet.dnestrcinema.ui.movie.soon
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fallgamlet.dnestrcinema.app.AppFacade
-import com.fallgamlet.dnestrcinema.domain.models.MovieItem
+import com.fallgamlet.dnestrcinema.domain.models.Film
+import com.fallgamlet.dnestrcinema.domain.repositories.remote.FilmRepository
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter
+import com.fallgamlet.dnestrcinema.ui.movie.MovieItemMapper
 import com.fallgamlet.dnestrcinema.ui.movie.model.MovieVo
 import com.fallgamlet.dnestrcinema.ui.movie.model.MovieVoMapper
 import com.fallgamlet.dnestrcinema.utils.reactive.mapTrue
@@ -17,9 +19,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SoonMoviesViewModel @Inject constructor() : ViewModel() {
+class SoonMoviesViewModel @Inject constructor(
+    private val filmRepository: FilmRepository
+) : ViewModel() {
 
-    private var movies: List<MovieItem> = emptyList()
+    private var films: List<Film> = emptyList()
+    private var cachedMovies: List<MovieVo> = emptyList()
 
     private val moviesVoMutableState = MutableStateFlow(emptyList<MovieVo>())
     val moviesVoState = moviesVoMutableState.asStateFlow()
@@ -39,12 +44,11 @@ class SoonMoviesViewModel @Inject constructor() : ViewModel() {
     }
 
     fun loadData() {
-        val client = AppFacade.instance.netClient ?: return
+        filmRepository.getSoon()
+            .doOnSuccess {
+                films = it
+                cachedMovies = it.map(MovieVoMapper::map)
 
-        client.soonMovies
-            .schedulersIoToUi()
-            .doOnNext {
-                movies = it
             }
             .doOnError {
                 viewModelScope.launch {
@@ -55,18 +59,20 @@ class SoonMoviesViewModel @Inject constructor() : ViewModel() {
             .doOnSubscribe {
                 isRefreshingMutableState.value = true
             }
-            .doOnTerminate {
-                moviesVoMutableState.value = movies
+            .doAfterTerminate {
+                moviesVoMutableState.value = films
                     .map(MovieVoMapper::map)
                 isRefreshingMutableState.value = false
             }
+            .schedulersIoToUi()
             .subscribeDisposable()
     }
 
     fun onMovieSelected(link: String) {
-        val movie = movies.firstOrNull { it.link == link }
+        val film = films.firstOrNull { it.link == link }
             ?: return
 
+        val movie = MovieItemMapper.map(film)
         router?.showMovieDetail(movie)
     }
 }

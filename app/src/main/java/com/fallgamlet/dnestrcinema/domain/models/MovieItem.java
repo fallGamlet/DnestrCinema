@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import kotlin.collections.EmptyList;
+
 /**
  * Created by fallgamlet on 07.01.17.
  */
@@ -95,6 +97,10 @@ public class MovieItem implements Parcelable {
             mSchedules = new ArrayList<>();
         }
         return mSchedules;
+    }
+
+    public void setSchedules(List<ScheduleItem> items) {
+        this.mSchedules = items != null ? new ArrayList<>(items) : new ArrayList<>();
     }
 
     @NonNull
