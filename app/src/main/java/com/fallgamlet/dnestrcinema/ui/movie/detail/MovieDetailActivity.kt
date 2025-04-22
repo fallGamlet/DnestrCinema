@@ -56,7 +56,7 @@ class MovieDetailActivity : AppCompatActivity() {
     private lateinit var trailerBtn: View
     private lateinit var buyTicketButton: View
 
-    private lateinit var viewModel: MovieDetailsViewModelImpl
+    private lateinit var viewModel: MovieDetailsViewModel
     private lateinit var imageListAdapter: ImageRecyclerAdapter
 
 
@@ -88,7 +88,7 @@ class MovieDetailActivity : AppCompatActivity() {
         val bundle = intent.extras
         val movieItem: MovieItem? = bundle?.getParcelable(ARG_MOVIE)
 
-        viewModel = ViewModelProviders.of(this).get(MovieDetailsViewModelImpl::class.java)
+        viewModel = ViewModelProviders.of(this).get(MovieDetailsViewModel::class.java)
         viewModel.setData(movieItem)
 
         val viewState = viewModel.viewState

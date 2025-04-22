@@ -10,7 +10,7 @@ import com.fallgamlet.dnestrcinema.utils.reactive.schedulersIoToUi
 import com.fallgamlet.dnestrcinema.utils.reactive.subscribeDisposable
 
 
-class MovieDetailsViewModelImpl : ViewModel() {
+class MovieDetailsViewModel : ViewModel() {
 
     val viewState = MovieDetailsViewState()
     private var movie: MovieItem = MovieItem()
