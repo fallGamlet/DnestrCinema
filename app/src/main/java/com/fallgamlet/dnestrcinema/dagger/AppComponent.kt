@@ -1,6 +1,7 @@
 package com.fallgamlet.dnestrcinema.dagger
 
 import com.fallgamlet.dnestrcinema.app.App
+import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity
 import com.fallgamlet.dnestrcinema.ui.movie.soon.SoonMoviesFragment
 import com.fallgamlet.dnestrcinema.ui.movie.today.TodayMoviesFragment
 import com.fallgamlet.dnestrcinema.ui.news.NewsFragment
@@ -23,6 +24,8 @@ interface AppComponent {
     }
 
     fun inject(activity: StartActivity)
+
+    fun inject(activity: MovieDetailActivity)
 
     fun inject(fragment: TodayMoviesFragment)
 

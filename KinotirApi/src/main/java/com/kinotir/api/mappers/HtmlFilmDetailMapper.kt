@@ -14,6 +14,7 @@ internal class HtmlFilmDetailMapper : Mapper<String?, FilmDetailsJson?> {
         val info = doc.select(".film .info").first() ?: return null
 
         val result = FilmDetailsJson(
+            title = doc.select(".film h1 span")?.text(),
             posterUrl = info.select(">.additional-poster>.image>img")?.attr("src"),
             buyTicketLink = doc.select("a.buy-ticket-btn").attr("href"),
             description = info.select(".description")?.text()

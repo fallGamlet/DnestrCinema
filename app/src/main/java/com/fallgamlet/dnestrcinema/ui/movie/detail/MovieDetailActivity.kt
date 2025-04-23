@@ -1,114 +1,71 @@
 package com.fallgamlet.dnestrcinema.ui.movie.detail
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.ComposeView
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.fallgamlet.dnestrcinema.R
-import com.fallgamlet.dnestrcinema.app.AppFacade
-import com.fallgamlet.dnestrcinema.app.GlideApp
-import com.fallgamlet.dnestrcinema.data.network.KinoTir
-import com.fallgamlet.dnestrcinema.domain.models.MovieItem
-import com.fallgamlet.dnestrcinema.ui.ImageActivity
-import com.fallgamlet.dnestrcinema.ui.holders.FieldHolder
-import com.fallgamlet.dnestrcinema.ui.holders.MovieViewHolder
-import com.fallgamlet.dnestrcinema.ui.movie.ImageRecyclerAdapter
-import com.fallgamlet.dnestrcinema.utils.HttpUtils
+import com.fallgamlet.dnestrcinema.dagger.getAppComponent
+import com.fallgamlet.dnestrcinema.ui.utils.showError
 import com.fallgamlet.dnestrcinema.utils.IntentUtils
-import java.util.*
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class MovieDetailActivity : AppCompatActivity() {
-    private lateinit var movieHolder: MovieViewHolder
-    private lateinit var directorHolder: FieldHolder
-    private lateinit var scenarioHolder: FieldHolder
-    private lateinit var actorsHolder: FieldHolder
-    private lateinit var ageLimitHolder: FieldHolder
-    private lateinit var durationHolder: FieldHolder
-    private lateinit var budgetHolder: FieldHolder
-    private lateinit var genreHolder: FieldHolder
-    private lateinit var countryHolder: FieldHolder
 
-    private lateinit var posterImageView: ImageView
-    private lateinit var toolbar: Toolbar
-    private lateinit var shortInfoContainer: View
-    private lateinit var directorView: View
-    private lateinit var scenarioView: View
-    private lateinit var actorsView: View
-    private lateinit var ageLimitView: View
-    private lateinit var durationView: View
-    private lateinit var budgetView: View
-    private lateinit var genreView: View
-    private lateinit var countryView: View
-    private lateinit var descriptionView: TextView
-    private lateinit var imageListView: RecyclerView
-    private lateinit var trailerBtn: View
-    private lateinit var buyTicketButton: View
-
-    private lateinit var viewModel: MovieDetailsViewModel
-    private lateinit var imageListAdapter: ImageRecyclerAdapter
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<MovieDetailsViewModel> { viewModelFactory }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cinema_detail)
+        getAppComponent().inject(this)
+        val labels = getLabels()
+        setContentView(
+            ComposeView(this).apply {
+                setContent {
+                    val movieState = viewModel.movieState.collectAsState(MovieDetailsVo())
+                    MovieDetailsScreen(
+                        movie = movieState.value,
+                        labels = labels,
+                        trailerAction = { url ->
+                            IntentUtils.openUrl(this@MovieDetailActivity, url)
+                        },
+                        backAction = {
+                            onBackPressed()
+                        }
+                    )
+                }
+            }
+        )
 
-        posterImageView = findViewById(R.id.posterImageView)
-        toolbar = findViewById(R.id.toolbar)
-        shortInfoContainer = findViewById(R.id.shortInfoContainer)
-        directorView = findViewById(R.id.directorView)
-        scenarioView = findViewById(R.id.scenarioView)
-        actorsView = findViewById(R.id.actorsView)
-        ageLimitView = findViewById(R.id.ageLimitView)
-        durationView = findViewById(R.id.durationView)
-        budgetView = findViewById(R.id.budgetView)
-        genreView = findViewById(R.id.genreView)
-        countryView = findViewById(R.id.countryView)
-        descriptionView = findViewById(R.id.descriptionView)
-        imageListView = findViewById(R.id.imageList)
-        trailerBtn = findViewById(R.id.trailerBtn)
-        buyTicketButton = findViewById(R.id.buyTicketButton)
-
-        initViews()
-        initViewModel()
+        viewModel.loadData(intent.extras?.getString("movie_link") ?: "")
+        lifecycleScope.launch {
+            viewModel.errorsState.filterNotNull().collect { error ->
+                showError(error)
+            }
+        }
     }
 
-    private fun initViewModel() {
-        val bundle = intent.extras
-        val movieItem: MovieItem? = bundle?.getParcelable(ARG_MOVIE)
-
-        viewModel = ViewModelProviders.of(this).get(MovieDetailsViewModel::class.java)
-        viewModel.setData(movieItem)
-
-        val viewState = viewModel.viewState
-        viewState.title.observe(this, Observer { title = it })
-        viewState.pubDate.observe(this, Observer { setPubDate(it) })
-        viewState.rooms.observe(this, Observer { setRooms(it) })
-        viewState.duration.observe(this, Observer { setDuration(it) })
-        viewState.director.observe(this, Observer { setDirector(it) })
-        viewState.actors.observe(this, Observer { setActors(it) })
-        viewState.scenario.observe(this, Observer { setScenario(it) })
-        viewState.ageLimit.observe(this, Observer { setAgeLimit(it) })
-        viewState.budget.observe(this, Observer { setBudget(it) })
-        viewState.country.observe(this, Observer { setCountry(it) })
-        viewState.genre.observe(this, Observer { setGenre(it) })
-        viewState.description.observe(this, Observer { setDescription(it) })
-        viewState.posterUrl.observe(this, Observer { setPosterUrl(it) })
-        viewState.imageUrls.observe(this, Observer { setImageUrls(it) })
-        viewState.trailerMovieUrls.observe(this, Observer { setTrailerUrls(it) })
+    private fun getLabels(): MovieDetailsLabels {
+        return MovieDetailsLabels(
+            duration = getString(R.string.label_duration),
+            director = getString(R.string.label_director),
+            scenario = getString(R.string.label_scenario),
+            actors = getString(R.string.label_actors),
+            budget = getString(R.string.label_budget),
+            ageLimit = getString(R.string.label_agelimit),
+            country = getString(R.string.label_country),
+            genre = getString(R.string.label_genre),
+            trailer = getString(R.string.label_trailer),
+        )
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
@@ -123,202 +80,81 @@ class MovieDetailActivity : AppCompatActivity() {
         return res
     }
 
-    private fun initViews() {
-        toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            title = null
-        }
-
-        buyTicketButton.isVisible = false
-
-        initListView()
-        initFieldHolders()
-    }
-
-    private fun initListView() {
-        imageListAdapter = ImageRecyclerAdapter()
-
-        imageListView.adapter = imageListAdapter
-        imageListView.setHasFixedSize(false)
-        imageListView.itemAnimator = DefaultItemAnimator()
-        imageListView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        imageListView.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(
-                outRect: Rect,
-                view: View,
-                parent: RecyclerView,
-                state: RecyclerView.State
-            ) {
-                super.getItemOffsets(outRect, view, parent, state)
-                if (parent.getChildAdapterPosition(view) != 0) {
-                    outRect.left = 16
-                }
-            }
-        })
-    }
-
-    private fun initFieldHolders() {
-        movieHolder = MovieViewHolder(shortInfoContainer)
-        directorHolder = FieldHolder(directorView)
-        scenarioHolder = FieldHolder(scenarioView)
-        actorsHolder = FieldHolder(actorsView)
-        ageLimitHolder = FieldHolder(ageLimitView)
-        durationHolder = FieldHolder(durationView)
-        budgetHolder = FieldHolder(budgetView)
-        genreHolder = FieldHolder(genreView)
-        countryHolder = FieldHolder(countryView)
-    }
-
-
-    override fun setTitle(title: CharSequence?) {
-        movieHolder.setTitle(title)
-    }
-
-    private fun setPubDate(date: Date?) {
-        movieHolder.setPubDate(date)
-    }
-
-    private fun setRooms(rooms: Collection<CharSequence>?) {
-        val roomsStr = rooms?.joinToString("\n") ?: ""
-        movieHolder.setSchedule(roomsStr)
-
-        val roomNames = viewModel.getRoomNames().toTypedArray()
-
-        movieHolder.scheduleView.setOnClickListener {
-            if (roomNames.isEmpty()) return@setOnClickListener
-
-            if (roomNames.size == 1) {
-                navigateToRoomView(roomNames.first())
-            } else {
-                showRoomSelectionDialog(roomNames)
-            }
-        }
-    }
-
-    private fun showRoomSelectionDialog(items: Array<String>) {
-        AlertDialog.Builder(this, R.style.AppTheme_Dialog)
-            .setTitle(R.string.label_choose_room)
-            .setCancelable(true)
-            .setSingleChoiceItems(items, -1) { dialog, i ->
-                dialog.dismiss()
-                navigateToRoomView(items[i])
-            }
-            .create()
-            .show()
-    }
-
-    private fun navigateToRoomView(roomName: String?) {
-        roomName ?: return
-
-        var imgURL: String? = when {
-            MovieItem.ROOM_BLUE.equals(roomName, ignoreCase = true) -> KinoTir.PATH_IMG_ROOM_BLUE
-            MovieItem.ROOM_BORDO.equals(roomName, ignoreCase = true) -> KinoTir.PATH_IMG_ROOM_BORDO
-            MovieItem.ROOM_DVD.equals(roomName, ignoreCase = true) -> KinoTir.PATH_IMG_ROOM_DVD
-            else -> ""
-        }
-
-        if (imgURL.isNullOrBlank()) {
-            return
-        }
-
-        val baseUrl = AppFacade.instance.requestFactory?.baseUrl
-        imgURL = HttpUtils.getAbsoluteUrl(baseUrl, imgURL)
-        ImageActivity.showActivity(this, imgURL)
-    }
-
-    private fun setDuration(value: CharSequence?) {
-        val duration = value?.toString() ?: ""
-        durationHolder.setDataAndVisible(getString(R.string.label_duration), duration)
-    }
-
-    private fun setGenre(v: CharSequence?) {
-        val value = v?.toString()
-        genreHolder.setDataAndVisible(getString(R.string.label_genre), value)
-    }
-
-    private fun setAgeLimit(v: CharSequence?) {
-        val value = v?.toString()
-        ageLimitHolder.setDataAndVisible(getString(R.string.label_agelimit), value)
-    }
-
-    private fun setCountry(v: CharSequence?) {
-        val value = v?.toString()
-        countryHolder.setDataAndVisible(getString(R.string.label_country), value)
-    }
-
-    private fun setDirector(v: CharSequence?) {
-        val value = v?.toString()
-        directorHolder.setDataAndVisible(getString(R.string.label_director), value)
-    }
-
-    private fun setScenario(v: CharSequence?) {
-        val value = v?.toString()
-        scenarioHolder.setDataAndVisible(getString(R.string.label_scenario), value)
-    }
-
-    private fun setActors(v: CharSequence?) {
-        val value = v?.toString()
-        actorsHolder.setDataAndVisible(getString(R.string.label_actors), value)
-    }
-
-    private fun setBudget(v: CharSequence?) {
-        val value = v?.toString()
-        budgetHolder.setDataAndVisible(getString(R.string.label_budget), value)
-    }
-
-    private fun setDescription(v: String?) {
-        descriptionView.isVisible = !v.isNullOrBlank()
-        descriptionView.text = HttpUtils.fromHtml(v)
-    }
-
-    private fun setPosterUrl(value: String?) {
-        GlideApp.with(posterImageView)
-            .load(value)
-            .fallback(R.drawable.ic_photo_empty_240dp)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .into(posterImageView)
-    }
-
-    private fun setImageUrls(urls: List<String>?) {
-        imageListView.isVisible = !urls.isNullOrEmpty()
-        imageListAdapter.setData(urls)
-    }
-
-    private fun setTrailerUrls(urls: List<String>?) {
-        trailerBtn.isVisible = !urls.isNullOrEmpty()
-        trailerBtn.setOnClickListener {
-            if (urls.isNullOrEmpty()) return@setOnClickListener
-
-            if (urls.size == 1) {
-                showTrainer(urls.first())
-                return@setOnClickListener
-            }
-
-            val context = it.context
-            val names = (urls.indices)
-                .map { index -> "${context.getString(R.string.label_trailer)} ${index+1}" }
-                .toTypedArray()
-
-            AlertDialog.Builder(it.context, R.style.AppTheme_Dialog)
-                .setItems(names) {dialog, which ->
-                    dialog.dismiss()
-                    showTrainer(urls[which])
-                }
-                .create()
-                .show()
-        }
-    }
-
-    private fun showTrainer(url: String?) {
-        url ?: return
-        IntentUtils.openUrl(this, url)
-    }
-
-    companion object {
-        var ARG_MOVIE = "movie_item_now"
-        var ARG_MOVIE_DETAIL = "movie_detail"
-        var YOUTUBE = "youtube.com"
-    }
+//    private fun setRooms(rooms: Collection<CharSequence>?) {
+//        val roomsStr = rooms?.joinToString("\n") ?: ""
+//        movieHolder.setSchedule(roomsStr)
+//
+//        val roomNames = viewModel.getRoomNames().toTypedArray()
+//
+//        movieHolder.scheduleView.setOnClickListener {
+//            if (roomNames.isEmpty()) return@setOnClickListener
+//
+//            if (roomNames.size == 1) {
+//                navigateToRoomView(roomNames.first())
+//            } else {
+//                showRoomSelectionDialog(roomNames)
+//            }
+//        }
+//    }
+//
+//    private fun showRoomSelectionDialog(items: Array<String>) {
+//        AlertDialog.Builder(this, R.style.AppTheme_Dialog)
+//            .setTitle(R.string.label_choose_room)
+//            .setCancelable(true)
+//            .setSingleChoiceItems(items, -1) { dialog, i ->
+//                dialog.dismiss()
+//                navigateToRoomView(items[i])
+//            }
+//            .create()
+//            .show()
+//    }
+//
+//    private fun navigateToRoomView(roomName: String?) {
+//        roomName ?: return
+//
+//        var imgURL: String? = when {
+//            MovieItem.ROOM_BLUE.equals(roomName, ignoreCase = true) -> KinoTir.PATH_IMG_ROOM_BLUE
+//            MovieItem.ROOM_BORDO.equals(roomName, ignoreCase = true) -> KinoTir.PATH_IMG_ROOM_BORDO
+//            MovieItem.ROOM_DVD.equals(roomName, ignoreCase = true) -> KinoTir.PATH_IMG_ROOM_DVD
+//            else -> ""
+//        }
+//
+//        if (imgURL.isNullOrBlank()) {
+//            return
+//        }
+//
+//        val baseUrl = AppFacade.instance.requestFactory?.baseUrl
+//        imgURL = HttpUtils.getAbsoluteUrl(baseUrl, imgURL)
+//        ImageActivity.showActivity(this, imgURL)
+//    }
+//
+//    private fun setTrailerUrls(urls: List<String>?) {
+//        trailerBtn.isVisible = !urls.isNullOrEmpty()
+//        trailerBtn.setOnClickListener {
+//            if (urls.isNullOrEmpty()) return@setOnClickListener
+//
+//            if (urls.size == 1) {
+//                showTrailer(urls.first())
+//                return@setOnClickListener
+//            }
+//
+//            val context = it.context
+//            val names = (urls.indices)
+//                .map { index -> "${context.getString(R.string.label_trailer)} ${index+1}" }
+//                .toTypedArray()
+//
+//            AlertDialog.Builder(it.context, R.style.AppTheme_Dialog)
+//                .setItems(names) {dialog, which ->
+//                    dialog.dismiss()
+//                    showTrailer(urls[which])
+//                }
+//                .create()
+//                .show()
+//        }
+//    }
+//
+//    private fun showTrailer(url: String?) {
+//        url ?: return
+//        IntentUtils.openUrl(this, url)
+//    }
 }

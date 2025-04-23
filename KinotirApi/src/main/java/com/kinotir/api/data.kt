@@ -21,6 +21,7 @@ data class FilmSessionJson(
 )
 
 data class FilmDetailsJson(
+    var title: String? = null,
     var posterUrl: String? = null,
     var buyTicketLink: String? = null,
     var description: String? = null,

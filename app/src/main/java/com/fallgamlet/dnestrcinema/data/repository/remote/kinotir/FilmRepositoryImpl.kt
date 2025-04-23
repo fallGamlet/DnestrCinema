@@ -57,6 +57,7 @@ internal class FilmRepositoryImpl(
 
     private fun mapFilmDetails(json: FilmDetailsJson): Film {
         return Film(
+            title = json.title ?: "",
             duration = json.duration ?: "",
             buyTicketLink = json.buyTicketLink ?: "",
             posterUrl = json.posterUrl ?: "",

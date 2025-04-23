@@ -69,10 +69,6 @@ class SoonMoviesViewModel @Inject constructor(
     }
 
     fun onMovieSelected(link: String) {
-        val film = films.firstOrNull { it.link == link }
-            ?: return
-
-        val movie = MovieItemMapper.map(film)
-        router?.showMovieDetail(movie)
+        router?.showMovieDetail(link)
     }
 }

@@ -6,7 +6,6 @@ import com.fallgamlet.dnestrcinema.app.AppFacade
 import com.fallgamlet.dnestrcinema.domain.models.Film
 import com.fallgamlet.dnestrcinema.domain.repositories.remote.FilmRepository
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter
-import com.fallgamlet.dnestrcinema.ui.movie.MovieItemMapper
 import com.fallgamlet.dnestrcinema.ui.movie.model.MovieVo
 import com.fallgamlet.dnestrcinema.ui.movie.model.MovieVoMapper
 import com.fallgamlet.dnestrcinema.utils.reactive.mapTrue
@@ -69,10 +68,6 @@ class TodayMoviesViewModel @Inject constructor(
     }
 
     fun onMovieSelected(link: String) {
-        val film = films.firstOrNull { it.link == link }
-            ?: return
-
-        val movie = MovieItemMapper.map(film)
-        router?.showMovieDetail(movie)
+        router?.showMovieDetail(link)
     }
 }

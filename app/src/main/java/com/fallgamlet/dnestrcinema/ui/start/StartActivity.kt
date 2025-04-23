@@ -1,7 +1,6 @@
 package com.fallgamlet.dnestrcinema.ui.start
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -13,16 +12,13 @@ import com.fallgamlet.dnestrcinema.app.AppFacade.Companion.instance
 import com.fallgamlet.dnestrcinema.dagger.getAppComponent
 import com.fallgamlet.dnestrcinema.data.localstore.AccountLocalRepository
 import com.fallgamlet.dnestrcinema.domain.models.AccountItem
-import com.fallgamlet.dnestrcinema.domain.models.MovieItem
 import com.fallgamlet.dnestrcinema.domain.models.NavigationItem
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter
 import com.fallgamlet.dnestrcinema.mvp.views.MvpNavigationView
 import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity
-import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity.Companion.ARG_MOVIE
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpBottomNavigationView
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpNavigationPresenterImpl
-import com.fallgamlet.dnestrcinema.utils.HttpUtils.getAbsoluteUrl
 import com.fallgamlet.dnestrcinema.utils.ViewUtils.shareApp
 import com.fallgamlet.dnestrcinema.utils.reactive.ObserverUtils.emptyDisposableObserver
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -189,20 +185,19 @@ class StartActivity : AppCompatActivity(), NavigationRouter {
         }
     }
 
-    override fun showMovieDetail(movieItem: MovieItem?) {
-        movieItem ?: return
-        val bundle = Bundle().apply { putParcelable(ARG_MOVIE, movieItem) }
+    override fun showMovieDetail(movieLink: String) {
+        val bundle = Bundle().apply { putString("movie_link", movieLink) }
         val intent = Intent(this, MovieDetailActivity::class.java)
         intent.putExtras(bundle)
         startActivity(intent)
     }
 
-    override fun showBuyTicket(movieItem: MovieItem?) {
-        movieItem ?: return
-        val baseUrl = instance.requestFactory!!.baseUrl
-        val url = getAbsoluteUrl(baseUrl, movieItem.buyTicketLink) ?: return
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
-        startActivity(intent)
-    }
+//    override fun showBuyTicket(movieItem: MovieItem?) {
+//        movieItem ?: return
+//        val baseUrl = instance.requestFactory!!.baseUrl
+//        val url = getAbsoluteUrl(baseUrl, movieItem.buyTicketLink) ?: return
+//        val intent = Intent(Intent.ACTION_VIEW)
+//        intent.data = Uri.parse(url)
+//        startActivity(intent)
+//    }
 }

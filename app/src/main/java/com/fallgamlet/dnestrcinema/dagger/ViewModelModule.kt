@@ -2,6 +2,7 @@ package com.fallgamlet.dnestrcinema.dagger
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailsViewModel
 import com.fallgamlet.dnestrcinema.ui.movie.soon.SoonMoviesViewModel
 import com.fallgamlet.dnestrcinema.ui.movie.today.TodayMoviesViewModel
 import com.fallgamlet.dnestrcinema.ui.news.NewsViewModel
@@ -29,5 +30,10 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(NewsViewModel::class)
     fun bindNewsViewModel(viewModel: NewsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MovieDetailsViewModel::class)
+    fun bindMovieDetailsViewModel(viewModel: MovieDetailsViewModel): ViewModel
 
 }
