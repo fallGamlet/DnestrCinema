@@ -1,13 +1,12 @@
 package com.kinotir.api
 
-import io.reactivex.Single
 
 interface KinotirApi {
 
-    fun todayFilms(): Single<List<FilmJson>>
-    fun soonFilms(): Single<List<FilmJson>>
-    fun filmDetails(path: String): Single<FilmDetailsJson>
-    fun newses(): Single<List<NewsJson>>
-    fun tickets(): Single<List<TicketJson>>
+    suspend fun todayFilms(): List<FilmJson>
+    suspend fun soonFilms(): List<FilmJson>
+    suspend fun filmDetails(path: String): FilmDetailsJson
+    suspend fun newses(): List<NewsJson>
+    suspend fun tickets(): List<TicketJson>
 
 }

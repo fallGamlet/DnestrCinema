@@ -4,16 +4,15 @@ import com.fallgamlet.dnestrcinema.domain.models.NewsPost
 import com.fallgamlet.dnestrcinema.domain.repositories.remote.NewsRepository
 import com.kinotir.api.KinotirApi
 import com.kinotir.api.NewsJson
-import io.reactivex.Single
 import java.util.*
 
 internal class NewsRepositoryImpl(
-    private val api: KinotirApi
+    private val api: KinotirApi,
 ) : NewsRepository {
 
-    override fun getItems(): Single<List<NewsPost>> {
-        return api.newses()
-            .map(::mapNewsList)
+    override suspend fun getItemsSuspend(): List<NewsPost> {
+        val newsJson = api.newses()
+        return mapNewsList(newsJson) ?: return emptyList()
     }
 
     private fun mapNewsList(jsonList: List<NewsJson>?) = jsonList

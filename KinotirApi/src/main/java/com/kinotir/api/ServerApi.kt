@@ -1,6 +1,5 @@
 package com.kinotir.api
 
-import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.GET
@@ -10,21 +9,21 @@ import retrofit2.http.Query
 interface ServerApi {
 
     @GET("/ajax/user.php?action=login&submit=true")
-    fun login(@Query("email") email: String, @Query("password") password: String): Single<Response<ResponseBody>>
+    suspend fun login(@Query("email") email: String, @Query("password") password: String): Response<ResponseBody>
 
     @GET("/")
-    fun todayFilms(): Single<Response<ResponseBody>>
+    suspend fun todayFilms(): Response<ResponseBody>
 
     @GET("/skoro-v-kino")
-    fun soonFilms(): Single<Response<ResponseBody>>
+    suspend fun soonFilms(): Response<ResponseBody>
 
     @GET("{path}")
-    fun filmDetails(@Path("path") path: String): Single<Response<ResponseBody>>
+    suspend fun filmDetails(@Path("path") path: String): Response<ResponseBody>
 
     @GET("/lc/")
-    fun tickets(): Single<Response<ResponseBody>>
+    suspend fun tickets(): Response<ResponseBody>
 
     @GET("/novosti")
-    fun newses(): Single<Response<ResponseBody>>
+    suspend fun newses(): Response<ResponseBody>
 
 }

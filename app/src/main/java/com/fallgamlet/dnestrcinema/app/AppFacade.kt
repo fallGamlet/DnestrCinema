@@ -6,7 +6,6 @@ import com.fallgamlet.dnestrcinema.data.network.RequestFactory
 import com.fallgamlet.dnestrcinema.domain.models.AccountItem
 import com.fallgamlet.dnestrcinema.domain.models.CinemaItem
 import com.fallgamlet.dnestrcinema.domain.models.NavigationItem
-import com.fallgamlet.dnestrcinema.domain.repositories.DeprecatedCinemaRepository
 import com.fallgamlet.dnestrcinema.mvp.factory.ConfigFactory
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpNavigationCreator
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpPresenterFactory

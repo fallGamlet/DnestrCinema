@@ -1,7 +1,6 @@
 package com.kinotir.api
 
 import com.kinotir.api.mappers.KinotirMapper
-import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.Response
 
@@ -9,38 +8,35 @@ internal class KinotirApiImpl(
     private val serverApi: ServerApi
 ) : KinotirApi{
 
-    override fun todayFilms(): Single<List<FilmJson>> {
-        return serverApi.todayFilms()
+    override suspend  fun todayFilms(): List<FilmJson> {
+        val result = serverApi.todayFilms()
             .checkResponse()
-            .map { KinotirMapper.mapFilms(it) ?: emptyList() }
+        return KinotirMapper.mapFilms(result) ?: emptyList()
     }
 
-    override fun soonFilms(): Single<List<FilmJson>> {
-        return serverApi.soonFilms()
+    override suspend  fun soonFilms(): List<FilmJson> {
+        val result = serverApi.soonFilms()
             .checkResponse()
-            .map { KinotirMapper.mapFilms(it) ?: emptyList() }
+        return KinotirMapper.mapFilms(result) ?: emptyList()
     }
 
-    override fun filmDetails(path: String): Single<FilmDetailsJson> {
-        return serverApi.filmDetails(path)
+    override suspend  fun filmDetails(path: String): FilmDetailsJson {
+        val result = serverApi.filmDetails(path)
             .checkResponse()
-            .map { KinotirMapper.mapFilmDetails(it) ?: FilmDetailsJson() }
+        return KinotirMapper.mapFilmDetails(result) ?: FilmDetailsJson()
     }
 
-    override fun newses(): Single<List<NewsJson>> {
-        return serverApi.newses()
+    override suspend  fun newses(): List<NewsJson> {
+        val result = serverApi.newses()
             .checkResponse()
-            .map { KinotirMapper.mapNewses(it) ?: emptyList() }
+        return KinotirMapper.mapNewses(result) ?: emptyList()
     }
 
-    override fun tickets(): Single<List<TicketJson>> {
-        return serverApi.tickets()
+    override suspend  fun tickets(): List<TicketJson> {
+        val result = serverApi.tickets()
             .checkResponse()
-            .map { KinotirMapper.mapTickets(it) ?: emptyList() }
+        return KinotirMapper.mapTickets(result) ?: emptyList()
     }
-
-    private fun Single<Response<ResponseBody>>.checkResponse(): Single<String>
-            = map { it.checkResponse() }
 
     private fun Response<ResponseBody>.checkResponse(): String {
         if (code() >= 400) {

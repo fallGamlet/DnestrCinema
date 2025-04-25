@@ -5,7 +5,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 
 class ApiFactory(
     private val appName: String = "",
@@ -18,15 +17,15 @@ class ApiFactory(
 
     init {
         val httpClient = createHttpClient(debug)
-        val serverApi = createServerApi(httpClient)
-        api = KinotirApiImpl(serverApi)
+        api = KinotirApiImpl(
+            serverApi = createServerApi(httpClient)
+        )
     }
 
     private fun createServerApi(httpClient: OkHttpClient): ServerApi {
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(httpClient)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 
         return retrofit.create(ServerApi::class.java)

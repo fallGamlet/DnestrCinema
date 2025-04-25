@@ -5,26 +5,25 @@ import com.fallgamlet.dnestrcinema.domain.models.FilmSession
 import com.fallgamlet.dnestrcinema.domain.models.ImageUrl
 import com.fallgamlet.dnestrcinema.domain.repositories.remote.FilmRepository
 import com.kinotir.api.*
-import io.reactivex.Single
 import java.util.*
 
 internal class FilmRepositoryImpl(
-    private val api: KinotirApi
+    private val api: KinotirApi,
 ) : FilmRepository {
 
-    override fun getToday(): Single<List<Film>> {
+    override suspend fun getToday(): List<Film> {
         return api.todayFilms()
-            .map(::mapFilms)
+            .let(::mapFilms)
     }
 
-    override fun getSoon(): Single<List<Film>> {
+    override suspend fun getSoon(): List<Film> {
         return api.soonFilms()
-            .map(::mapFilms)
+            .let(::mapFilms)
     }
 
-    override fun getDetails(selector: String): Single<Film> {
+    override suspend fun getDetails(selector: String): Film {
         return api.filmDetails(selector)
-            .map(::mapFilmDetails)
+            .let(::mapFilmDetails)
     }
 
     private fun mapFilms(jsonList: List<FilmJson>) = jsonList.map(::mapFilm)

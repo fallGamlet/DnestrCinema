@@ -3,12 +3,16 @@ package com.fallgamlet.dnestrcinema.ui.news
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fallgamlet.dnestrcinema.domain.repositories.remote.NewsRepository
-import com.fallgamlet.dnestrcinema.utils.reactive.mapTrue
-import com.fallgamlet.dnestrcinema.utils.reactive.schedulersIoToUi
-import com.fallgamlet.dnestrcinema.utils.reactive.subscribeDisposable
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -30,32 +34,29 @@ class NewsViewModel @Inject constructor(
         loadData()
     }
 
-    @Suppress("UnstableApiUsage")
     fun loadData() {
-        newsRepository.getItems()
-            .doOnSuccess { items ->
-                cachedNewsVoList = items.map(NewsVoMapper::mapNews)
-            }
-            .doOnSubscribe {
-                stateVo.update { state ->
-                    state.copy(isRefreshing = true)
+        viewModelScope.launch(Dispatchers.IO) {
+            flow { emit(newsRepository.getItemsSuspend()) }
+                .onEach { items ->
+                    cachedNewsVoList = items.map(NewsVoMapper::mapNews)
                 }
-            }
-            .schedulersIoToUi()
-            .doOnError {
-                viewModelScope.launch {
-                    errorChannel.send(it)
+                .onStart {
+                    stateVo.update { state ->
+                        state.copy(isRefreshing = true)
+                    }
                 }
-            }
-            .mapTrue()
-            .doOnTerminate {
-                stateVo.update { state ->
-                    state.copy(
-                        isRefreshing = false,
-                        items = cachedNewsVoList,
-                    )
+                .onCompletion {
+                    stateVo.update { state ->
+                        state.copy(
+                            isRefreshing = false,
+                            items = cachedNewsVoList,
+                        )
+                    }
                 }
-            }
-            .subscribeDisposable()
+                .catch { error ->
+                    errorChannel.send(error)
+                }
+                .collect()
+        }
     }
 }
