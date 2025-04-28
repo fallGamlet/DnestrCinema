@@ -156,11 +156,6 @@ class StartActivity : AppCompatActivity(), NavigationRouter {
         bottomNavigationPresenter.onSoonSelected()
     }
 
-    override fun showTickets() {
-        showViewWithNavigationId(NavigationItem.NavigationId.TICKETS)
-        bottomNavigationPresenter.onTicketsSelected()
-    }
-
     override fun showAbout() {
         showViewWithNavigationId(NavigationItem.NavigationId.ABOUT)
         bottomNavigationPresenter.onAboutSelected()
@@ -172,7 +167,7 @@ class StartActivity : AppCompatActivity(), NavigationRouter {
     }
 
     private fun showViewWithNavigationId(navigationId: Int) {
-        val pos = instance.navigations!!.indexOf(navigationId)
+        val pos = instance.navigations.indexOf(navigationId)
         showViewWithPosition(pos)
     }
 

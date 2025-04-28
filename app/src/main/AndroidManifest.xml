@@ -48,16 +48,6 @@
             android:exported="false"
             android:theme="@style/AppTheme" />
 
-        <activity
-            android:name=".ui.CinemaBuyTicketActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme" />
-
-        <activity
-            android:name=".ui.tickets.detail.TicketDetailActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme" />
-
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

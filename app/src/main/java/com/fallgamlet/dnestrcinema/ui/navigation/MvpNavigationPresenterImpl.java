@@ -71,21 +71,6 @@ public class MvpNavigationPresenterImpl
     }
 
     @Override
-    public void onTicketsSelected() {
-        if (!this.state.isStateTickets()) {
-            this.state.setStateTickets();
-
-            if (isViewBinded()) {
-                getView().selectTickets();
-            }
-
-            if (isRouterBinded()) {
-                getRouter().showTickets();
-            }
-        }
-    }
-
-    @Override
     public void onAboutSelected() {
         if (!this.state.isStateAbout()) {
             this.state.setStateAbout();
@@ -119,9 +104,8 @@ public class MvpNavigationPresenterImpl
     private class State {
         private static final int STATE_TODAY = 1;
         private static final int STATE_SOON = 2;
-        private static final int STATE_TICKETS = 3;
-        private static final int STATE_NEWS = 4;
-        private static final int STATE_ABOUT = 5;
+        private static final int STATE_NEWS = 3;
+        private static final int STATE_ABOUT = 4;
 
         private int value;
 
@@ -135,10 +119,6 @@ public class MvpNavigationPresenterImpl
 
         public void setStateSoon() {
             this.value = STATE_SOON;
-        }
-
-        public void setStateTickets() {
-            this.value = STATE_TICKETS;
         }
 
         public void setStateNews() {
@@ -155,10 +135,6 @@ public class MvpNavigationPresenterImpl
 
         public boolean isStateSoon() {
             return this.value == STATE_SOON;
-        }
-
-        public boolean isStateTickets() {
-            return this.value == STATE_TICKETS;
         }
 
         public boolean isStateNews() {

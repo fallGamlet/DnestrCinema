@@ -6,8 +6,6 @@ interface NavigationRouter {
 
     fun showSoon()
 
-    fun showTickets()
-
     fun showAbout()
 
     fun showNews()

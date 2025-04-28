@@ -76,10 +76,6 @@ public class MvpBottomNavigationView
                 presenter.onSoonSelected();
                 checked = true;
                 break;
-            case NavigationItem.NavigationId.TICKETS:
-                presenter.onTicketsSelected();
-                checked = true;
-                break;
             case NavigationItem.NavigationId.NEWS:
                 presenter.onNewsSelected();
                 checked = true;
@@ -112,11 +108,6 @@ public class MvpBottomNavigationView
     @Override
     public void selectSoon() {
         selectItemById(NavigationItem.NavigationId.SOON);
-    }
-
-    @Override
-    public void selectTickets() {
-        selectItemById(NavigationItem.NavigationId.TICKETS);
     }
 
     @Override

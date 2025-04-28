@@ -11,8 +11,6 @@ class NavigationCreatorImpl : MvpNavigationCreator {
         return when (id) {
             NavigationItem.NavigationId.TODAY -> createTodayNavigation()
             NavigationItem.NavigationId.SOON -> createSoonNavigation()
-            NavigationItem.NavigationId.TICKETS -> createTicketsNavigation()
-            NavigationItem.NavigationId.LOGIN -> createLoginNavigation()
             NavigationItem.NavigationId.NEWS -> createNewsNavigation()
             NavigationItem.NavigationId.ABOUT -> createAboutNavigation()
             else -> null
@@ -31,20 +29,6 @@ class NavigationCreatorImpl : MvpNavigationCreator {
         val item = NavigationItem(NavigationItem.NavigationId.SOON)
         item.titleId = R.string.soon
         item.iconResId = R.drawable.ic_watch_later_black_24dp
-        return item
-    }
-
-    private fun createLoginNavigation(): NavigationItem {
-        val item = NavigationItem(NavigationItem.NavigationId.LOGIN)
-        item.titleId = R.string.title_login
-        item.iconResId = R.drawable.ic_person_black_24dp
-        return item
-    }
-
-    private fun createTicketsNavigation(): NavigationItem {
-        val item = NavigationItem(NavigationItem.NavigationId.TICKETS)
-        item.titleId = R.string.tickets
-        item.iconResId = R.drawable.ic_tickets_24dp
         return item
     }
 

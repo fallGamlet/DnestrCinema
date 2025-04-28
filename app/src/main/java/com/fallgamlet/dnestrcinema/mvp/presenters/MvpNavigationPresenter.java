@@ -12,8 +12,6 @@ public interface MvpNavigationPresenter extends MvpPresenter<MvpNavigationView> 
 
     void onSoonSelected();
 
-    void onTicketsSelected();
-
     void onAboutSelected();
 
     void onNewsSelected();

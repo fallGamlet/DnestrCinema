@@ -75,10 +75,8 @@ public class NavigationItem implements Comparable {
     public interface NavigationId {
         static final int TODAY = 1;
         static final int SOON = 2;
-        static final int LOGIN = 3;
-        static final int TICKETS = 4;
-        static final int DETAIL = 5;
-        static final int NEWS = 6;
-        static final int ABOUT = 7;
+        static final int DETAIL = 3;
+        static final int NEWS = 4;
+        static final int ABOUT = 5;
     }
 }

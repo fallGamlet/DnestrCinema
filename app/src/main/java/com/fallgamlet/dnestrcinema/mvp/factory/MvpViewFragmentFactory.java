@@ -9,10 +9,6 @@ public interface MvpViewFragmentFactory {
 
     Fragment createSoonView();
 
-    Fragment createTicketsView();
-
-    Fragment createLoginView();
-
     Fragment createNewsView();
 
     Fragment createAboutView();

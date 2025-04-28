@@ -50,9 +50,6 @@ public class MvpNavigationFragment
         } else if (itemId == R.id.actionSoon) {
             getPresenter().onSoonSelected();
             checked = true;
-        } else if (itemId == R.id.actionTickets) {
-            getPresenter().onTicketsSelected();
-            checked = true;
         } else if (itemId == R.id.actionNews) {
             getPresenter().onNewsSelected();
             checked = true;
@@ -83,13 +80,6 @@ public class MvpNavigationFragment
     public void selectSoon() {
         if (this.navigationView.getSelectedItemId() != R.id.actionSoon) {
             this.navigationView.setSelectedItemId(R.id.actionSoon);
-        }
-    }
-
-    @Override
-    public void selectTickets() {
-        if (this.navigationView.getSelectedItemId() != R.id.actionTickets) {
-            this.navigationView.setSelectedItemId(R.id.actionTickets);
         }
     }
 

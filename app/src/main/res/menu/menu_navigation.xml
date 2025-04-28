@@ -14,13 +14,6 @@
         app:srcCompat="@drawable/ic_watch_later_black_24dp"
         />
 
-    <item android:id="@+id/actionTickets"
-        android:title="@string/tickets"
-        android:icon="@drawable/ic_tickets_24dp"
-        app:srcCompat="@drawable/ic_tickets_24dp"
-        android:visible="false"
-        />
-
     <item android:id="@+id/actionNews"
         android:title="@string/news"
         android:icon="@drawable/ic_library_books_black_24dp"
