@@ -3,7 +3,6 @@ package com.fallgamlet.dnestrcinema.data.network.kinotir.mappers;
 import com.fallgamlet.dnestrcinema.data.network.Mapper;
 import com.fallgamlet.dnestrcinema.domain.models.TicketItem;
 import com.fallgamlet.dnestrcinema.domain.models.TicketPlace;
-import com.fallgamlet.dnestrcinema.utils.StringUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,7 +19,7 @@ import java.util.List;
 public class HtmlTicketsMapper implements Mapper<String, List<TicketItem>> {
     @Override
     public List<TicketItem> map(String html) {
-        if (StringUtils.INSTANCE.isEmpty(html)) {
+        if (html == null || html.isBlank()) {
             return null;
         }
 

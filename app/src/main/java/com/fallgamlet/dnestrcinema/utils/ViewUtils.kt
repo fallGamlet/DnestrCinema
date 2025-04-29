@@ -113,9 +113,4 @@ object ViewUtils {
         }
     }
 
-    @JvmOverloads
-    fun setVisible(view: View, visible: Boolean, invisibleState: Int = View.GONE) {
-        view.visibility = if (visible) View.VISIBLE else invisibleState
-    }
-
 }

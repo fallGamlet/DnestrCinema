@@ -2,7 +2,6 @@ package com.fallgamlet.dnestrcinema.data.network.kinotir.mappers;
 
 import com.fallgamlet.dnestrcinema.data.network.Mapper;
 import com.fallgamlet.dnestrcinema.utils.LogUtils;
-import com.fallgamlet.dnestrcinema.utils.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,7 +13,7 @@ public class MovieDateMapper implements Mapper<String, Date> {
     @Override
     public Date map(String src) {
         try {
-            if (StringUtils.INSTANCE.isEmpty(src)) {
+            if (src == null || src.isBlank()) {
                 return null;
             }
 

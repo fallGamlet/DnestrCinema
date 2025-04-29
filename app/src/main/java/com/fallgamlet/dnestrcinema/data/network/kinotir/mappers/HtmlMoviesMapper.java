@@ -4,7 +4,6 @@ import com.fallgamlet.dnestrcinema.data.network.Mapper;
 import com.fallgamlet.dnestrcinema.domain.models.MovieDetailItem;
 import com.fallgamlet.dnestrcinema.domain.models.MovieItem;
 import com.fallgamlet.dnestrcinema.domain.models.ScheduleItem;
-import com.fallgamlet.dnestrcinema.utils.StringUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,7 +25,7 @@ public class HtmlMoviesMapper implements Mapper<String, List<MovieItem>> {
 
     @Override
     public List<MovieItem> map(String html) {
-        if (StringUtils.INSTANCE.isEmpty(html)) {
+        if (html == null || html.isBlank()) {
             return null;
         }
         Document doc = Jsoup.parse(html);

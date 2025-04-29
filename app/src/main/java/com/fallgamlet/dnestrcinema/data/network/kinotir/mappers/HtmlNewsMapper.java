@@ -2,7 +2,6 @@ package com.fallgamlet.dnestrcinema.data.network.kinotir.mappers;
 
 import com.fallgamlet.dnestrcinema.data.network.Mapper;
 import com.fallgamlet.dnestrcinema.domain.models.NewsItem;
-import com.fallgamlet.dnestrcinema.utils.StringUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -22,7 +21,7 @@ public class HtmlNewsMapper implements Mapper <String, List<NewsItem>> {
 
     @Override
     public List<NewsItem> map(String html) {
-        if (StringUtils.INSTANCE.isEmpty(html)) {
+        if (html == null || html.isBlank()) {
             return null;
         }
 
