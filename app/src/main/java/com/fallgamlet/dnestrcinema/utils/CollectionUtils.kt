@@ -1,7 +1,5 @@
 package com.fallgamlet.dnestrcinema.utils
 
-import java.util.*
-
 
 object CollectionUtils {
 

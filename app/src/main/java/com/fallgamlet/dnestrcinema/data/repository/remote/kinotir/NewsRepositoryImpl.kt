@@ -4,7 +4,7 @@ import com.fallgamlet.dnestrcinema.domain.models.NewsPost
 import com.fallgamlet.dnestrcinema.domain.repositories.remote.NewsRepository
 import com.kinotir.api.KinotirApi
 import com.kinotir.api.NewsJson
-import java.util.*
+import java.util.Date
 
 internal class NewsRepositoryImpl(
     private val api: KinotirApi,

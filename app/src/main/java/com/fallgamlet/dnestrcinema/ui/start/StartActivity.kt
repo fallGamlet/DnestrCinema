@@ -10,8 +10,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.fallgamlet.dnestrcinema.R
 import com.fallgamlet.dnestrcinema.app.AppFacade.Companion.instance
 import com.fallgamlet.dnestrcinema.dagger.getAppComponent
-import com.fallgamlet.dnestrcinema.data.localstore.AccountLocalRepository
-import com.fallgamlet.dnestrcinema.domain.models.AccountItem
 import com.fallgamlet.dnestrcinema.domain.models.NavigationItem
 import com.fallgamlet.dnestrcinema.mvp.presenters.MvpNavigationPresenter
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter
@@ -20,10 +18,7 @@ import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpBottomNavigationView
 import com.fallgamlet.dnestrcinema.ui.navigation.MvpNavigationPresenterImpl
 import com.fallgamlet.dnestrcinema.utils.ViewUtils.shareApp
-import com.fallgamlet.dnestrcinema.utils.reactive.ObserverUtils.emptyDisposableObserver
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 class StartActivity : AppCompatActivity(), NavigationRouter {
     private lateinit var mViewPager: ViewPager2
@@ -41,35 +36,9 @@ class StartActivity : AppCompatActivity(), NavigationRouter {
     }
 
     private fun initData() {
-        initAccount()
         initNavigation()
         setupViewPager(mViewPager)
         showToday()
-    }
-
-    private fun initAccount() {
-        AccountLocalRepository(this).items
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .map { value: List<AccountItem> ->
-                initAccount(value)
-                true
-            }
-            .onErrorReturnItem(false)
-            .subscribe(emptyDisposableObserver())
-    }
-
-    private fun initAccount(items: List<AccountItem>) {
-        val cinemaId = instance.cinemaItem!!.id
-        val accountItem = items
-            .firstOrNull { it.cinemaId == cinemaId }
-            ?: return
-
-        instance.accountItem = accountItem
-        instance.netClient?.apply {
-            login = accountItem.login
-            password = accountItem.password
-        }
     }
 
     private fun initNavigation() {

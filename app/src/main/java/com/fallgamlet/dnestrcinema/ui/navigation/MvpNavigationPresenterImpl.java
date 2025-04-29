@@ -14,11 +14,6 @@ public class MvpNavigationPresenterImpl
     private NavigationRouter router;
     private State state;
 
-
-    public MvpNavigationPresenterImpl() {
-        this.state = new State();
-    }
-
     public MvpNavigationPresenterImpl(MvpNavigationView view, NavigationRouter router) {
         this.state = new State();
 

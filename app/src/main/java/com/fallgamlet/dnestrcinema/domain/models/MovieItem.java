@@ -13,8 +13,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import kotlin.collections.EmptyList;
-
 /**
  * Created by fallgamlet on 07.01.17.
  */

@@ -2,7 +2,9 @@ package com.fallgamlet.dnestrcinema.utils
 
 import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 
 @SuppressLint("ConstantLocale")

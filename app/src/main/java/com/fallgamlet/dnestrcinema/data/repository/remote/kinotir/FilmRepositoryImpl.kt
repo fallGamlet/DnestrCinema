@@ -4,8 +4,12 @@ import com.fallgamlet.dnestrcinema.domain.models.Film
 import com.fallgamlet.dnestrcinema.domain.models.FilmSession
 import com.fallgamlet.dnestrcinema.domain.models.ImageUrl
 import com.fallgamlet.dnestrcinema.domain.repositories.remote.FilmRepository
-import com.kinotir.api.*
-import java.util.*
+import com.kinotir.api.FilmDetailsJson
+import com.kinotir.api.FilmJson
+import com.kinotir.api.FilmSessionJson
+import com.kinotir.api.ImageUrlJson
+import com.kinotir.api.KinotirApi
+import java.util.Date
 
 internal class FilmRepositoryImpl(
     private val api: KinotirApi,

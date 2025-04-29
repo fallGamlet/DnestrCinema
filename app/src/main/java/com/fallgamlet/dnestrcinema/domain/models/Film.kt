@@ -1,6 +1,6 @@
 package com.fallgamlet.dnestrcinema.domain.models
 
-import java.util.*
+import java.util.Date
 
 
 data class Film(
