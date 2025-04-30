@@ -1,7 +1,6 @@
 package com.fallgamlet.dnestrcinema.mvp.factory;
 
 import com.fallgamlet.dnestrcinema.data.network.RequestFactory;
-import com.fallgamlet.dnestrcinema.domain.models.CinemaItem;
 
 import java.util.List;
 
@@ -10,8 +9,6 @@ import java.util.List;
  */
 
 public interface ConfigFactory {
-
-    CinemaItem getCinema();
 
     List<Integer> getNavigations();
 

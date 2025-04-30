@@ -1,7 +1,6 @@
 package com.fallgamlet.dnestrcinema.app
 
 import com.fallgamlet.dnestrcinema.data.network.RequestFactory
-import com.fallgamlet.dnestrcinema.domain.models.CinemaItem
 import com.fallgamlet.dnestrcinema.domain.models.NavigationItem
 import com.fallgamlet.dnestrcinema.mvp.factory.ConfigFactory
 import com.fallgamlet.dnestrcinema.mvp.factory.MvpNavigationCreator
@@ -16,7 +15,6 @@ class AppFacade private constructor() {
     }
 
     fun init(configFactory: ConfigFactory) {
-        this.cinemaItem = configFactory.cinema
         this.navigations = configFactory.navigations
         this.fragmentFactory = configFactory.viewFragmentFactory
         this.navigationCreator = configFactory.navigationCreator
@@ -25,8 +23,6 @@ class AppFacade private constructor() {
 
 
     var navigationRouter: NavigationRouter? = null
-    var cinemaItem: CinemaItem? = null
-        private set
     var navigations: List<Int> = emptyList()
         private set
     var fragmentFactory: MvpViewFragmentFactory? = null
