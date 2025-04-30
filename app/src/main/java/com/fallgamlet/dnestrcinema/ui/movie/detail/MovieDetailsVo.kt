@@ -1,5 +1,8 @@
 package com.fallgamlet.dnestrcinema.ui.movie.detail
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class MovieDetailsVo(
     val title: String = "",
     val pubDate: String = "",

@@ -1,5 +1,8 @@
 package com.fallgamlet.dnestrcinema.ui.movie.detail
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class MovieDetailsLabels(
     val duration: String,
     val director: String,

@@ -1,5 +1,8 @@
 package com.fallgamlet.dnestrcinema.ui.news
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class NewsVo(
     val id: String,
     val tag: String,

@@ -25,6 +25,8 @@ fun NewsListScreen(
         isRefreshing = isRefreshing,
         modifier = Modifier.fillMaxSize(),
         onRefresh = onRefresh,
+        key = { newsList[it].id },
+        contentType = { "news_item" },
         itemContent = { index ->
             NewsSnippet(
                 news = newsList[index],
@@ -50,7 +52,6 @@ private fun PreviewNewsListScreen() {
 
     val itemsState = remember { mutableStateOf(items) }
     val isRefreshing = remember { mutableStateOf(false) }
-    val refreshingCount = remember { mutableStateOf(0) }
 
     NewsListScreen(
         newsList = items,
@@ -58,8 +59,7 @@ private fun PreviewNewsListScreen() {
         onRefresh = {
             GlobalScope.launch {
                 isRefreshing.value = true
-                refreshingCount.value++
-                delay(1000)
+                delay(500)
                 isRefreshing.value = false
                 itemsState.value = itemsState.value.reversed()
             }

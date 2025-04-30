@@ -32,6 +32,8 @@ fun MoviesComposable(
         isRefreshing = isRefreshing,
         modifier = Modifier.fillMaxSize(),
         onRefresh = onRefresh,
+        key = { movies[it].link },
+        contentType = { "movie_item" },
         itemContent = { index ->
             val movie = movies[index]
             Column(
