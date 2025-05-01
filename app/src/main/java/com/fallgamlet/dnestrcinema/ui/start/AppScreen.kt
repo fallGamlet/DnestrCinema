@@ -35,14 +35,12 @@ fun AppScreen(
     val navigationSelectedItem = remember { mutableStateOf(0) }
 
     MaterialTheme {
-
         Scaffold(
-//            modifier = Modifier.fillMaxSize(),
             bottomBar = {
                 NavigationBar {
                     listOf(
-                        TopLevelRoute.SoonMovies,
                         TopLevelRoute.TodayMovies,
+                        TopLevelRoute.SoonMovies,
                         TopLevelRoute.Newses,
                         TopLevelRoute.About,
                     ).forEachIndexed { index, item ->
@@ -74,7 +72,7 @@ fun AppScreen(
         ) { innerPadding ->
             NavHost(
                 navController = navController,
-                startDestination = TopLevelRoute.SoonMovies.destination.route,
+                startDestination = TopLevelRoute.TodayMovies.destination.route,
                 modifier = Modifier.padding(paddingValues = innerPadding)
             ) {
                 todayMoviesNavigation(
