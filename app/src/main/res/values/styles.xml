@@ -65,32 +65,4 @@
         <item name="cardPreventCornerOverlap">false</item>
     </style>
 
-    <style name="AppTheme.Guideline">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="AppTheme.Guideline.Start">
-        <item name="android:id">@id/guidelineStart</item>
-        <item name="layout_constraintGuide_begin">@dimen/SpaceMiddle</item>
-    </style>
-
-    <style name="AppTheme.Guideline.End">
-        <item name="android:id">@id/guidelineEnd</item>
-        <item name="layout_constraintGuide_end">@dimen/SpaceMiddle</item>
-    </style>
-
-    <style name="AppTheme.Guideline.Top">
-        <item name="android:id">@id/guidelineTop</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="layout_constraintGuide_begin">@dimen/SpaceMiddle</item>
-    </style>
-
-    <style name="AppTheme.Guideline.Bottom">
-        <item name="android:id">@id/guidelineBottom</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="layout_constraintGuide_end">@dimen/SpaceMiddle</item>
-    </style>
-
 </resources>
