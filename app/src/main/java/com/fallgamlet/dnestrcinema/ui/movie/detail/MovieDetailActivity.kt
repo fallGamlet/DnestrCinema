@@ -4,6 +4,10 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModelProvider
@@ -31,16 +35,19 @@ class MovieDetailActivity : AppCompatActivity() {
             ComposeView(this).apply {
                 setContent {
                     val movieState = viewModel.movieState.collectAsState(MovieDetailsVo())
-                    MovieDetailsScreen(
-                        movie = movieState.value,
-                        labels = labels,
-                        trailerAction = { url ->
-                            IntentUtils.openUrl(this@MovieDetailActivity, url)
-                        },
-                        backAction = {
-                            onBackPressed()
-                        }
-                    )
+                    val colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()
+                    MaterialTheme(colorScheme = colorScheme) {
+                        MovieDetailsScreen(
+                            movie = movieState.value,
+                            labels = labels,
+                            trailerAction = { url ->
+                                IntentUtils.openUrl(this@MovieDetailActivity, url)
+                            },
+                            backAction = {
+                                onBackPressed()
+                            }
+                        )
+                    }
                 }
             }
         )

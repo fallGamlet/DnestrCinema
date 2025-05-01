@@ -1,6 +1,7 @@
 package com.fallgamlet.dnestrcinema.ui.start
 
 import android.content.Context
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -8,7 +9,10 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -32,9 +36,10 @@ fun AppScreen(
     val getViewModelFactory: () -> ViewModelProvider.Factory = remember {
         { viewModelFactory }
     }
-    val navigationSelectedItem = remember { mutableStateOf(0) }
+    val navigationSelectedItem = remember { mutableIntStateOf(0) }
+    val colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()
 
-    MaterialTheme {
+    MaterialTheme(colorScheme = colorScheme) {
         Scaffold(
             bottomBar = {
                 NavigationBar {
@@ -45,7 +50,7 @@ fun AppScreen(
                         TopLevelRoute.About,
                     ).forEachIndexed { index, item ->
                         NavigationBarItem(
-                            selected = index == navigationSelectedItem.value,
+                            selected = index == navigationSelectedItem.intValue,
                             label = {
                                 Text(item.destination.name)
                             },
@@ -56,7 +61,7 @@ fun AppScreen(
                                 )
                             },
                             onClick = {
-                                navigationSelectedItem.value = index
+                                navigationSelectedItem.intValue = index
                                 navController.navigate(route = item.destination.route) {
                                     popUpTo(navController.graph.findStartDestination().id) {
                                         saveState = true
