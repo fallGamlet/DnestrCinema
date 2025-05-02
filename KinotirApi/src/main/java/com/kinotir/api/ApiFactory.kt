@@ -50,8 +50,6 @@ class ApiFactory(
 
         val builder = original.newBuilder()
             .header("User-Agent", appName)
-            .header("Accept", "application/json")
-            .header("Content-Type", "application/json")
 
         return chain.proceed(builder.build())
     }
