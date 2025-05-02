@@ -13,7 +13,6 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -31,6 +30,7 @@ import com.fallgamlet.dnestrcinema.ui.news.navigation.newsListNavigation
 fun AppScreen(
     viewModelFactory: ViewModelProvider.Factory,
     context: () -> Context,
+    navItems: List<TopLevelRoute>,
 ) {
     val navController = rememberNavController()
     val getViewModelFactory: () -> ViewModelProvider.Factory = remember {
@@ -43,16 +43,11 @@ fun AppScreen(
         Scaffold(
             bottomBar = {
                 NavigationBar {
-                    listOf(
-                        TopLevelRoute.TodayMovies,
-                        TopLevelRoute.SoonMovies,
-                        TopLevelRoute.Newses,
-                        TopLevelRoute.About,
-                    ).forEachIndexed { index, item ->
+                    navItems.forEachIndexed { index, item ->
                         NavigationBarItem(
                             selected = index == navigationSelectedItem.intValue,
                             label = {
-                                Text(item.destination.name)
+                                Text(item.title)
                             },
                             icon = {
                                 Icon(
@@ -77,7 +72,7 @@ fun AppScreen(
         ) { innerPadding ->
             NavHost(
                 navController = navController,
-                startDestination = TopLevelRoute.TodayMovies.destination.route,
+                startDestination = navItems.first().destination.route,
                 modifier = Modifier.padding(paddingValues = innerPadding)
             ) {
                 todayMoviesNavigation(

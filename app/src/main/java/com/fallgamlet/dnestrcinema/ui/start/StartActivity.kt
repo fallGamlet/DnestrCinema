@@ -5,16 +5,44 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModelProvider
+import com.fallgamlet.dnestrcinema.R
 import com.fallgamlet.dnestrcinema.app.AppFacade.Companion.instance
 import com.fallgamlet.dnestrcinema.dagger.getAppComponent
 import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter
 import com.fallgamlet.dnestrcinema.ui.movie.detail.MovieDetailActivity
+import com.fallgamlet.dnestrcinema.ui.navigation.RouteDestination
+import com.fallgamlet.dnestrcinema.ui.navigation.TopLevelRoute
 import javax.inject.Inject
 
 class StartActivity : AppCompatActivity(), NavigationRouter {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val navItems: List<TopLevelRoute> by lazy {
+        listOf(
+            TopLevelRoute(
+                title = getString(R.string.today),
+                iconResId = R.drawable.ic_local_movies_black_24dp,
+                destination = RouteDestination.TodayMovies,
+            ),
+            TopLevelRoute(
+                title = getString(R.string.soon),
+                destination = RouteDestination.SoonMovies,
+                iconResId = R.drawable.ic_watch_later_black_24dp,
+            ),
+            TopLevelRoute(
+                title = getString(R.string.news),
+                destination = RouteDestination.Newses,
+                iconResId = R.drawable.ic_library_books_black_24dp,
+            ),
+            TopLevelRoute(
+                title = getString(R.string.about),
+                destination = RouteDestination.About,
+                iconResId = R.drawable.ic_info_black_24dp,
+            )
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         getAppComponent().inject(this)
@@ -24,7 +52,8 @@ class StartActivity : AppCompatActivity(), NavigationRouter {
                 setContent {
                     AppScreen(
                         viewModelFactory = viewModelFactory,
-                        context = { this@StartActivity }
+                        context = { this@StartActivity },
+                        navItems = navItems,
                     )
                 }
             }

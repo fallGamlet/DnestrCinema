@@ -1,5 +1,6 @@
 package com.fallgamlet.dnestrcinema.app
 
+import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDexApplication
 import com.fallgamlet.dnestrcinema.dagger.AppComponent
@@ -17,6 +18,26 @@ class App : MultiDexApplication(),
 
     override fun onCreate() {
         super.onCreate()
+
+        StrictMode.setThreadPolicy(
+            StrictMode.ThreadPolicy.Builder()
+//                .detectDiskReads()
+//                .detectDiskWrites()
+//                .detectNetwork()
+                .detectAll()
+                .penaltyLog()
+                .penaltyDeath()
+                .build()
+        )
+
+        StrictMode.setVmPolicy(
+            StrictMode.VmPolicy.Builder()
+                .detectAll()
+                .build()
+        )
+
+
+
         initDagger()
         AndroidThreeTen.init(this)
 
