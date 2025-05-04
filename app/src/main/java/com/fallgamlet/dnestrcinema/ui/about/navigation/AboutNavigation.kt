@@ -17,6 +17,7 @@ import com.fallgamlet.dnestrcinema.ui.about.composable.AboutScreen
 import com.fallgamlet.dnestrcinema.ui.navigation.destinations.AboutDestination
 import com.fallgamlet.dnestrcinema.utils.HttpUtils
 import com.fallgamlet.dnestrcinema.utils.IntentUtils
+import com.fallgamlet.dnestrcinema.utils.ViewUtils
 
 fun NavGraphBuilder.aboutNavigation(
     viewModelFactory: () -> ViewModelProvider.Factory,
@@ -62,6 +63,8 @@ private fun Context.getState(): AboutScreenState {
         address = getString(R.string.org_address),
         addressAction = { navigateToMap() },
         attentionInfo = getString(R.string.org_desc_info),
+        shareAppLabel = getString(R.string.share),
+        shareAppAction = { ViewUtils.shareApp(this) },
         devInfo = getString(R.string.developer_contact_info),
         devEmail = getString(R.string.developer_email),
         devEmailAction = {

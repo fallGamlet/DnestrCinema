@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Call
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Place
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -28,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -117,6 +119,11 @@ fun AboutScreen(
         Text(
             text = state.attentionInfo,
             modifier = Modifier.padding(top = spaceMiddle),
+        )
+        IconTextLinkButton(
+            icon = Icons.Outlined.Share,
+            text = state.shareAppLabel,
+            onClick = state.shareAppAction,
         )
         Text(
             text = state.devInfo,
@@ -212,6 +219,8 @@ private fun PreviewAboutScreen() {
                 address = stringResource(R.string.org_address),
                 addressAction = { },
                 attentionInfo = stringResource(R.string.org_desc_info),
+                shareAppLabel = "Share the application",
+                shareAppAction = { },
                 devInfo = stringResource(R.string.developer_contact_info),
                 devEmail = stringResource(R.string.developer_email),
                 devEmailAction = { },

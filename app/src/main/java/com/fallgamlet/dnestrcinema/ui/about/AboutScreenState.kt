@@ -10,6 +10,8 @@ data class AboutScreenState(
     val address: String,
     val addressAction: () -> Unit,
     val attentionInfo: String,
+    val shareAppLabel: String,
+    val shareAppAction: () -> Unit,
     val devInfo: String,
     val devEmail: String,
     val devEmailAction: () -> Unit,
