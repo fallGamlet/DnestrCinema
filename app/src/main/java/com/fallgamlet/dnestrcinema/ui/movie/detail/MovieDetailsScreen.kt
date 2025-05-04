@@ -37,8 +37,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,8 +53,10 @@ fun MovieDetailsScreen(
     trailerAction: ((String) -> Unit)? = null,
     backAction: () -> Unit = { },
 ) {
-    val config = LocalConfiguration.current
-    val spaceTop = config.screenWidthDp.times(1.48f).minus(16)
+    val spaceTop = LocalWindowInfo.current.containerSize.width
+        .div(LocalDensity.current.density)
+        .times(1.48f)
+        .minus(32)
 
     val initialScroll = (0.5f * spaceTop * LocalDensity.current.density).toInt()
     val scrollState = rememberScrollState(initialScroll)
