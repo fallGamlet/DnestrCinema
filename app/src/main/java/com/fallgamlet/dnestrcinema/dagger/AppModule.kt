@@ -9,6 +9,7 @@ import dagger.Module
     NetworkModule::class,
     RepositoryModule::class,
     ViewModelModule::class,
+    NavigationModule::class,
 ])
 interface AppModule {
 

@@ -3,8 +3,9 @@ package com.fallgamlet.dnestrcinema.ui.about.navigation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.fallgamlet.dnestrcinema.R
@@ -13,22 +14,20 @@ import com.fallgamlet.dnestrcinema.data.network.KinoTir
 import com.fallgamlet.dnestrcinema.ui.ImageActivity
 import com.fallgamlet.dnestrcinema.ui.about.AboutScreenState
 import com.fallgamlet.dnestrcinema.ui.about.composable.AboutScreen
-import com.fallgamlet.dnestrcinema.ui.navigation.RouteDestination
+import com.fallgamlet.dnestrcinema.ui.navigation.destinations.AboutDestination
 import com.fallgamlet.dnestrcinema.utils.HttpUtils
 import com.fallgamlet.dnestrcinema.utils.IntentUtils
 
 fun NavGraphBuilder.aboutNavigation(
-    navController: NavController,
     viewModelFactory: () -> ViewModelProvider.Factory,
-    context: () -> Context,
 ) {
-    val state = context().getState()
-
-    composable(route = RouteDestination.About.route) {
+    composable<AboutDestination> {
+        val context = LocalContext.current
+        val state = remember { context.getState() }
         AboutScreen(
             state = state,
             callPhoneAction = { phone ->
-                IntentUtils.callPhone(context(), phone)
+                IntentUtils.callPhone(context, phone)
             }
         )
     }
