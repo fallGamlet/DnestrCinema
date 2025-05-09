@@ -1,30 +1,30 @@
 package com.fallgamlet.dnestrcinema.ui.about.navigation
 
 import android.content.Context
-import android.content.Intent
-import android.os.Bundle
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.fallgamlet.dnestrcinema.R
 import com.fallgamlet.dnestrcinema.app.AppFacade
 import com.fallgamlet.dnestrcinema.data.network.KinoTir
-import com.fallgamlet.dnestrcinema.ui.ImageActivity
 import com.fallgamlet.dnestrcinema.ui.about.AboutScreenState
 import com.fallgamlet.dnestrcinema.ui.about.composable.AboutScreen
 import com.fallgamlet.dnestrcinema.ui.navigation.destinations.AboutDestination
+import com.fallgamlet.dnestrcinema.ui.navigation.destinations.ImageViewerDestination
 import com.fallgamlet.dnestrcinema.utils.HttpUtils
 import com.fallgamlet.dnestrcinema.utils.IntentUtils
 import com.fallgamlet.dnestrcinema.utils.ViewUtils
 
 fun NavGraphBuilder.aboutNavigation(
+    navController: NavController,
     viewModelFactory: () -> ViewModelProvider.Factory,
 ) {
     composable<AboutDestination> {
         val context = LocalContext.current
-        val state = remember { context.getState() }
+        val state = remember { context.getState(navController) }
         AboutScreen(
             state = state,
             callPhoneAction = { phone ->
@@ -34,20 +34,22 @@ fun NavGraphBuilder.aboutNavigation(
     }
 }
 
-private fun Context.getState(): AboutScreenState {
+private fun Context.getState(
+    navController: NavController,
+): AboutScreenState {
     return AboutScreenState(
         rooms = listOf(
             AboutScreenState.Room(
                 title = getString(R.string.room_blue),
-                action = { navigateToRoomByPath(KinoTir.PATH_IMG_ROOM_BLUE) },
+                action = { navController.navigateToRoomByPath(KinoTir.PATH_IMG_ROOM_BLUE) },
             ),
             AboutScreenState.Room(
                 title = getString(R.string.room_bordo),
-                action = { navigateToRoomByPath(KinoTir.PATH_IMG_ROOM_BORDO) },
+                action = { navController.navigateToRoomByPath(KinoTir.PATH_IMG_ROOM_BORDO) },
             ),
             AboutScreenState.Room(
                 title = getString(R.string.room_dvd),
-                action = { navigateToRoomByPath(KinoTir.PATH_IMG_ROOM_DVD) },
+                action = { navController.navigateToRoomByPath(KinoTir.PATH_IMG_ROOM_DVD) },
             ),
         ),
         contactInfo = getString(R.string.org_contact_info),
@@ -74,15 +76,11 @@ private fun Context.getState(): AboutScreenState {
     )
 }
 
-private fun Context.navigateToRoomByPath(path: String) {
+private fun NavController.navigateToRoomByPath(path: String) {
     val baseUrl = AppFacade.instance.requestFactory?.baseUrl ?: return
-    val imgURL = HttpUtils.getAbsoluteUrl(baseUrl, path)
-    val bundle = Bundle().apply {
-        putString(ImageActivity.ARG_IMG_URL, imgURL)
-    }
+    val imgURL = HttpUtils.getAbsoluteUrl(baseUrl, path) ?: return
 
-    val intent = Intent(this, ImageActivity::class.java).putExtras(bundle)
-    startActivity(intent)
+    navigate(ImageViewerDestination(imgURL))
 }
 
 private fun Context.navigateToMap() {

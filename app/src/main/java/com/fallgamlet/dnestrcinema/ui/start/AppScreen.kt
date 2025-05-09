@@ -27,6 +27,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.fallgamlet.dnestrcinema.ui.about.navigation.aboutNavigation
+import com.fallgamlet.dnestrcinema.ui.images.viewer.navigation.imageViewerNavigation
 import com.fallgamlet.dnestrcinema.ui.movie.detail.navigation.movieDetailsNavigation
 import com.fallgamlet.dnestrcinema.ui.movie.soon.navigation.soonMoviesNavigation
 import com.fallgamlet.dnestrcinema.ui.movie.today.navigation.todayMoviesNavigation
@@ -136,6 +137,11 @@ private fun AppNavHost(
             viewModelFactory = getViewModelFactory,
         )
         aboutNavigation(
+            navController = navController,
+            viewModelFactory = getViewModelFactory,
+        )
+        imageViewerNavigation(
+            navController = navController,
             viewModelFactory = getViewModelFactory,
         )
     }
