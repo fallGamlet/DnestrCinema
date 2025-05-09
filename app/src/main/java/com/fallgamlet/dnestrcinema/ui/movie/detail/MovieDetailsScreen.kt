@@ -121,7 +121,6 @@ fun MovieDetailsScreen(
 }
 
 @Composable
-
 private fun ColumnScope.MovieInfo(
     movie: MovieDetailsVo,
     labels: MovieDetailsLabels,
