@@ -1,1 +1,2 @@
-include ':app', ':KinotirApi'
+include(":app")
+include(":KinotirApi")
