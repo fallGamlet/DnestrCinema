@@ -115,9 +115,6 @@ dependencies {
 
     implementation(libs.gson)
 
-    implementation(libs.glide)
-    kapt (libs.glide.compiler)
-
     implementation(libs.threetenabp)
 
     implementation(platform(libs.firebase.bom))
