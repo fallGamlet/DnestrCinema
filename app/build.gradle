@@ -1,11 +1,11 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-kapt")
-    id("org.jetbrains.kotlin.plugin.serialization") version("2.1.20")
-    id("org.jetbrains.kotlin.plugin.compose")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -75,9 +75,9 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ["*.jar"], dir: "libs")
+    implementation(fileTree(include: ["*.jar"], dir: "libs"))
 
-    implementation project(":KinotirApi")
+    implementation(project(":KinotirApi"))
 
     implementation(libs.kotlin.stdlib)
     implementation(libs.kotlinx.serialization.json)
