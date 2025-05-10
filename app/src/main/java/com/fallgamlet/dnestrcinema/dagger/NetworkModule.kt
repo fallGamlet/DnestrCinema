@@ -18,7 +18,7 @@ class NetworkModule {
     }
 
     @Provides
-    fun provideKinotirApiSuspend(factory: ApiFactory): KinotirApi {
+    fun provideKinotirApi(factory: ApiFactory): KinotirApi {
         return factory.api
     }
 }
