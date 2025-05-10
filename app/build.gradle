@@ -79,59 +79,55 @@ dependencies {
 
     implementation project(":KinotirApi")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.kotlinx.serialization.json)
 
-    def composeBom = platform("androidx.compose:compose-bom:2025.04.01")
-    implementation composeBom
-    androidTestImplementation composeBom
+    implementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(platform(libs.androidx.compose.bom))
 
-    implementation("androidx.compose.material3:material3")
+    implementation(libs.androidx.material3)
     // Android Studio Preview support
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
     // UI Tests
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("androidx.navigation:navigation-compose:2.8.9")
+    implementation(libs.androidx.navigation.compose)
 
-    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
-    implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 
-    implementation("androidx.annotation:annotation:1.9.1")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.multidex:multidex:2.0.1")
-    implementation("androidx.core:core-ktx:1.16.0")
-    implementation("androidx.fragment:fragment-ktx:1.8.6")
+    implementation(libs.androidx.annotation)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.multidex)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.fragment.ktx)
 
-    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-common-java8:2.8.7")
-    runtimeOnly ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+    implementation(libs.androidx.lifecycle.extensions)
+    implementation(libs.androidx.lifecycle.common.java8)
+    runtimeOnly (libs.androidx.lifecycle.runtime.ktx)
 
-    implementation("com.google.dagger:dagger:2.56.2")
-    kapt ("com.google.dagger:dagger-compiler:2.56.2")
-    kapt ("com.google.dagger:dagger-android-processor:2.56.2")
+    implementation(libs.dagger)
+    kapt (libs.dagger.compiler)
+    kapt (libs.dagger.android.processor)
 
-    implementation("com.google.code.gson:gson:2.13.1")
+    implementation(libs.gson)
 
-    implementation("com.github.bumptech.glide:glide:4.16.0")
-    kapt ("com.github.bumptech.glide:compiler:4.16.0")
+    implementation(libs.glide)
+    kapt (libs.glide.compiler)
 
-    implementation("com.jakewharton.threetenabp:threetenabp:1.4.9")
+    implementation(libs.threetenabp)
 
-    implementation platform("com.google.firebase:firebase-bom:33.13.0")
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.crashlytics.ktx)
 
-    debugImplementation("com.squareup.leakcanary:leakcanary-support-fragment:1.6.3")
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
-    releaseImplementation("com.squareup.leakcanary:leakcanary-android-no-op:1.6.3")
+    debugImplementation(libs.leakcanary.support.fragment)
+    debugImplementation(libs.leakcanary.android)
+    releaseImplementation(libs.leakcanary.android.no.op)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1", {
-        exclude group: "com.android.support", module: "support-annotations"
-        exclude group: "com.google.code.findbugs"
-    })
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }
