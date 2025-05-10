@@ -1,8 +1,8 @@
 package com.fallgamlet.dnestrcinema.ui.start
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -21,7 +21,7 @@ import com.fallgamlet.dnestrcinema.ui.navigation.destinations.TodayMoviesDestina
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class StartActivity : AppCompatActivity(), NavigationRouter {
+class StartActivity : ComponentActivity(), NavigationRouter {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
