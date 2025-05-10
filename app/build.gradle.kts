@@ -25,7 +25,7 @@ android {
         applicationId = "com.fallgamlet.dnestrcinema"
         minSdk = 21
         targetSdk = 36
-        versionCode = 35
+        versionCode = 36
         versionName = "1.0.$versionCode"
         project.ext.set("archivesBaseName", "DnestrCinema$versionName")
         vectorDrawables.useSupportLibrary = true
