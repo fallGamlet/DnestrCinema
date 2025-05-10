@@ -8,74 +8,68 @@ plugins {
     alias(libs.plugins.google.firebase.crashlytics)
 }
 
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+kotlin {
+    jvmToolchain(11)
+}
 
 android {
-    signingConfigs {
-        config {
-            keyAlias keystoreProperties["keyAlias"]
-            keyPassword keystoreProperties["keyPassword"]
-            storeFile file(keystoreProperties["storeFile"])
-            storePassword keystoreProperties["storePassword"]
-        }
-    }
+    namespace = "com.fallgamlet.dnestrcinema"
+    compileSdk = 35
+    buildToolsVersion = "36.0.0"
 
     configurations.configureEach {
         resolutionStrategy.force("com.google.code.findbugs:jsr305:3.0.2")
     }
 
-    compileSdk 35
-    buildToolsVersion = "36.0.0"
-    namespace "com.fallgamlet.dnestrcinema"
-
     defaultConfig {
-        applicationId "com.fallgamlet.dnestrcinema"
-        minSdkVersion 21
-        targetSdkVersion 36
-        versionCode 35
-        versionName "1.0.${versionCode}"
-        project.ext.set("archivesBaseName", "DnestrCinema" + versionName)
+        applicationId = "com.fallgamlet.dnestrcinema"
+        minSdk = 21
+        targetSdk = 36
+        versionCode = 35
+        versionName = "1.0.$versionCode"
+        project.ext.set("archivesBaseName", "DnestrCinema$versionName")
         vectorDrawables.useSupportLibrary = true
-        signingConfig signingConfigs.config
-        multiDexEnabled true
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled = true
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.config
+        getByName("release") {
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                "proguard-rules.pro"
+            )
         }
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.config
+        getByName("debug") {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     buildFeatures {
-        buildConfig true
-        compose true
+        buildConfig = true
+        compose = true
     }
-    productFlavors {
-    }
+    productFlavors {}
     compileOptions {
-        incremental true
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
     composeCompiler {
         reportsDestination = layout.buildDirectory.dir("compose_compiler")
-        stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf")
+        stabilityConfigurationFiles = listOf(
+            rootProject.layout.projectDirectory.file("stability_config.conf")
+        )
     }
 }
 
 dependencies {
-    implementation(fileTree(include: ["*.jar"], dir: "libs"))
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     implementation(project(":KinotirApi"))
 

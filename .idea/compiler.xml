@@ -2,7 +2,6 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11">
-      <module name="Dnestr_Cinema.app" target="21" />
       <module name="DnestrCinema.app" target="21" />
     </bytecodeTargetLevel>
   </component>
