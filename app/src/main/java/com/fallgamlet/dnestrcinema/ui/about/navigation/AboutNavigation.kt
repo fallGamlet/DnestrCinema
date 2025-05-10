@@ -8,7 +8,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.fallgamlet.dnestrcinema.R
-import com.fallgamlet.dnestrcinema.app.AppFacade
 import com.fallgamlet.dnestrcinema.data.network.KinoTir
 import com.fallgamlet.dnestrcinema.ui.about.AboutScreenState
 import com.fallgamlet.dnestrcinema.ui.about.composable.AboutScreen
@@ -77,7 +76,7 @@ private fun Context.getState(
 }
 
 private fun NavController.navigateToRoomByPath(path: String) {
-    val baseUrl = AppFacade.instance.requestFactory?.baseUrl ?: return
+    val baseUrl = "http://kinotir.md"
     val imgURL = HttpUtils.getAbsoluteUrl(baseUrl, path) ?: return
 
     navigate(ImageViewerDestination(imgURL))

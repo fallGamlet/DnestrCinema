@@ -2,12 +2,12 @@ package com.fallgamlet.dnestrcinema.ui.movie.today
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fallgamlet.dnestrcinema.app.AppFacade
 import com.fallgamlet.dnestrcinema.domain.models.Film
 import com.fallgamlet.dnestrcinema.domain.repositories.remote.FilmRepository
-import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter
 import com.fallgamlet.dnestrcinema.ui.movie.model.MovieVo
 import com.fallgamlet.dnestrcinema.ui.movie.model.MovieVoMapper
+import com.fallgamlet.dnestrcinema.ui.navigation.Navigator
+import com.fallgamlet.dnestrcinema.ui.navigation.destinations.MovieDetailsDestination
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +23,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TodayMoviesViewModel @Inject constructor(
-    private val filmRepository: FilmRepository
+    private val filmRepository: FilmRepository,
+    private val navigator: Navigator,
 ) : ViewModel() {
 
     private var films: List<Film> = emptyList()
@@ -37,10 +38,6 @@ class TodayMoviesViewModel @Inject constructor(
 
     private val errorChannel = Channel<Throwable?>(Channel.BUFFERED)
     val errorsState = errorChannel.receiveAsFlow()
-
-    private val router: NavigationRouter?
-        get() = AppFacade.instance.navigationRouter
-
 
     init {
         loadData()
@@ -74,6 +71,10 @@ class TodayMoviesViewModel @Inject constructor(
     }
 
     fun onMovieSelected(link: String) {
-        router?.showMovieDetail(link)
+        viewModelScope.launch {
+            navigator.pushAction { navController ->
+                navController.navigate(MovieDetailsDestination(link = link))
+            }
+        }
     }
 }

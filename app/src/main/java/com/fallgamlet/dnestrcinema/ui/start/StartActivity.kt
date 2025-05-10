@@ -5,23 +5,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.fallgamlet.dnestrcinema.R
-import com.fallgamlet.dnestrcinema.app.AppFacade.Companion.instance
 import com.fallgamlet.dnestrcinema.dagger.getAppComponent
-import com.fallgamlet.dnestrcinema.mvp.routers.NavigationRouter
 import com.fallgamlet.dnestrcinema.ui.navigation.NavigationActionsHolder
 import com.fallgamlet.dnestrcinema.ui.navigation.Navigator
 import com.fallgamlet.dnestrcinema.ui.navigation.TopLevelRoute
 import com.fallgamlet.dnestrcinema.ui.navigation.destinations.AboutDestination
-import com.fallgamlet.dnestrcinema.ui.navigation.destinations.MovieDetailsDestination
 import com.fallgamlet.dnestrcinema.ui.navigation.destinations.NewsesDestination
 import com.fallgamlet.dnestrcinema.ui.navigation.destinations.SoonMoviesDestination
 import com.fallgamlet.dnestrcinema.ui.navigation.destinations.TodayMoviesDestination
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class StartActivity : ComponentActivity(), NavigationRouter {
+class StartActivity : ComponentActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -72,24 +67,6 @@ class StartActivity : ComponentActivity(), NavigationRouter {
                 }
             }
         )
-    }
-
-    override fun onPause() {
-        instance.navigationRouter = null
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        instance.navigationRouter = this
-    }
-
-    override fun showMovieDetail(movieLink: String) {
-        lifecycleScope.launch {
-            navigator.pushAction { navController ->
-                navController.navigate(MovieDetailsDestination(link = movieLink))
-            }
-        }
     }
 
 //    override fun showBuyTicket(movieItem: MovieItem?) {

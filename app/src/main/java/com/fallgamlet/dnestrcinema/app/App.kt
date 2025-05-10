@@ -5,7 +5,6 @@ import androidx.multidex.MultiDexApplication
 import com.fallgamlet.dnestrcinema.dagger.AppComponent
 import com.fallgamlet.dnestrcinema.dagger.AppComponentProvider
 import com.fallgamlet.dnestrcinema.dagger.DaggerAppComponent
-import com.fallgamlet.dnestrcinema.factory.KinotirConfigFactory
 import com.jakewharton.threetenabp.AndroidThreeTen
 
 
@@ -19,8 +18,6 @@ class App : MultiDexApplication(),
         super.onCreate()
         initDagger()
         AndroidThreeTen.init(this)
-
-        AppFacade.instance.init(KinotirConfigFactory())
     }
 
     private fun initDagger() {
