@@ -14,7 +14,7 @@ kotlin {
 
 android {
     namespace = "com.fallgamlet.dnestrcinema"
-    compileSdk = 35
+    compileSdk = 36
     buildToolsVersion = "36.0.0"
 
     configurations.configureEach {
