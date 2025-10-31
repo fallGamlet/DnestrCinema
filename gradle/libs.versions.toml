@@ -1,33 +1,33 @@
 [versions]
-agp = "8.10.0"
+agp = "8.13.0"
 annotation = "1.9.1"
-appcompat = "1.7.0"
-coilCompose = "3.1.0"
-coilNetworkOkhttp = "3.1.0"
-composeBomVersion = "2025.05.00"
-dagger = "2.56.2"
-espressoCore = "3.6.1"
-firebaseBom = "33.13.0"
-firebase-crashlytics = "3.0.3"
-fragmentKtx = "1.8.6"
-google-services = "4.4.2"
-gson = "2.13.1"
-jsoup = "1.16.1"
-kotlin = "2.1.20"
-kotlinJvm = "2.1.20"
-coreKtx = "1.16.0"
+appcompat = "1.7.1"
+coilCompose = "3.3.0"
+coilNetworkOkhttp = "3.3.0"
+composeBomVersion = "2025.10.01"
+dagger = "2.57.2"
+espressoCore = "3.7.0"
+firebaseBom = "34.5.0"
+firebase-crashlytics = "3.0.6"
+fragmentKtx = "1.8.9"
+google-services = "4.4.4"
+gson = "2.13.2"
+jsoup = "1.21.2"
+kotlin = "2.2.21"
+kotlinJvm = "2.2.21"
+coreKtx = "1.17.0"
 junit = "4.13.2"
-kotlinxSerializationJson = "1.8.1"
+kotlinxSerializationJson = "1.9.0"
 leakcanaryAndroid = "2.14"
 leakcanaryAndroidNoOp = "1.6.3"
 leakcanarySupportFragment = "1.6.3"
-lifecycleCommonJava8 = "2.9.0"
+lifecycleCommonJava8 = "2.9.4"
 lifecycleExtensions = "2.2.0"
-material = "1.12.0"
+material = "1.13.0"
 multidex = "2.0.1"
-navigationCompose = "2.9.0"
-okhttp = "4.12.0"
-retrofit = "2.11.0"
+navigationCompose = "2.9.5"
+okhttp = "5.3.0"
+retrofit = "3.0.0"
 threetenabp = "1.4.9"
 
 [libraries]
@@ -45,15 +45,16 @@ androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 androidx-material3 = { module = "androidx.compose.material3:material3" }
+androidx-material-cons-core = { module = "androidx.compose.material:material-icons-core" }
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-android-processor = { module = "com.google.dagger:dagger-android-processor", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
-firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
-firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
