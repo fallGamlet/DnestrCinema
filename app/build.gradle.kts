@@ -23,7 +23,7 @@ android {
 
     defaultConfig {
         applicationId = "com.fallgamlet.dnestrcinema"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 36
         versionCode = 36
         versionName = "1.0.$versionCode"
@@ -36,14 +36,14 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             proguardFiles(
-                getDefaultProguardFile("proguard-android.txt"),
+                getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
         getByName("debug") {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android.txt"),
+                getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
@@ -80,6 +80,7 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.cons.core)
     // Android Studio Preview support
     implementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
